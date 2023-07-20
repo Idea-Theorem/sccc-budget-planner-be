@@ -8,6 +8,8 @@ pool:
 
 steps:
   - script: |
+
     chmod +x ./CI/setup.sh
     ./CI/setup.sh
-  displayName: 'Preparing environment files'
+
+    displayName: 'Preparing environment files'
