@@ -7,5 +7,5 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-  - script: ./CI/setup.sh
+  - script: sudo ./CI/setup.sh
     displayName: 'Preparing environment files'
