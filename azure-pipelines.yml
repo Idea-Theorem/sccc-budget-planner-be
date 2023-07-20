@@ -8,8 +8,8 @@ pool:
 
 steps:
   - script: |
-
-    chmod +x ./CI/setup.sh
-    ./CI/setup.sh
-
-    displayName: 'Preparing environment files'
+      # Grant permission to run script
+      chmod +x ./CI/setup.sh
+      # Run the setup.sh script
+      ./CI/setup.sh
+    displayName: 'Preparing environment'
