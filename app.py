@@ -4,7 +4,7 @@ from configs import Settings
 
 BASE = FlaskApp(__name__, Settings)
 register_urls(BASE)
-APPLICATION = BASE.get_app()
+app = BASE.get_app()
 
 if __name__ == "__main__":
-    APPLICATION.run()
+    app.run()
