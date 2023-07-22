@@ -11,4 +11,4 @@ class HelloWorld(MethodResource):
     def get(self, **kwargs):
         """Hello World Get"""
 
-        return "Hello World 2", 200
+        return "Hello World 3", 200
