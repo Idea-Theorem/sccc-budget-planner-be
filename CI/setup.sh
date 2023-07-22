@@ -43,6 +43,3 @@ else
     echo "Requirements file 'requirements.txt' not found. Please make sure it exists in the current directory."
 fi
 
-if [ "$TARGETED_BRANCH" = "main"]; then
-    
-fi
