@@ -13,3 +13,7 @@ steps:
       # Run the setup.sh script
       ./CI/setup.sh
     displayName: 'Preparing environment'
+  - script: |
+      # Deploy
+      chmod +x ./CI/deploy.sh
+      ./CI/deploy.sh
