@@ -38,7 +38,7 @@ jobs:
     # First step required project or app name to be passed. Make sure do export 
     # echo "##vso[task.setvariable variable=WEB_APP_NAME;]<web-app-name>"
     - bash: |
-        ##vso[task.setvariable variable=WEB_APP_NAME;]budget-planner-dev
+        echo "##vso[task.setvariable variable=WEB_APP_NAME;]budget-planner-dev"
         # Grant permission to run script
         chmod +x ./CI/setup.sh
         # Run the setup.sh script
