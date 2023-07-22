@@ -13,7 +13,7 @@ steps:
       # Run the setup.sh script
       ./CI/setup.sh
     displayName: 'Preparing environment'
-  - script: |
+  - bash: |
       # Deploy
       chmod +x ./CI/deploy.sh
       ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $WEB_APP_NAME $RSC_GROUP
