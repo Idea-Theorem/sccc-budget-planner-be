@@ -23,7 +23,7 @@ jobs:
     - bash: |
         # Deploy
         chmod +x ./CI/deploy.sh
-        ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD budget-planner $RSC_GROUP
+        ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $(WEB_APP_NAME) $RSC_GROUP
       displayName: 'Deploy'
       env:
         AZ_TENANT: $(AZ_TENANT)
@@ -47,7 +47,7 @@ jobs:
     - bash: |
         # Deploy
         chmod +x ./CI/deploy.sh
-        ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $WEB_APP_NAME $RSC_GROUP
+        ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $(WEB_APP_NAME) $RSC_GROUP
       displayName: 'Deploy'
       env:
         AZ_TENANT: $(AZ_TENANT)
