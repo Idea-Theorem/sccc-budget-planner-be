@@ -1,4 +1,5 @@
 #!/bin/bash
+TARGETED_BRANCH=$1
 
 # Function to check if a command exists
 command_exists() {
@@ -40,4 +41,8 @@ if [ -f "requirements.txt" ]; then
     pip install -r requirements.txt
 else
     echo "Requirements file 'requirements.txt' not found. Please make sure it exists in the current directory."
+fi
+
+if [ "$TARGETED_BRANCH" = "main"]; then
+    
 fi
