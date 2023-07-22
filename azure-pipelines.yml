@@ -10,45 +10,45 @@ jobs:
 - job: main
   displayName: 'main'
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/main') #Targeted branch
-    steps:
-      # First step required project or app name to be passed. Make sure do export $WEB_APP_NAME=<app-name>
-      - script: |
-          export $WEB_APP_NAME=budget-planner
-          # Grant permission to run script
-          chmod +x ./CI/setup.sh
-          # Run the setup.sh script
-          ./CI/setup.sh
-        displayName: 'Preparing environment'
-      - bash: |
-          # Deploy
-          chmod +x ./CI/deploy.sh
-          ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD budget-planner $RSC_GROUP
-        displayName: 'Deploy'
-        env:
-          AZ_TENANT: $(AZ_TENANT)
-          AZ_USER: $(AZ_USER)
-          AZ_PWD: $(AZ_PWD)
-          RSC_GROUP: $(RSC_GROUP)
+  steps:
+    # First step required project or app name to be passed. Make sure do export $WEB_APP_NAME=<app-name>
+    - script: |
+        export $WEB_APP_NAME=budget-planner
+        # Grant permission to run script
+        chmod +x ./CI/setup.sh
+        # Run the setup.sh script
+        ./CI/setup.sh
+      displayName: 'Preparing environment'
+    - bash: |
+        # Deploy
+        chmod +x ./CI/deploy.sh
+        ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD budget-planner $RSC_GROUP
+      displayName: 'Deploy'
+      env:
+        AZ_TENANT: $(AZ_TENANT)
+        AZ_USER: $(AZ_USER)
+        AZ_PWD: $(AZ_PWD)
+        RSC_GROUP: $(RSC_GROUP)
 
 - job: development
   displayName: 'development'
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/development') #Targeted branch
-    steps:
-      # First step required project or app name to be passed. Make sure do export $WEB_APP_NAME=<app-name>
-      - script: |
-          export $WEB_APP_NAME=budget-planner-dev
-          # Grant permission to run script
-          chmod +x ./CI/setup.sh
-          # Run the setup.sh script
-          ./CI/setup.sh
-        displayName: 'Preparing environment'
-      - bash: |
-          # Deploy
-          chmod +x ./CI/deploy.sh
-          ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $WEB_APP_NAME $RSC_GROUP
-        displayName: 'Deploy'
-        env:
-          AZ_TENANT: $(AZ_TENANT)
-          AZ_USER: $(AZ_USER)
-          AZ_PWD: $(AZ_PWD)
-          RSC_GROUP: $(RSC_GROUP)
+  steps:
+    # First step required project or app name to be passed. Make sure do export $WEB_APP_NAME=<app-name>
+    - script: |
+        export $WEB_APP_NAME=budget-planner-dev
+        # Grant permission to run script
+        chmod +x ./CI/setup.sh
+        # Run the setup.sh script
+        ./CI/setup.sh
+      displayName: 'Preparing environment'
+    - bash: |
+        # Deploy
+        chmod +x ./CI/deploy.sh
+        ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $WEB_APP_NAME $RSC_GROUP
+      displayName: 'Deploy'
+      env:
+        AZ_TENANT: $(AZ_TENANT)
+        AZ_USER: $(AZ_USER)
+        AZ_PWD: $(AZ_PWD)
+        RSC_GROUP: $(RSC_GROUP)
