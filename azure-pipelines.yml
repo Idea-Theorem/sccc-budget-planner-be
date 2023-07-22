@@ -16,5 +16,11 @@ steps:
   - script: |
       # Deploy
       chmod +x ./CI/deploy.sh
-      ./CI/deploy.sh
+      ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $WEB_APP_NAME $RSC_GROUP
     displayName: 'Deploy'
+    env:
+      AZ_TENANT: $(AZ_TENANT)
+      AZ_USER: $(AZ_USER)
+      AZ_PWD: $(AZ_PWD)
+      WEB_APP_NAME: $(WEB_APP_NAME)
+      RSC_GROUP: $(RSC_GROUP)

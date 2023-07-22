@@ -38,7 +38,7 @@ fi
 echo "Azure CLI and az webapp are installed and available."
 
 echo "Login into Azure"
-az login --service-principal --tenant $(AZ_TENANT) --username $(AZ_USER) --password $(AZ_PWD)
+az login --service-principal --tenant $1 --username $2 --password $3
 
 echo "Deploy App To Azure"
-az webapp up --runtime PYTHON:3.9 --sku F1 --name $(WEB_APP_NAME) --resource-group $(RSC_GROUP)
+az webapp up --runtime PYTHON:3.9 --sku F1 --name $4 --resource-group $5
