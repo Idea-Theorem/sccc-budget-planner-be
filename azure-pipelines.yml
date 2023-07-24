@@ -6,7 +6,7 @@ trigger:
       - '*'
 
 jobs:
-- jobs: prepareEnv
+- job: prepareEnv
   pool:
     vmImage: 'ubuntu-latest'
   steps:
