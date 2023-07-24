@@ -10,10 +10,6 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '$(pythonVersion)'
-        displayName: 'Python Version: $(pythonVersion)'
     - script: |
         chmod +x ./CI/setup.sh
         ./CI/setup.sh
