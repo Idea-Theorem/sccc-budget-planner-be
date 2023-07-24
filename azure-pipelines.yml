@@ -13,7 +13,6 @@ jobs:
     - script: |
         chmod +x ./CI/setup.sh
         ./CI/setup.sh
-      workingDirectory: $(projectRoot)
       displayName: "Install python dependencies"
     - task: ArchiveFiles@2
       inputs:
