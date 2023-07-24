@@ -37,8 +37,10 @@ fi
 
 # Install Python app requirements using pip
 if [ -f "requirements.txt" ]; then
+    virtualenv appenv
+    source appenv/bin/activate
     echo "Installing app requirements..."
-    pip install -r requirements.txt
+    pip install --target="./.python_packages/lib/site-packages" -r requirements.txt
 else
     echo "Requirements file 'requirements.txt' not found. Please make sure it exists in the current directory."
 fi
