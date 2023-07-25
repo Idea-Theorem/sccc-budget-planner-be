@@ -35,6 +35,7 @@ jobs:
       ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $(WEB_APP_NAME) $RSC_GROUP
     displayName: 'Deploy App to Azure Web App'
     env:
+      WEB_APP_NAME: $(WEB_APP_NAME)
       AZ_TENANT: $(AZ_TENANT)
       AZ_USER: $(AZ_USER)
       AZ_PWD: $(AZ_PWD)
