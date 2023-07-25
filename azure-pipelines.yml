@@ -15,9 +15,9 @@ jobs:
   steps:
   - task: Cache@2
     inputs:
-      key: '"appenv" | "$(Agent.OS)"'
+      key: '"venv" | "$(Agent.OS)"'
       restoreKeys: |
-        "appenv" | "$(Agent.OS)"
+        "venv" | "$(Agent.OS)"
       path: $(VENV_CACHE_FOLDER)
       cacheHitVar: VENV_CACHE_RESTORE
     displayName: Restore Cache
@@ -27,8 +27,7 @@ jobs:
     displayName: Install requirements
     condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - script: |
-      ls
-      ls $(VENV_CACHE_FOLDER)/bin
+      ls $(VENV_CACHE_FOLDER)
       source $(VENV_CACHE_FOLDER)/bin/activate
       pytest ./tests
     displayName: Run Tests

@@ -23,11 +23,11 @@ fi
 # Create a virtual environment and activate it
 if [ ! -d "venv" ]; then
     echo "Creating virtual environment..."
-    python3 -m venv $APPENV_PATH
+    python3 -m venv venv
 fi
 
 echo "Activating virtual environment..."
-source $APPENV_PATH/bin/activate
+source ./venv/bin/activate
 
 # Install pip
 if ! command_exists pip; then
