@@ -12,6 +12,9 @@ jobs:
   variables:
     VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/appenv
   steps:
+  - script: |
+      chmod +x ./CI/setup.sh
+      ./CI/setup.sh
   - task: Cache@2
     inputs:
       key: '"pip" | "$(Agent.OS)"'
@@ -19,6 +22,3 @@ jobs:
         "pip" | "$(Agent.OS)"
       path: $(VENV_CACHE_FOLDER)
     displayName: Cache Venv
-  - script: |
-      chmod +x ./CI/setup.sh
-      ./CI/setup.sh
