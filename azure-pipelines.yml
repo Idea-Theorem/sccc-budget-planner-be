@@ -20,7 +20,6 @@ jobs:
         "venv"
       path: $(VENV_CACHE_FOLDER)
       cacheHitVar: VENV_CACHE_RESTORE
-    displayName: Restore Cache
   - script: |
       chmod +x ./CI/setup.sh
       ./CI/setup.sh $(VENV_CACHE_FOLDER)
