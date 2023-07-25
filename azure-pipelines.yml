@@ -14,7 +14,7 @@ jobs:
   steps:
   - script: |
       chmod +x ./CI/setup.sh
-      ./CI/setup.sh
+      ./CI/setup.sh $(VENV_CACHE_FOLDER)
       pwd
     displayName: Install requirements
   - task: Cache@2

@@ -1,5 +1,5 @@
 #!/bin/bash
-TARGETED_BRANCH=$1
+APPENV_PATH=$1
 
 # Function to check if a command exists
 command_exists() {
@@ -38,7 +38,7 @@ fi
 # Install Python app requirements using pip
 if [ -f "requirements.txt" ]; then
     echo "Installing app requirements..."
-    pip install --target="./.python_packages/lib/site-packages" -r requirements.txt
+    pip install --target=$APPENV_PATH -r requirements.txt
 else
     echo "Requirements file 'requirements.txt' not found. Please make sure it exists in the current directory."
 fi
