@@ -16,16 +16,18 @@ jobs:
   - script: |
       chmod +x ./CI/setup.sh
       ./CI/setup.sh $(VENV_CACHE_FOLDER)
-      pwd
     displayName: Install requirements
+    condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - task: Cache@2
     inputs:
       key: '"appenv" | "$(Agent.OS)"'
       restoreKeys: |
         "appenv" | "$(Agent.OS)"
       path: $(VENV_CACHE_FOLDER)
+      cacheHitVar: VENV_CACHE_RESTORE
     displayName: Cache AppEnv
   - script: |
+      source $(VENV_CACHE_FOLDER)/bin/activate
       pytest ./tests
     displayName: Run Tests
   - bash: |
