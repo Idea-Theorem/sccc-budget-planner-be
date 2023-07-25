@@ -6,26 +6,63 @@ trigger:
       - '*'
 
 jobs:
-- jobs: prepareEnv
+- job: Development
   pool:
     vmImage: 'ubuntu-latest'
+  variables:
+    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/appenv
   steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '$(pythonVersion)'
-        displayName: 'Python Version: $(pythonVersion)'
-    - script: |
-        chmod +x ./CI/setup.sh
-        ./CI/setup.sh
-      workingDirectory: $(projectRoot)
-      displayName: "Install python dependencies"
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)'
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
-        replaceExistingArchive: true
-    - publish: $(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip
-      displayName: "Upload Package"
-      artifact: drop
+  - script: |
+      chmod +x ./CI/setup.sh
+      ./CI/setup.sh $(VENV_CACHE_FOLDER)
+      pwd
+    displayName: Install requirements
+  - task: Cache@2
+    inputs:
+      key: '"appenv" | "$(Agent.OS)"'
+      restoreKeys: |
+        "appenv" | "$(Agent.OS)"
+      path: $(VENV_CACHE_FOLDER)
+    displayName: Cache AppEnv
+  - bash: |
+      export WEB_APP_NAME=budget-planner-dev
+      # Deploy
+      chmod +x ./CI/deploy.sh
+      ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $WEB_APP_NAME $RSC_GROUP
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/development') #Targeted branch
+    displayName: 'Deploy App to Azure Web App'
+    env:
+      AZ_TENANT: $(AZ_TENANT)
+      AZ_USER: $(AZ_USER)
+      AZ_PWD: $(AZ_PWD)
+      RSC_GROUP: $(RSC_GROUP)
+- job: Master
+  pool:
+    vmImage: 'ubuntu-latest'
+  variables:
+    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/appenv
+  steps:
+  - script: |
+      chmod +x ./CI/setup.sh
+      ./CI/setup.sh $(VENV_CACHE_FOLDER)
+      pwd
+    displayName: Install requirements
+  - task: Cache@2
+    inputs:
+      key: '"appenv" | "$(Agent.OS)"'
+      restoreKeys: |
+        "appenv" | "$(Agent.OS)"
+      path: $(VENV_CACHE_FOLDER)
+    displayName: Cache AppEnv
+  - bash: |
+      export WEB_APP_NAME=bugeting-app
+      # Deploy
+      chmod +x ./CI/deploy.sh
+      ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $WEB_APP_NAME $RSC_GROUP
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main') #Targeted branch
+    displayName: 'Deploy App to Azure Web App'
+    env:
+      AZ_TENANT: $(AZ_TENANT)
+      AZ_USER: $(AZ_USER)
+      AZ_PWD: $(AZ_PWD)
+      RSC_GROUP: $(RSC_GROUP)
