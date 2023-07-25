@@ -11,7 +11,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   variables:
-    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/cache/v1/venv
+    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/venv
   steps:
   - task: Cache@2
     inputs:
