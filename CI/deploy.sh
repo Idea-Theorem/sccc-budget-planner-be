@@ -3,6 +3,8 @@
 # Specify the desired version of Azure CLI
 targeted_version="2.50.0"
 
+echo "$1, $2, $3, $4, $5"
+
 # Function to check if a command exists
 command_exists() {
     command -v "$1" >/dev/null 2>&1
