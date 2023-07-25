@@ -15,7 +15,7 @@ jobs:
   steps:
   - task: Cache@2
     inputs:
-      key: '"venv" | "requirements.txt'
+      key: '"venv" | "requirements.txt"'
       restoreKeys: |
         "venv" | "requirements.txt"
       path: $(VENV_CACHE_FOLDER)
