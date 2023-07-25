@@ -11,13 +11,8 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   variables:
-    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/.venv
+    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/venv
   steps:
-  - script: |
-      chmod +x ./CI/setup.sh
-      ./CI/setup.sh $(VENV_CACHE_FOLDER)
-    displayName: Install requirements
-    condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - task: Cache@2
     inputs:
       key: '"appenv" | "$(Agent.OS)"'
@@ -26,6 +21,11 @@ jobs:
       path: $(VENV_CACHE_FOLDER)
       cacheHitVar: VENV_CACHE_RESTORE
     displayName: Cache AppEnv
+  - script: |
+      chmod +x ./CI/setup.sh
+      ./CI/setup.sh $(VENV_CACHE_FOLDER)
+    displayName: Install requirements
+    condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - script: |
       source $(VENV_CACHE_FOLDER)/bin/activate
       pytest ./tests
@@ -48,7 +48,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   variables:
-    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/.venv
+    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/venv
   steps:
   - script: |
       chmod +x ./CI/setup.sh
