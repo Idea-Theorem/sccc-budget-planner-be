@@ -9,18 +9,16 @@ jobs:
 - job: prepareEnv
   pool:
     vmImage: 'ubuntu-latest'
+  variables:
+    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/appenv
   steps:
-    - script: |
-        chmod +x ./CI/setup.sh
-        ./CI/setup.sh
-      displayName: "Install python dependencies"
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)'
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
-        replaceExistingArchive: true
-    - publish: $(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip
-      displayName: "Upload Package"
-      artifact: drop
+  - task: Cache@2
+    inputs:
+      key: '"pip" | "$(Agent.OS)"'
+      restoreKeys: |
+        "pip" | "$(Agent.OS)"
+      path: $(VENV_CACHE_FOLDER)
+    displayName: Cache Venv
+  - script: |
+      chmod +x ./CI/setup.sh
+      ./CI/setup.sh
