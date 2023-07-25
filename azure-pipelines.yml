@@ -26,7 +26,7 @@ jobs:
       path: $(VENV_CACHE_FOLDER)
     displayName: Cache AppEnv
   - bash: |
-      export WEB_APP_NAME=budget-planner-dev
+      export WEB_APP_NAME=budget-planner-development
       zip -r $WEB_APP_NAME.zip . -x '.??*'
       # Deploy
       chmod +x ./CI/deploy.sh
