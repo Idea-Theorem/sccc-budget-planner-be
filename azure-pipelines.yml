@@ -20,7 +20,7 @@ jobs:
         "appenv" | "$(Agent.OS)"
       path: $(VENV_CACHE_FOLDER)
       cacheHitVar: VENV_CACHE_RESTORE
-    displayName: Cache AppEnv
+    displayName: Restore Cache
   - script: |
       chmod +x ./CI/setup.sh
       ./CI/setup.sh $(VENV_CACHE_FOLDER)

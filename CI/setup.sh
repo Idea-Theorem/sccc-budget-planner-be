@@ -27,7 +27,7 @@ if [ ! -d "venv" ]; then
 fi
 
 echo "Activating virtual environment..."
-source venv/bin/activate
+source $APPENV_PATH/bin/activate
 
 # Install pip
 if ! command_exists pip; then
