@@ -27,7 +27,7 @@ jobs:
     displayName: Install requirements
     condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - script: |
-      ls $(VENV_CACHE_FOLDER)
+      ls $(VENV_CACHE_FOLDER)/bin
       source $(VENV_CACHE_FOLDER)/bin/activate
       pytest ./tests
     displayName: Run Tests
