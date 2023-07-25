@@ -3,7 +3,7 @@
 # Specify the desired version of Azure CLI
 targeted_version="2.50.0"
 
-echo "$0, $1, $2, $3, $4, $5"
+echo "$1, $2, $3, $4, $5"
 
 # Function to check if a command exists
 command_exists() {
@@ -40,7 +40,7 @@ fi
 echo "Azure CLI and az webapp are installed and available."
 
 echo "Login into Azure"
-az login --service-principal --tenant $0 --username $1 --password $2
+az login --service-principal --tenant $1 --username $2 --password $3
 
 echo "Deploy App To Azure"
-az webapp up --runtime PYTHON:3.9 --sku F1 --name $3 --resource-group $4
+az webapp up --runtime PYTHON:3.9 --sku F1 --name $4 --resource-group $5
