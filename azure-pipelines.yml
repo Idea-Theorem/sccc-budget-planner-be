@@ -25,10 +25,10 @@ jobs:
       path: $(VENV_CACHE_FOLDER)
     displayName: Cache AppEnv
   - bash: |
-      echo "##vso[task.setvariable variable=WEB_APP_NAME;]budget-app"
+      export WEB_APP_NAME=budget-app
       # Deploy
       chmod +x ./CI/deploy.sh
-      ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $(WEB_APP_NAME) $RSC_GROUP
+      ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $WEB_APP_NAME $RSC_GROUP
     displayName: 'Deploy App to Azure Web App'
     env:
       AZ_TENANT: $(AZ_TENANT)
