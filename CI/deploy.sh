@@ -42,5 +42,10 @@ echo "Azure CLI and az webapp are installed and available."
 echo "Login into Azure"
 az login --service-principal --tenant $1 --username $2 --password $3
 
+az webapp config appsettings set \
+    --resource-group $5 \
+    --name $4 \
+    --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true
+
 echo "Deploy App To Azure"
 az webapp deploy --src-path $4.zip --name $4 --resource-group $5
