@@ -24,7 +24,6 @@ jobs:
         "appenv" | "$(Agent.OS)"
       path: $(VENV_CACHE_FOLDER)
     displayName: Cache AppEnv
-  steps:
   - bash: |
       echo "##vso[task.setvariable variable=WEB_APP_NAME;]budget-app"
       # Deploy
