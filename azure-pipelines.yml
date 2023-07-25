@@ -15,10 +15,12 @@ jobs:
   - script: |
       chmod +x ./CI/setup.sh
       ./CI/setup.sh
+      pwd
+    displayName: Install requirements
   - task: Cache@2
     inputs:
-      key: '"pip" | "$(Agent.OS)"'
+      key: '"appenv" | "$(Agent.OS)"'
       restoreKeys: |
-        "pip" | "$(Agent.OS)"
+        "appenv" | "$(Agent.OS)"
       path: $(VENV_CACHE_FOLDER)
-    displayName: Cache Venv
+    displayName: Cache AppEnv
