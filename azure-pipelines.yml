@@ -25,7 +25,7 @@ jobs:
       chmod +x ./CI/setup.sh
       ./CI/setup.sh $(VENV_CACHE_FOLDER)
     displayName: Install requirements
-    condition: eq(variables.VENV_CACHE_RESTORE, 'false')
+    # condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - script: |
       ls $(VENV_CACHE_FOLDER)
       echo "Activating venv"
