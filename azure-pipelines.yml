@@ -29,7 +29,7 @@ jobs:
   - script: |
       echo "Activating venv"
       source $(VENV_CACHE_FOLDER)/bin/activate
-      pip freeze
+      pip install -r requirements.txt
       echo "Running tests..."
       pytest ./tests
     displayName: Run Tests
