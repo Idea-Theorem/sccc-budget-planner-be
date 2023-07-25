@@ -24,9 +24,6 @@ jobs:
         "appenv" | "$(Agent.OS)"
       path: $(VENV_CACHE_FOLDER)
     displayName: Cache AppEnv
-- job: Deployment
-  pool:
-    vmImage: 'ubuntu-latest'
   steps:
   - bash: |
       echo "##vso[task.setvariable variable=WEB_APP_NAME;]budget-app"
@@ -35,7 +32,6 @@ jobs:
       ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $(WEB_APP_NAME) $RSC_GROUP
     displayName: 'Deploy App to Azure Web App'
     env:
-      WEB_APP_NAME: $(WEB_APP_NAME)
       AZ_TENANT: $(AZ_TENANT)
       AZ_USER: $(AZ_USER)
       AZ_PWD: $(AZ_PWD)
