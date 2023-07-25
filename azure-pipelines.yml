@@ -27,7 +27,7 @@ jobs:
     displayName: Install requirements
     condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - script: |
-      ls $(VENV_CACHE_FOLDER)
+      pip freeze
       echo "Activating venv"
       source $(VENV_CACHE_FOLDER)/bin/activate
       echo "Running tests..."
