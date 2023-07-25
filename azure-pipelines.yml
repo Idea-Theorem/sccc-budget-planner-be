@@ -11,13 +11,13 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   variables:
-    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/.cache/v1/venv
+    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/cache/v1/venv
   steps:
   - task: Cache@2
     inputs:
-      key: '"venv" | "/.cache/v1/venv"'
+      key: '"venv" | "/cache/v1/venv"'
       restoreKeys: |
-        "venv" | "/.cache/v1/venv"
+        "venv" | "/cache/v1/venv"
       path: $(VENV_CACHE_FOLDER)
       cacheHitVar: VENV_CACHE_RESTORE
     displayName: Restore Cache
@@ -51,7 +51,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   variables:
-    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/.cache/v1/venv
+    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/cache/v1/venv
   steps:
   - script: |
       chmod +x ./CI/setup.sh
@@ -60,9 +60,9 @@ jobs:
     condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - task: Cache@2
     inputs:
-      key: '"venv" | "/.cache/v1/venv"'
+      key: '"venv" | "/cache/v1/venv"'
       restoreKeys: |
-        "venv" | "/.cache/v1/venv"
+        "venv" | "/cache/v1/venv"
       path: $(VENV_CACHE_FOLDER)
       cacheHitVar: VENV_CACHE_RESTORE
     displayName: Cache AppEnv
