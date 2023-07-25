@@ -23,11 +23,11 @@ fi
 # Create a virtual environment and activate it
 if [ ! -d "venv" ]; then
     echo "Creating virtual environment..."
-    python3 -m venv venv
+    python3 -m venv appenv
 fi
 
 echo "Activating virtual environment..."
-source venv/bin/activate
+source appenv/bin/activate
 
 # Install pip
 if ! command_exists pip; then
@@ -37,8 +37,6 @@ fi
 
 # Install Python app requirements using pip
 if [ -f "requirements.txt" ]; then
-    virtualenv appenv
-    source appenv/bin/activate
     echo "Installing app requirements..."
     pip install --target="./.python_packages/lib/site-packages" -r requirements.txt
 else
