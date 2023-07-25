@@ -17,7 +17,7 @@ jobs:
     inputs:
       key: '"venv"'
       restoreKeys: |
-        "venv" | "requirements.txt"
+        "venv"
       path: $(VENV_CACHE_FOLDER)
       cacheHitVar: VENV_CACHE_RESTORE
     displayName: Restore Cache
@@ -27,11 +27,8 @@ jobs:
     displayName: Install requirements
     condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - script: |
-      echo "Activating venv"
-      ls $(VENV_CACHE_FOLDER)
-      source $(VENV_CACHE_FOLDER)/bin/activate
-      echo "Running tests..."
-      pytest ./tests
+      chmod +x ./CI/run_tests.sh
+      ./CI/run_tests.sh $(VENV_CACHE_FOLDER)
     displayName: Run Tests
   - bash: |
       export WEB_APP_NAME=budget-planner-development
