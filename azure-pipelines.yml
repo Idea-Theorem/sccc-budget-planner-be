@@ -25,9 +25,11 @@ jobs:
       chmod +x ./CI/setup.sh
       ./CI/setup.sh $(VENV_CACHE_FOLDER)
     displayName: Install requirements
-    # condition: eq(variables.VENV_CACHE_RESTORE, 'false')
+    condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - script: |
+      echo "Activating venv"
       source $(VENV_CACHE_FOLDER)/bin/activate
+      echo "Running tests..."
       pytest ./tests
     displayName: Run Tests
   - bash: |
