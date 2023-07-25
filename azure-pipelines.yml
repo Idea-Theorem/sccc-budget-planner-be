@@ -15,7 +15,7 @@ jobs:
   steps:
   - task: Cache@2
     inputs:
-      key: '"venv" | "requirements.txt"'
+      key: '"venv"'
       restoreKeys: |
         "venv" | "requirements.txt"
       path: $(VENV_CACHE_FOLDER)
@@ -29,7 +29,7 @@ jobs:
   - script: |
       echo "Activating venv"
       source $(VENV_CACHE_FOLDER)/bin/activate
-      pip install --no-deps .
+      pip freeze
       echo "Running tests..."
       pytest ./tests
     displayName: Run Tests
