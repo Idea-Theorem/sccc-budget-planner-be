@@ -43,4 +43,4 @@ else
     echo "Requirements file 'requirements.txt' not found. Please make sure it exists in the current directory."
 fi
 
-cp -R ./venv $APPENV_PATH
+cp -R ./venv/* $APPENV_PATH
