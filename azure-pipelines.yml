@@ -7,6 +7,7 @@ trigger:
 
 jobs:
 - job: Development
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/development') #Targeted branch
   pool:
     vmImage: 'ubuntu-latest'
   variables:
@@ -29,7 +30,6 @@ jobs:
       # Deploy
       chmod +x ./CI/deploy.sh
       ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $WEB_APP_NAME $RSC_GROUP
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/development') #Targeted branch
     displayName: 'Deploy App to Azure Web App'
     env:
       AZ_TENANT: $(AZ_TENANT)
@@ -37,6 +37,7 @@ jobs:
       AZ_PWD: $(AZ_PWD)
       RSC_GROUP: $(RSC_GROUP)
 - job: Master
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/main') #Targeted branch
   pool:
     vmImage: 'ubuntu-latest'
   variables:
@@ -59,7 +60,6 @@ jobs:
       # Deploy
       chmod +x ./CI/deploy.sh
       ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $WEB_APP_NAME $RSC_GROUP
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main') #Targeted branch
     displayName: 'Deploy App to Azure Web App'
     env:
       AZ_TENANT: $(AZ_TENANT)
