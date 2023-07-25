@@ -1,8 +1,8 @@
 VENV_PATH=$1
 
 if [ -e "$VENV_PATH" ]; then
-  echo "Activating venv"
-    ls $VENV_PATH
+    echo "Activating venv"
+    ls $VENV_PATH/lib
     source $VENV_PATH/bin/activate
     echo "Running tests..."
     pytest ./tests
