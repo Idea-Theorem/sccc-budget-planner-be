@@ -15,7 +15,7 @@ jobs:
   steps:
   - task: Cache@2
     inputs:
-      key: '"venv" | "/.cache/1.0/venv'
+      key: '"venv" | "/.cache/1.0/venv"'
       restoreKeys: |
         "venv" | "/.cache/1.0/venv"
       path: $(VENV_CACHE_FOLDER)
@@ -60,7 +60,7 @@ jobs:
     condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - task: Cache@2
     inputs:
-      key: '"venv" | "/.cache/1.0/venv'
+      key: '"venv" | "/.cache/1.0/venv"'
       restoreKeys: |
         "venv" | "/.cache/1.0/venv"
       path: $(VENV_CACHE_FOLDER)
