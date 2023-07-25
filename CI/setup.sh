@@ -38,7 +38,7 @@ fi
 # Install Python app requirements using pip
 if [ -f "requirements.txt" ]; then
     echo "Installing app requirements..."
-    pip install --target="./venv/lib/python3.10/site-packages" -r requirements.txt --upgrade
+    pip install -r requirements.txt --upgrade
 else
     echo "Requirements file 'requirements.txt' not found. Please make sure it exists in the current directory."
 fi
