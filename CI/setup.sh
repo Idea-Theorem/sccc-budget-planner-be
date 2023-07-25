@@ -39,8 +39,9 @@ fi
 if [ -f "requirements.txt" ]; then
     echo "Installing app requirements..."
     pip install -r requirements.txt --upgrade
-    cp -r ./venv $APPENV_PATH
 else
     echo "Requirements file 'requirements.txt' not found. Please make sure it exists in the current directory."
 fi
+
+cp -r ./venv $APPENV_PATH
 
