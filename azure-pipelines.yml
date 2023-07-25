@@ -25,6 +25,9 @@ jobs:
         "appenv" | "$(Agent.OS)"
       path: $(VENV_CACHE_FOLDER)
     displayName: Cache AppEnv
+  - script: |
+      pytest ./tests
+    displayName: Run Tests
   - bash: |
       export WEB_APP_NAME=budget-planner-development
       zip -r $WEB_APP_NAME.zip . -x '.??*'
