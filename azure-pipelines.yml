@@ -28,7 +28,7 @@ jobs:
     condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - script: |
       echo "Activating venv"
-      ls $(VENV_CACHE_FOLDER)/lib
+      ls $(VENV_CACHE_FOLDER)
       source $(VENV_CACHE_FOLDER)/bin/activate
       echo "Running tests..."
       pytest ./tests
