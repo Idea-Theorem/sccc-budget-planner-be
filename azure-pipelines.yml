@@ -11,7 +11,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   variables:
-    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/appenv
+    VENV_CACHE_FOLDER:  ./venv
   steps:
   - script: |
       chmod +x ./CI/setup.sh
@@ -42,7 +42,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   variables:
-    VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/appenv
+    VENV_CACHE_FOLDER:  ./venv
   steps:
   - script: |
       chmod +x ./CI/setup.sh
