@@ -32,7 +32,7 @@ source $APPENV_PATH/bin/activate
 # Install pip
 if ! command_exists pip; then
     echo "Pip not found. Installing pip..."
-    python3 -m ensurepip --upgrade
+    python -m ensurepip --upgrade
 fi
 
 # Install Python app requirements using pip

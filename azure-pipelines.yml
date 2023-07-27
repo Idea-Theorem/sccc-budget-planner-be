@@ -29,18 +29,18 @@ jobs:
       chmod +x ./CI/run_tests.sh
       ./CI/run_tests.sh $(VENV_CACHE_FOLDER)
     displayName: Run Tests
-  - bash: |
-      export WEB_APP_NAME=budget-planner-development
-      zip -r $WEB_APP_NAME.zip . -x '.??*'
-      # Deploy
-      chmod +x ./CI/deploy.sh
-      ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $WEB_APP_NAME $RSC_GROUP
-    displayName: 'Deploy App to Azure Web App'
-    env:
-      AZ_TENANT: $(AZ_TENANT)
-      AZ_USER: $(AZ_USER)
-      AZ_PWD: $(AZ_PWD)
-      RSC_GROUP: $(RSC_GROUP)
+  # - bash: |
+  #     export WEB_APP_NAME=budget-planner-development
+  #     zip -r $WEB_APP_NAME.zip . -x '.??*'
+  #     # Deploy
+  #     chmod +x ./CI/deploy.sh
+  #     ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $WEB_APP_NAME $RSC_GROUP
+  #   displayName: 'Deploy App to Azure Web App'
+  #   env:
+  #     AZ_TENANT: $(AZ_TENANT)
+  #     AZ_USER: $(AZ_USER)
+  #     AZ_PWD: $(AZ_PWD)
+  #     RSC_GROUP: $(RSC_GROUP)
 
 - job: Main
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/main') #Targeted branch
