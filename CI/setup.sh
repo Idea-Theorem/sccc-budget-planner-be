@@ -32,13 +32,13 @@ source $APPENV_PATH/bin/activate
 # Install pip
 if ! command_exists pip; then
     echo "Pip not found. Installing pip..."
-    python -m ensurepip --upgrade
+    $APPENV_PATH/bin/python3 -m ensurepip --upgrade
 fi
 
 # Install Python app requirements using pip
 if [ -f "requirements.txt" ]; then
     echo "Installing app requirements..."
-    pip install -r requirements.txt --upgrade
+    $APPENV_PATH/bin/pip install -r requirements.txt --upgrade
 else
     echo "Requirements file 'requirements.txt' not found. Please make sure it exists in the current directory."
 fi
