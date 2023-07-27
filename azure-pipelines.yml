@@ -24,7 +24,7 @@ jobs:
       chmod +x ./CI/setup.sh
       ./CI/setup.sh $(VENV_CACHE_FOLDER)
     displayName: Install requirements
-    # condition: eq(variables.VENV_CACHE_RESTORE, 'false')
+    condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - script: |
       chmod +x ./CI/run_tests.sh
       ./CI/run_tests.sh $(VENV_CACHE_FOLDER)
