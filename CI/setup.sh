@@ -23,22 +23,21 @@ fi
 # Create a virtual environment and activate it
 if [ ! -d "venv" ]; then
     echo "Creating virtual environment..."
-    python3 -m venv $APPENV_PATH
+    virtualenv $APPENV_PATH
 fi
 
 echo "Activating virtual environment..."
 source $APPENV_PATH/bin/activate
-ls $APPENV_PATH/bin
 # Install pip
 if ! command_exists pip; then
     echo "Pip not found. Installing pip..."
-    $APPENV_PATH/bin/python3 -m ensurepip --upgrade
+    python3 -m ensurepip --upgrade
 fi
 
 # Install Python app requirements using pip
 if [ -f "requirements.txt" ]; then
     echo "Installing app requirements..."
-    $APPENV_PATH/bin/pip install -r requirements.txt --upgrade
+    pip install -r requirements.txt --upgrade
 else
     echo "Requirements file 'requirements.txt' not found. Please make sure it exists in the current directory."
 fi
