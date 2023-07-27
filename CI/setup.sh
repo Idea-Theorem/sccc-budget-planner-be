@@ -23,7 +23,7 @@ fi
 # Create a virtual environment and activate it
 if [ ! -d "venv" ]; then
     echo "Creating virtual environment..."
-    virtualenv $APPENV_PATH
+    python3 -m venv $APPENV_PATH
 fi
 
 echo "Activating virtual environment..."
