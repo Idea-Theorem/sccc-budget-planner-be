@@ -28,6 +28,7 @@ fi
 
 echo "Activating virtual environment..."
 source ./venv/bin/activate
+echo "Current pwd: $(pwd)"
 echo "Check if virtualenv is activated: $VIRTUAL_ENV"
 
 # Install pip
