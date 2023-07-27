@@ -28,7 +28,7 @@ fi
 
 echo "Activating virtual environment..."
 source $APPENV_PATH/bin/activate
-
+ls $APPENV_PATH/bin
 # Install pip
 if ! command_exists pip; then
     echo "Pip not found. Installing pip..."
