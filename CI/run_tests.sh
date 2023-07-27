@@ -4,7 +4,6 @@ if [ -e "$VENV_PATH" ]; then
     echo "Env Path Found: $VENV_PATH"
     echo "Activating venv"
     source $VENV_PATH/bin/activate
-    pip freeze
     echo "Running tests..."
     pytest ./tests
 else
