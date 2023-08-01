@@ -13,11 +13,6 @@ jobs:
   variables:
     VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/venv
   steps:
-  - script: |
-      chmod +x ./CI/setup.sh
-      ./CI/setup.sh $(VENV_CACHE_FOLDER)
-    displayName: Install requirements
-    condition: eq(variables.VENV_CACHE_FOLDER, 'false')
   - task: Cache@2
     inputs:
       key: 'v3 | "venv"'
@@ -25,6 +20,11 @@ jobs:
         "venv"
       path: $(VENV_CACHE_FOLDER)
       cacheHitVar: VENV_CACHE_RESTORE
+  - script: |
+      chmod +x ./CI/setup.sh
+      ./CI/setup.sh $(VENV_CACHE_FOLDER)
+    displayName: Install requirements
+    condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - script: |
       chmod +x ./CI/run_tests.sh
       ./CI/run_tests.sh $(VENV_CACHE_FOLDER)
