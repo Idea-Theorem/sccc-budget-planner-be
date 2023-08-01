@@ -29,18 +29,18 @@ jobs:
       chmod +x ./CI/run_tests.sh
       ./CI/run_tests.sh $(VENV_CACHE_FOLDER)
     displayName: Run Tests
-  # - bash: |
-  #     export WEB_APP_NAME=budget-planner-development
-  #     zip -r $WEB_APP_NAME.zip . -x '.??*'
-  #     # Deploy
-  #     chmod +x ./CI/deploy.sh
-  #     ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $WEB_APP_NAME $RSC_GROUP
-  #   displayName: 'Deploy App to Azure Web App'
-  #   env:
-  #     AZ_TENANT: $(AZ_TENANT)
-  #     AZ_USER: $(AZ_USER)
-  #     AZ_PWD: $(AZ_PWD)
-  #     RSC_GROUP: $(RSC_GROUP)
+  - bash: |
+      export WEB_APP_NAME=budget-planner-development
+      zip -r $WEB_APP_NAME.zip . -x '.??*'
+      # Deploy
+      chmod +x ./CI/deploy.sh
+      ./CI/deploy.sh $AZ_TENANT $AZ_USER $AZ_PWD $WEB_APP_NAME $RSC_GROUP
+    displayName: 'Deploy App to Azure Web App'
+    env:
+      AZ_TENANT: $(AZ_TENANT)
+      AZ_USER: $(AZ_USER)
+      AZ_PWD: $(AZ_PWD)
+      RSC_GROUP: $(RSC_GROUP)
 
 - job: Main
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/main') #Targeted branch
@@ -49,22 +49,21 @@ jobs:
   variables:
     VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/cache/v1/venv
   steps:
+  - task: Cache@2
+  inputs:
+    key: 'v3 | "venv"'
+    restoreKeys: |
+      "venv"
+    path: $(VENV_CACHE_FOLDER)
+    cacheHitVar: VENV_CACHE_RESTORE
   - script: |
       chmod +x ./CI/setup.sh
       ./CI/setup.sh $(VENV_CACHE_FOLDER)
     displayName: Install requirements
     condition: eq(variables.VENV_CACHE_RESTORE, 'false')
-  - task: Cache@2
-    inputs:
-      key: '"venv" | "/cache/v1/venv"'
-      restoreKeys: |
-        "venv" | "/cache/v1/venv"
-      path: $(VENV_CACHE_FOLDER)
-      cacheHitVar: VENV_CACHE_RESTORE
-    displayName: Cache AppEnv
   - script: |
-      source $(VENV_CACHE_FOLDER)/bin/activate
-      pytest ./tests
+      chmod +x ./CI/run_tests.sh
+      ./CI/run_tests.sh $(VENV_CACHE_FOLDER)
     displayName: Run Tests
   - bash: |
       export WEB_APP_NAME=bugeting-app
