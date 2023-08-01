@@ -12,19 +12,19 @@ jobs:
     vmImage: 'ubuntu-latest'
   variables:
     VENV_CACHE_FOLDER:  $(Pipeline.Workspace)/venv
-  steps:
-  - task: Cache@2
-    inputs:
-      key: 'v2 | "venv"'
-      restoreKeys: |
-        "venv"
-      path: $(VENV_CACHE_FOLDER)
-      cacheHitVar: VENV_CACHE_RESTORE
   - script: |
       chmod +x ./CI/setup.sh
       ./CI/setup.sh $(VENV_CACHE_FOLDER)
     displayName: Install requirements
     condition: eq(variables.VENV_CACHE_RESTORE, 'false')
+  steps:
+    - task: Cache@2
+      inputs:
+        key: 'v2 | "venv"'
+        restoreKeys: |
+          "venv"
+        path: $(VENV_CACHE_FOLDER)
+        cacheHitVar: VENV_CACHE_RESTORE
   - script: |
       chmod +x ./CI/run_tests.sh
       ./CI/run_tests.sh $(VENV_CACHE_FOLDER)
