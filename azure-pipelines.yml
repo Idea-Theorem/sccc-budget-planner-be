@@ -20,7 +20,7 @@ jobs:
     condition: eq(variables.VENV_CACHE_RESTORE, 'false')
   - task: Cache@2
     inputs:
-      key: 'v2 | "venv"'
+      key: 'v3 | "venv"'
       restoreKeys: |
         "venv"
       path: $(VENV_CACHE_FOLDER)
