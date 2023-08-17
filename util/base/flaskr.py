@@ -2,13 +2,12 @@
 import logging
 import traceback
 from flask.logging import default_handler
-from flask import abort
 from flask import Flask
 from flask_apispec import FlaskApiSpec
 from werkzeug.exceptions import HTTPException
 from webargs.flaskparser import parser
 
-LOGGER = logging.getLogger('logger')
+LOGGER = logging.getLogger('default')
 
 @parser.error_handler
 def handle_request_parsing_error(err, req, schema, *, error_status_code, error_headers):
@@ -54,7 +53,7 @@ class FlaskApp:
 
     def set_logger(self):
         """Overwrite flask default logger"""
-        logger = logging.getLogger('logger')
+        logger = logging.getLogger('default')
         logger.setLevel(logging.DEBUG)
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         default_handler.setFormatter(formatter)
@@ -75,3 +74,4 @@ class FlaskApp:
     def register_url(self, uri, resource, api_name):
         """Register Url"""
         self.app.add_url_rule(uri, view_func=resource.as_view(api_name))
+        self.docs.register(resource, api_name)

@@ -15,7 +15,7 @@ jobs:
   steps:
   - task: Cache@2
     inputs:
-      key: 'v3 | "venv"'
+      key: 'v1 | "venv"'
       restoreKeys: |
         "venv"
       path: $(VENV_CACHE_FOLDER)
@@ -51,7 +51,7 @@ jobs:
   steps:
   - task: Cache@2
     inputs:
-      key: 'v3 | "venv"'
+      key: 'v1 | "venv"'
       restoreKeys: |
         "venv"
       path: $(VENV_CACHE_FOLDER)

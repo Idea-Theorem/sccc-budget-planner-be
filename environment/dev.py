@@ -1,0 +1,1 @@
+DB_CONN_STRING = "mongodb://budget-planner-ideatheorem-dev:yubLtnsHdXbTkITltn7xOzA4SBXFdgo9B1Zh4h5oupnvhlQZMUecsJbO5C3rxn5RrFXbPm6aUgBuACDbsXtYZw==@budget-planner-ideatheorem-dev.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@budget-planner-ideatheorem-dev@"
