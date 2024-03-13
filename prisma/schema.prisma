@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String            @id @default(uuid())
+  firstname         String?
+  lastname          String?
+  email             String            @unique
+  password          String
+  role              Role?             @relation(fields: [role_id], references: [id])
+  role_id           String?
+  resetToken        String?
+  phoneNumber       String?
+  hiredate          DateTime?
+  department        Department?       @relation(fields: [department_id], references: [id])
+  department_id     String?
+  employment_type   EmploymentType?
+  compensation_type CompensationType?
+  salary_rate       Float?
+  center            Center?           @relation(fields: [center_id], references: [id])
+  center_id         String?
+  created_at        DateTime          @default(now())
+  updated_at        DateTime?
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+}
+
+enum CompensationType {
+  HOURLY
+  SALARY
+}
+
+model Role {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  users     User[]
+}
+
+model Department {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  User      User[]
+  Program   Program[]
+}
+
+model Center {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User[]
+}
+
+model Program {
+  id             String     @id @default(uuid())
+  name           String
+  code           String
+  department     Department @relation(fields: [department_id], references: [id])
+  department_id  String
+  from_date      DateTime
+  to_date        DateTime
+  income         Json
+  supply_expense Json
+  salary_expense Json
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
