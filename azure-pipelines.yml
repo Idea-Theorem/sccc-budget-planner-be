@@ -37,7 +37,7 @@ stages:
 
     - script: |
         npm install
-        # npm run build --if-present
+        npm run build
         # npm run test --if-present
       displayName: 'npm install'
 
@@ -62,7 +62,7 @@ stages:
     displayName: Deploy
     environment:
       name: $(environmentName)
-      resourceName: 'budget-be-dev'
+      resourceName: 'budget-dev'
       resourceType: VirtualMachine
     pool:
       vmImage: $(vmImageName)
@@ -81,5 +81,4 @@ stages:
               cd /home/azureuser/app/budget-planner-be
               unzip $(Build.BuildId).zip
               cp /home/azureuser/app/.env /home/azureuser/app/budget-planner-be/
-              npm install -g pm2
-              pm2 start npm --name budget-be -- start
+              pm2 restart budget-be
