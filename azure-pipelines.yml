@@ -60,7 +60,10 @@ stages:
   jobs:
   - deployment: Deployment
     displayName: Deploy
-    environment: $(environmentName)
+    environment:
+      name: $(environmentName)
+      resourceName: 'budget-be-dev'
+      resourceType: VirtualMachine
     pool:
       vmImage: $(vmImageName)
     strategy:
