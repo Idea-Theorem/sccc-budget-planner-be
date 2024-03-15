@@ -81,4 +81,5 @@ stages:
               cd /home/azureuser/app/budget-planner-be
               unzip $(Build.BuildId).zip
               cp /home/azureuser/app/.env /home/azureuser/app/budget-planner-be/
-              pm2 restart budget-be
+              npm install -g pm2
+              pm2 start npm --name budget-be -- start
