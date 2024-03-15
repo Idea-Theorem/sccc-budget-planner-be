@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import helpers from "../src/utils/helpers";
+import "dotenv/config";
 
 const prisma = new PrismaClient();
 
@@ -42,8 +43,8 @@ const createHRUser = async () => {
                 email: 'hr@gmail.com',
             },
         });
-
-        const hashedPassword = await helpers.hashPassword('hr@123456');
+        const pasword = process.env.HR_PASSWORD;
+        const hashedPassword = await helpers.hashPassword(pasword as string);
 
         if (!existingHRUser) {
             await prisma.user.create({
