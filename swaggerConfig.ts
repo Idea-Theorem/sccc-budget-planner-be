@@ -16,6 +16,10 @@ export default (app: Express) => {
                     url: 'http://localhost:5000',
                     description: 'Development server',
                 },
+                {
+                    url: 'http://20.151.79.66/',
+                    description: 'Production server',
+                },
             ],
             components: {
                 schemas: {
@@ -38,6 +42,13 @@ export default (app: Express) => {
                             center_id: { type: "string" },
                             created_at: { type: "string", format: "date-time" },
                             updated_at: { type: "string", format: "date-time" },
+                        },
+                    },
+                    Login: {
+                        type: "object",
+                        properties: {
+                            email: { type: "string" },
+                            password: { type: "string" },
                         },
                     },
                     Department: {

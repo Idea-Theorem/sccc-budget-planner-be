@@ -3,7 +3,6 @@ import DepartmentController from "../controllers/DepartmentController";
 
 const router = Router();
 
-// Define Swagger documentation for Department endpoints
 /**
  * @swagger
  * tags:
@@ -15,6 +14,8 @@ const router = Router();
  * @swagger
  * /api/department:
  *   get:
+ *     tags:
+ *       - Departments
  *     summary: Get all departments
  *     description: Retrieve a list of all departments
  *     responses:
@@ -31,6 +32,8 @@ router.get("/", DepartmentController.fetchDepartments);
  * @swagger
  * /api/department/{id}:
  *   get:
+ *     tags:
+ *       - Departments
  *     summary: Get department by ID
  *     description: Retrieve a department by its ID
  *     parameters:
@@ -56,6 +59,8 @@ router.get("/:id", DepartmentController.getDepartmentById);
  * @swagger
  * /api/department:
  *   post:
+ *     tags:
+ *       - Departments
  *     summary: Create a new department
  *     description: Creates a new department with the provided data
  *     requestBody:
@@ -76,6 +81,8 @@ router.post("/", DepartmentController.createDepartment);
  * @swagger
  * /api/department/{id}:
  *   put:
+ *     tags:
+ *       - Departments
  *     summary: Update department by ID
  *     description: Updates a department with the provided ID and data
  *     parameters:
@@ -105,6 +112,8 @@ router.put("/:id", DepartmentController.updateDepartment);
  * @swagger
  * /api/department/{id}:
  *   delete:
+ *     tags:
+ *       - Departments
  *     summary: Delete department by ID
  *     description: Deletes a department with the provided ID
  *     parameters:

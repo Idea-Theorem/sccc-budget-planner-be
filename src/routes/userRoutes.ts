@@ -3,7 +3,6 @@ import UserController from "../controllers/UserController";
 
 const router = Router();
 
-// Define Swagger documentation for User endpoints
 /**
  * @swagger
  * tags:
@@ -15,6 +14,8 @@ const router = Router();
  * @swagger
  * /api/user:
  *   get:
+ *     tags:
+ *       - Users
  *     summary: Get all users
  *     description: Retrieve a list of all users
  *     responses:
@@ -23,7 +24,7 @@ const router = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: 'components/schemas/User'
  */
 router.get("/", UserController.fetchUsers);
 
@@ -31,6 +32,8 @@ router.get("/", UserController.fetchUsers);
  * @swagger
  * /api/user/{id}:
  *   get:
+ *     tags:
+ *       - Users
  *     summary: Get user by ID
  *     description: Retrieve a user by their ID
  *     parameters:
@@ -46,7 +49,7 @@ router.get("/", UserController.fetchUsers);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/User'
+ *               $ref: 'components/schemas/User'
  *       404:
  *         description: User not found
  */
@@ -56,6 +59,8 @@ router.get("/:id", UserController.getUserById);
  * @swagger
  * /api/user:
  *   post:
+ *     tags:
+ *       - Users
  *     summary: Create a new user
  *     description: Creates a new user with the provided data
  *     requestBody:
@@ -63,7 +68,7 @@ router.get("/:id", UserController.getUserById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: 'components/schemas/User'
  *     responses:
  *       200:
  *         description: User created successfully
@@ -76,6 +81,8 @@ router.post("/", UserController.createUser);
  * @swagger
  * /api/user/login:
  *   post:
+ *     tags:
+ *       - Users
  *     summary: User login
  *     description: Authenticates the user and returns an access token
  *     requestBody:
@@ -83,7 +90,7 @@ router.post("/", UserController.createUser);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/LoginPayload'
+ *             $ref: 'components/schemas/Login'
  *     responses:
  *       200:
  *         description: User logged in successfully
@@ -96,6 +103,8 @@ router.post("/login", UserController.signin);
  * @swagger
  * /api/user/{id}:
  *   put:
+ *     tags:
+ *       - Users
  *     summary: Update user by ID
  *     description: Updates a user with the provided ID and data
  *     parameters:
@@ -110,7 +119,7 @@ router.post("/login", UserController.signin);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: 'components/schemas/User'
  *     responses:
  *       200:
  *         description: User updated successfully
@@ -125,6 +134,8 @@ router.put("/:id", UserController.updateUser);
  * @swagger
  * /api/user/{id}:
  *   delete:
+ *     tags:
+ *       - Users
  *     summary: Delete user by ID
  *     description: Deletes a user with the provided ID
  *     parameters:

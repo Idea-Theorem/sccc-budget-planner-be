@@ -3,7 +3,6 @@ import ProgramController from "../controllers/ProgramController";
 
 const router = Router();
 
-// Define Swagger documentation for Program endpoints
 /**
  * @swagger
  * tags:
@@ -15,6 +14,8 @@ const router = Router();
  * @swagger
  * /api/program:
  *   get:
+ *     tags:
+ *       - Programs
  *     summary: Get all programs
  *     description: Retrieve a list of all programs
  *     responses:
@@ -31,6 +32,8 @@ router.get("/", ProgramController.fetchPrograms);
  * @swagger
  * /api/program/{id}:
  *   get:
+ *     tags:
+ *       - Programs
  *     summary: Get program by ID
  *     description: Retrieve a program by its ID
  *     parameters:
@@ -56,6 +59,8 @@ router.get("/:id", ProgramController.getProgramById);
  * @swagger
  * /api/program:
  *   post:
+ *     tags:
+ *       - Programs
  *     summary: Create a new program
  *     description: Creates a new program with the provided data
  *     requestBody:
@@ -76,6 +81,8 @@ router.post("/", ProgramController.createProgram);
  * @swagger
  * /api/program/{id}:
  *   put:
+ *     tags:
+ *       - Programs
  *     summary: Update program by ID
  *     description: Updates a program with the provided ID and data
  *     parameters:
@@ -105,6 +112,8 @@ router.put("/:id", ProgramController.updateProgram);
  * @swagger
  * /api/program/{id}:
  *   delete:
+ *     tags:
+ *       - Programs
  *     summary: Delete program by ID
  *     description: Deletes a program with the provided ID
  *     parameters:

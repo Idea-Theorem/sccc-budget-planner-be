@@ -3,7 +3,6 @@ import centerController from '../controllers/CenterController';
 
 const router = Router();
 
-// Define Swagger documentation for Center endpoints
 /**
  * @swagger
  * tags:
@@ -15,6 +14,8 @@ const router = Router();
  * @swagger
  * /api/center:
  *   get:
+ *     tags:
+ *       - Centers
  *     summary: Get all centers
  *     description: Retrieve a list of all centers
  *     responses:
@@ -31,6 +32,8 @@ router.get('/', centerController.fetchCenters);
  * @swagger
  * /api/center:
  *   post:
+ *     tags:
+ *       - Centers
  *     summary: Create a new center
  *     description: Creates a new center with the provided data
  *     requestBody:
@@ -51,6 +54,8 @@ router.post('/', centerController.createCenter);
  * @swagger
  * /api/center/{id}:
  *   get:
+ *     tags:
+ *       - Centers
  *     summary: Get center by ID
  *     description: Retrieve a center by its ID
  *     parameters:
@@ -76,6 +81,8 @@ router.get('/:id', centerController.getCenterById);
  * @swagger
  * /api/center/{id}:
  *   put:
+ *     tags:
+ *       - Centers
  *     summary: Update center by ID
  *     description: Updates a center with the provided ID and data
  *     parameters:
@@ -105,6 +112,8 @@ router.put('/:id', centerController.updateCenter);
  * @swagger
  * /api/center/{id}:
  *   delete:
+ *     tags:
+ *       - Centers
  *     summary: Delete center by ID
  *     description: Deletes a center with the provided ID
  *     parameters:
