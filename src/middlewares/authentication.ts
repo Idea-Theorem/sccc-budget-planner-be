@@ -28,22 +28,22 @@ const authentication = {
       return next(new ErrorHandler('Token is missing.', 401));
     }
   }) as RequestHandler,
-  isHR: asyncErrorHandler((req: AuthRequest, res: Response, next: NextFunction) => {
-    const user = req.user;
-    if (user?.role?.name === constants.USER_ROLES.ADMIN) {
-      return next();
-    } else {
-      return next(new ErrorHandler('You are not authorized to access this resource.', 401));
-    }
-  }) as RequestHandler,
-  isSuperAdmin: asyncErrorHandler((req: AuthRequest, res: Response, next: NextFunction) => {
-    const user = req.user;
-    if (user?.role?.name !== constants.USER_ROLES.USER) {
-      return next();
-    } else {
-      return next(new ErrorHandler('You are not authorized to access this resource.', 401));
-    }
-  }) as RequestHandler,
+  // isHR: asyncErrorHandler((req: AuthRequest, res: Response, next: NextFunction) => {
+  //   const user = req.user;
+  //   if (user?.role?.name === constants.USER_ROLES.ADMIN) {
+  //     return next();
+  //   } else {
+  //     return next(new ErrorHandler('You are not authorized to access this resource.', 401));
+  //   }
+  // }) as RequestHandler,
+  // isSuperAdmin: asyncErrorHandler((req: AuthRequest, res: Response, next: NextFunction) => {
+  //   const user = req.user;
+  //   if (user?.role?.name !== constants.USER_ROLES.USER) {
+  //     return next();
+  //   } else {
+  //     return next(new ErrorHandler('You are not authorized to access this resource.', 401));
+  //   }
+  // }) as RequestHandler,
 };
 
 export default authentication;
