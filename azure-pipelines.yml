@@ -1,0 +1,84 @@
+# Node.js Express Web App to Linux on Azure
+# Build a Node.js Express app and deploy it to Azure as a Linux web app.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- dev
+
+variables:
+
+  # Azure Resource Manager connection created during pipeline creation
+  azureSubscription: '3140a524-52c3-469e-9117-475089509af7'
+
+  # Web app name
+  # webAppName: ''
+
+  # Environment name
+  environmentName: 'budget-planner-be'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  displayName: Build stage
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '18.x'
+      displayName: 'Install Node.js'
+
+    - script: |
+        npm install
+        # npm run build --if-present
+        # npm run test --if-present
+      displayName: 'npm install'
+
+    - task: ArchiveFiles@2
+      displayName: 'Archive files'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        replaceExistingArchive: true
+
+    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      artifact: drop
+
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - deployment: Deployment
+    displayName: Deploy
+    environment:
+      name: $(environmentName)
+      resourceName: 'budget-be-dev'
+      resourceType: VirtualMachine
+    pool:
+      vmImage: $(vmImageName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: CopyFiles@2
+            displayName: 'Copy files to remote machine'
+            inputs:
+              SourceFolder: '$(Pipeline.Workspace)/drop'
+              Contents: '**'
+              TargetFolder: '/home/azureuser/app/budget-planner-be'
+              CleanTargetFolder: true
+          - script: |
+              cd /home/azureuser/app/budget-planner-be
+              unzip $(Build.BuildId).zip
+              cp /home/azureuser/app/.env /home/azureuser/app/budget-planner-be/
+              pm2 restart budget-be
