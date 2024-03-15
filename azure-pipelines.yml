@@ -62,7 +62,7 @@ stages:
     displayName: Deploy
     environment:
       name: $(environmentName)
-      resourceName: 'budget-be-dev'
+      resourceName: 'budget-dev'
       resourceType: VirtualMachine
     pool:
       vmImage: $(vmImageName)
