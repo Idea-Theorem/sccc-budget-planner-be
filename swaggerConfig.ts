@@ -13,12 +13,12 @@ export default (app: Express) => {
             },
             servers: [
                 {
-                    url: 'http://localhost:5000',
-                    description: 'Development server',
-                },
-                {
                     url: 'http://20.151.79.66/',
                     description: 'Production server',
+                },
+                {
+                    url: 'http://localhost:5000/',
+                    description: 'Development server',
                 },
             ],
             components: {

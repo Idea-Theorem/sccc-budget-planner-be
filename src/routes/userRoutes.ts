@@ -24,7 +24,7 @@ const router = Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: 'components/schemas/User'
+ *               $ref: '#/components/schemas/User'
  */
 router.get("/", UserController.fetchUsers);
 
@@ -49,7 +49,7 @@ router.get("/", UserController.fetchUsers);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: 'components/schemas/User'
+ *               $ref: '#/components/schemas/User'
  *       404:
  *         description: User not found
  */
@@ -68,7 +68,7 @@ router.get("/:id", UserController.getUserById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: 'components/schemas/User'
+ *             $ref: '#/components/schemas/User'
  *     responses:
  *       200:
  *         description: User created successfully
@@ -90,7 +90,7 @@ router.post("/", UserController.createUser);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: 'components/schemas/Login'
+ *             $ref: '#/components/schemas/Login'
  *     responses:
  *       200:
  *         description: User logged in successfully
@@ -119,7 +119,7 @@ router.post("/login", UserController.signin);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: 'components/schemas/User'
+ *             $ref: '#/components/schemas/User'
  *     responses:
  *       200:
  *         description: User updated successfully
