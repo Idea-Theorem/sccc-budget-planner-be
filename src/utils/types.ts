@@ -13,20 +13,20 @@ export enum CompensationType {
 
 export interface User {
     id: string;
-    firstname?: string;
-    lastname?: string;
+    firstname: string;
+    lastname: string;
     email: string;
     password: string;
-    role_id?: string;
-    resetToken?: string | null;
-    phoneNumber?: string | null;
-    hiredate?: Date;
-    department_id?: string;
-    employment_type?: EmploymentType;
-    compensation_type?: CompensationType;
+    role_id: string;
+    reset_token?: string | null;
+    phone_number?: string | null;
+    hire_date: Date;
+    department_id: string | null;
+    employment_type: EmploymentType;
+    compensation_type: CompensationType;
     salary_rate: number;
     center_id?: string;
-    created_at?: Date;
+    created_at: Date;
     updated_at?: Date;
 }
 
@@ -48,6 +48,6 @@ export interface Program {
     income: Record<string, number>;
     supply_expense: Record<string, number>;
     salary_expense: Record<string, number>;
-    createdAt: Date;
-    updatedAt: Date;
+    created_at: Date;
+    updated_at?: Date;
 }

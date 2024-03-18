@@ -14,24 +14,24 @@ datasource db {
 }
 
 model User {
-  id                String            @id @default(uuid())
-  firstname         String?
-  lastname          String?
-  email             String            @unique
+  id                String           @id @default(uuid())
+  firstname         String
+  lastname          String
+  email             String           @unique
   password          String
-  role              Role?             @relation(fields: [role_id], references: [id])
-  role_id           String?
-  resetToken        String?
-  phoneNumber       String?
-  hiredate          DateTime?
-  department        Department?       @relation(fields: [department_id], references: [id])
+  role              Role             @relation(fields: [role_id], references: [id])
+  role_id           String
+  reset_token       String?
+  phone_number      String?
+  hire_date         DateTime
+  department        Department?      @relation(fields: [department_id], references: [id])
   department_id     String?
-  employment_type   EmploymentType?
-  compensation_type CompensationType?
-  salary_rate       Float?
-  center            Center?           @relation(fields: [center_id], references: [id])
+  employment_type   EmploymentType
+  compensation_type CompensationType
+  salary_rate       Float
+  center            Center?          @relation(fields: [center_id], references: [id])
   center_id         String?
-  created_at        DateTime          @default(now())
+  created_at        DateTime         @default(now())
   updated_at        DateTime?
 }
 
@@ -46,28 +46,28 @@ enum CompensationType {
 }
 
 model Role {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  users     User[]
+  id         String    @id @default(uuid())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime?
+  users      User[]
 }
 
 model Department {
-  id        String    @id @default(uuid())
-  name      String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  User      User[]
-  Program   Program[]
+  id         String    @id @default(uuid())
+  name       String
+  created_at DateTime  @default(now())
+  updated_at DateTime?
+  User       User[]
+  Program    Program[]
 }
 
 model Center {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  User      User[]
+  id         String    @id @default(uuid())
+  name       String
+  created_at DateTime  @default(now())
+  updated_at DateTime?
+  User       User[]
 }
 
 model Program {
@@ -81,6 +81,6 @@ model Program {
   income         Json
   supply_expense Json
   salary_expense Json
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  created_at     DateTime   @default(now())
+  updated_at     DateTime?
 }

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import ProgramController from "../controllers/ProgramController";
+import { programValidator } from "../validators/middlewares/program";
 
 const router = Router();
 
@@ -75,7 +76,7 @@ router.get("/:id", ProgramController.getProgramById);
  *       400:
  *         description: Invalid request
  */
-router.post("/", ProgramController.createProgram);
+router.post("/", programValidator.createProgram, ProgramController.createProgram);
 
 /**
  * @swagger
@@ -106,7 +107,7 @@ router.post("/", ProgramController.createProgram);
  *       404:
  *         description: Program not found
  */
-router.put("/:id", ProgramController.updateProgram);
+router.put("/:id", programValidator.createProgram, ProgramController.updateProgram);
 
 /**
  * @swagger

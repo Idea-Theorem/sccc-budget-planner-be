@@ -1,5 +1,6 @@
 import { Router } from "express";
 import centerController from '../controllers/CenterController';
+import { roleValidator } from "../validators/middlewares/role";
 
 const router = Router();
 
@@ -48,7 +49,7 @@ router.get('/', centerController.fetchCenters);
  *       400:
  *         description: Invalid request
  */
-router.post('/', centerController.createCenter);
+router.post('/', roleValidator.createRole, centerController.createCenter);
 
 /**
  * @swagger
@@ -106,7 +107,7 @@ router.get('/:id', centerController.getCenterById);
  *       404:
  *         description: Center not found
  */
-router.put('/:id', centerController.updateCenter);
+router.put('/:id', roleValidator.createRole, centerController.updateCenter);
 
 /**
  * @swagger

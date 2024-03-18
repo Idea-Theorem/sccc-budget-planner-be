@@ -1,5 +1,6 @@
 import { Router } from "express";
 import UserController from "../controllers/UserController";
+import { userValidator } from "../validators/middlewares/user";
 
 const router = Router();
 
@@ -75,7 +76,7 @@ router.get("/:id", UserController.getUserById);
  *       400:
  *         description: Invalid request
  */
-router.post("/", UserController.createUser);
+router.post("/", userValidator.createUser, UserController.createUser);
 
 /**
  * @swagger
@@ -97,7 +98,7 @@ router.post("/", UserController.createUser);
  *       401:
  *         description: Unauthorized
  */
-router.post("/login", UserController.signin);
+router.post("/login", userValidator.loginUser, UserController.signin);
 
 /**
  * @swagger
@@ -128,7 +129,7 @@ router.post("/login", UserController.signin);
  *       404:
  *         description: User not found
  */
-router.put("/:id", UserController.updateUser);
+router.put("/:id", userValidator.createUser, UserController.updateUser);
 
 /**
  * @swagger

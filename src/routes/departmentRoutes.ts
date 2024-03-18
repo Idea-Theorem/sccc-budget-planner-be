@@ -1,5 +1,6 @@
 import { Router } from "express";
 import DepartmentController from "../controllers/DepartmentController";
+import { departmentValidator } from "../validators/middlewares/department";
 
 const router = Router();
 
@@ -75,7 +76,7 @@ router.get("/:id", DepartmentController.getDepartmentById);
  *       400:
  *         description: Invalid request
  */
-router.post("/", DepartmentController.createDepartment);
+router.post("/", departmentValidator.createDepartment, DepartmentController.createDepartment);
 
 /**
  * @swagger
@@ -106,7 +107,7 @@ router.post("/", DepartmentController.createDepartment);
  *       404:
  *         description: Department not found
  */
-router.put("/:id", DepartmentController.updateDepartment);
+router.put("/:id", departmentValidator.createDepartment, DepartmentController.updateDepartment);
 
 /**
  * @swagger
