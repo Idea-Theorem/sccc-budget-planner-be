@@ -1,6 +1,7 @@
 import { Router } from "express";
 import centerController from '../controllers/CenterController';
 import { roleValidator } from "../validators/middlewares/role";
+import { authenication } from "../middlewares/authentication";
 
 const router = Router();
 
@@ -9,17 +10,23 @@ const router = Router();
  * tags:
  *   name: Centers
  *   description: API endpoints for managing centers
+ *   security:
+ *     - bearerAuth: []
  */
 
 /**
  * @swagger
  * /api/center:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     tags:
  *       - Centers
  *     summary: Get all centers
  *     description: Retrieve a list of all centers
  *     responses:
+ *       401:
+ *         $ref: '#/components/responses/UnauthorizedError'
  *       200:
  *         description: Successful operation
  *         content:
@@ -27,7 +34,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Center'
  */
-router.get('/', centerController.fetchCenters);
+router.get('/', authenication.verify, authenication.isHR, centerController.fetchCenters);
 
 /**
  * @swagger

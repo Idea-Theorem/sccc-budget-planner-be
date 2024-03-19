@@ -1,6 +1,7 @@
 import { Router } from "express";
 import UserController from "../controllers/UserController";
 import { userValidator } from "../validators/middlewares/user";
+import { authenication } from "../middlewares/authentication";
 
 const router = Router();
 
@@ -27,7 +28,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/User'
  */
-router.get("/", UserController.fetchUsers);
+router.get("/", authenication.verify, authenication.isHR, UserController.fetchUsers);
 
 /**
  * @swagger
@@ -54,7 +55,7 @@ router.get("/", UserController.fetchUsers);
  *       404:
  *         description: User not found
  */
-router.get("/:id", UserController.getUserById);
+router.get("/:id", authenication.verify, authenication.isHR, UserController.getUserById);
 
 /**
  * @swagger
@@ -76,7 +77,7 @@ router.get("/:id", UserController.getUserById);
  *       400:
  *         description: Invalid request
  */
-router.post("/", userValidator.createUser, UserController.createUser);
+router.post("/", authenication.verify, authenication.isHR, UserController.createUser);
 
 /**
  * @swagger
@@ -129,7 +130,7 @@ router.post("/login", userValidator.loginUser, UserController.signin);
  *       404:
  *         description: User not found
  */
-router.put("/:id", userValidator.createUser, UserController.updateUser);
+router.put("/:id", userValidator.createUser, authenication.isHR, UserController.updateUser);
 
 /**
  * @swagger
@@ -152,6 +153,6 @@ router.put("/:id", userValidator.createUser, UserController.updateUser);
  *       404:
  *         description: User not found
  */
-router.delete("/:id", UserController.deleteUser);
+router.delete("/:id", userValidator.createUser, authenication.isHR, UserController.deleteUser);
 
 export default router;

@@ -1,8 +1,7 @@
 import { Schema, ValidationResult } from "joi";
 import asyncErrorHandler from "./asyncErrorHandler";
 import { NextFunction, Request, Response } from "express";
-import ErrorHandler from "../utils/errorHandler";
-const constants = require("../../config/constants");
+import { RESPONSE_MESSAGES } from "../../config/constants";
 
 const validation = (
   schema: Schema,
@@ -10,13 +9,18 @@ const validation = (
 ) => {
   return asyncErrorHandler(
     async (req: Request, res: Response, next: NextFunction) => {
-      const value: ValidationResult = await schema.validateAsync(req[object]);
+      try {
+        const value: ValidationResult = await schema.validateAsync(req[object], { abortEarly: false });
 
-      if (value.error) {
-        return next(new ErrorHandler(value.error.details[0].message, constants.ERROR));
+        if (value.error) {
+          const errorMessage = value.error.details.map((detail) => detail.message.replace(/"/g, '')).join(', ');
+          return res.status(RESPONSE_MESSAGES.ERROR).json({ error: errorMessage });
+        }
+
+        next();
+      } catch (error) {
+        next(error);
       }
-
-      next();
     }
   );
 };
