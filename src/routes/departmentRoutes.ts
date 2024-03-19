@@ -1,6 +1,8 @@
 import { Router } from "express";
 import DepartmentController from "../controllers/DepartmentController";
-import { departmentValidator } from "../validators/middlewares/department";
+import { authenication } from "../middlewares/authentication";
+import validation from "../middlewares/validation";
+import { departmentSchema } from "../validators/department";
 
 const router = Router();
 
@@ -27,7 +29,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Department'
  */
-router.get("/", DepartmentController.fetchDepartments);
+router.get("/", authenication.verify, authenication.isHR, DepartmentController.fetchDepartments);
 
 /**
  * @swagger
@@ -54,7 +56,7 @@ router.get("/", DepartmentController.fetchDepartments);
  *       404:
  *         description: Department not found
  */
-router.get("/:id", DepartmentController.getDepartmentById);
+router.get("/:id", authenication.verify, authenication.isHR, DepartmentController.getDepartmentById);
 
 /**
  * @swagger
@@ -76,7 +78,7 @@ router.get("/:id", DepartmentController.getDepartmentById);
  *       400:
  *         description: Invalid request
  */
-router.post("/", departmentValidator.createDepartment, DepartmentController.createDepartment);
+router.post("/", authenication.verify, authenication.isHR, validation(departmentSchema.createDepartment), DepartmentController.createDepartment);
 
 /**
  * @swagger
@@ -107,7 +109,7 @@ router.post("/", departmentValidator.createDepartment, DepartmentController.crea
  *       404:
  *         description: Department not found
  */
-router.put("/:id", departmentValidator.createDepartment, DepartmentController.updateDepartment);
+router.put("/:id", authenication.verify, authenication.isHR, validation(departmentSchema.createDepartment), DepartmentController.updateDepartment);
 
 /**
  * @swagger
@@ -130,6 +132,6 @@ router.put("/:id", departmentValidator.createDepartment, DepartmentController.up
  *       404:
  *         description: Department not found
  */
-router.delete("/:id", DepartmentController.deleteDepartment);
+router.delete("/:id", authenication.verify, authenication.isHR, DepartmentController.deleteDepartment);
 
 export default router;

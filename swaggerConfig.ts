@@ -29,11 +29,6 @@ export default (app: Express) => {
                         bearerFormat: 'JWT',
                     },
                 },
-                responses: {
-                    UnauthorizedError: {
-                        description: 'Access token is missing or invalid',
-                    },
-                },
                 schemas: {
                     User: {
                         type: "object",

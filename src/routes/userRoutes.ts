@@ -1,7 +1,8 @@
 import { Router } from "express";
 import UserController from "../controllers/UserController";
-import { userValidator } from "../validators/middlewares/user";
 import { authenication } from "../middlewares/authentication";
+import validation from "../middlewares/validation";
+import { userSchema } from "../validators/user";
 
 const router = Router();
 
@@ -77,7 +78,7 @@ router.get("/:id", authenication.verify, authenication.isHR, UserController.getU
  *       400:
  *         description: Invalid request
  */
-router.post("/", authenication.verify, authenication.isHR, UserController.createUser);
+router.post("/", authenication.verify, authenication.isHR, validation(userSchema.createUser), UserController.createUser);
 
 /**
  * @swagger
@@ -99,7 +100,7 @@ router.post("/", authenication.verify, authenication.isHR, UserController.create
  *       401:
  *         description: Unauthorized
  */
-router.post("/login", userValidator.loginUser, UserController.signin);
+router.post("/login", validation(userSchema.login), UserController.signin);
 
 /**
  * @swagger
@@ -130,7 +131,7 @@ router.post("/login", userValidator.loginUser, UserController.signin);
  *       404:
  *         description: User not found
  */
-router.put("/:id", userValidator.createUser, authenication.isHR, UserController.updateUser);
+router.put("/:id", authenication.verify, authenication.isHR, validation(userSchema.createUser), UserController.updateUser);
 
 /**
  * @swagger
@@ -153,6 +154,6 @@ router.put("/:id", userValidator.createUser, authenication.isHR, UserController.
  *       404:
  *         description: User not found
  */
-router.delete("/:id", userValidator.createUser, authenication.isHR, UserController.deleteUser);
+router.delete("/:id", authenication.verify, authenication.isHR, UserController.deleteUser);
 
 export default router;

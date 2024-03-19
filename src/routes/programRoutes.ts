@@ -1,6 +1,8 @@
 import { Router } from "express";
 import ProgramController from "../controllers/ProgramController";
-import { programValidator } from "../validators/middlewares/program";
+import { authenication } from "../middlewares/authentication";
+import validation from "../middlewares/validation";
+import { programSchema } from "../validators/program";
 
 const router = Router();
 
@@ -27,7 +29,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Program'
  */
-router.get("/", ProgramController.fetchPrograms);
+router.get("/", authenication.verify, authenication.isHR, ProgramController.fetchPrograms);
 
 /**
  * @swagger
@@ -54,7 +56,7 @@ router.get("/", ProgramController.fetchPrograms);
  *       404:
  *         description: Program not found
  */
-router.get("/:id", ProgramController.getProgramById);
+router.get("/:id", authenication.verify, authenication.isHR, ProgramController.getProgramById);
 
 /**
  * @swagger
@@ -76,7 +78,7 @@ router.get("/:id", ProgramController.getProgramById);
  *       400:
  *         description: Invalid request
  */
-router.post("/", programValidator.createProgram, ProgramController.createProgram);
+router.post("/", authenication.verify, authenication.isHR, validation(programSchema.createProgram), ProgramController.createProgram);
 
 /**
  * @swagger
@@ -107,7 +109,7 @@ router.post("/", programValidator.createProgram, ProgramController.createProgram
  *       404:
  *         description: Program not found
  */
-router.put("/:id", programValidator.createProgram, ProgramController.updateProgram);
+router.put("/:id", authenication.verify, authenication.isHR, validation(programSchema.createProgram), ProgramController.updateProgram);
 
 /**
  * @swagger
@@ -130,6 +132,6 @@ router.put("/:id", programValidator.createProgram, ProgramController.updateProgr
  *       404:
  *         description: Program not found
  */
-router.delete("/:id", ProgramController.deleteProgram);
+router.delete("/:id", authenication.verify, authenication.isHR, ProgramController.deleteProgram);
 
 export default router;

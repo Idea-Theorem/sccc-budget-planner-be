@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import routes from "./src/routes";
 import swaggerConfig from "./swaggerConfig";
+import error from "./src/middlewares/error";
 const cors = require('cors');
 
 const app = express();
@@ -17,6 +18,8 @@ swaggerConfig(app);
 
 // Routes
 app.use("/api", routes);
+
+app.use(error);
 
 app.get("/", (req, res) => {
     return res.send("Hi Everyone.");

@@ -10,7 +10,7 @@ const error = (
   next: NextFunction
 ) => {
   err.statusCode = err.statusCode || RESPONSE_MESSAGES.INTERNAL_SERVER_ERROR;
-  err.message = err.message || "INTERNAL SERVER ERROR";
+  err.message = err.message.replace(/"/g, '').replace(/\. /g, ', ') || "INTERNAL SERVER ERROR";
 
   /** ------- FOR JWT TOKEN ------ **/
 

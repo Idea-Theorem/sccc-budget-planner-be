@@ -1,7 +1,8 @@
 import { Router } from "express";
 import centerController from '../controllers/CenterController';
-import { roleValidator } from "../validators/middlewares/role";
 import { authenication } from "../middlewares/authentication";
+import validation from "../middlewares/validation";
+import { centerSchema } from "../validators/center";
 
 const router = Router();
 
@@ -10,23 +11,17 @@ const router = Router();
  * tags:
  *   name: Centers
  *   description: API endpoints for managing centers
- *   security:
- *     - bearerAuth: []
  */
 
 /**
  * @swagger
  * /api/center:
  *   get:
- *     security:
- *       - bearerAuth: []
  *     tags:
  *       - Centers
  *     summary: Get all centers
  *     description: Retrieve a list of all centers
  *     responses:
- *       401:
- *         $ref: '#/components/responses/UnauthorizedError'
  *       200:
  *         description: Successful operation
  *         content:
@@ -56,7 +51,7 @@ router.get('/', authenication.verify, authenication.isHR, centerController.fetch
  *       400:
  *         description: Invalid request
  */
-router.post('/', roleValidator.createRole, centerController.createCenter);
+router.post('/', authenication.verify, authenication.isHR, validation(centerSchema.createCenter), centerController.createCenter);
 
 /**
  * @swagger
@@ -83,7 +78,7 @@ router.post('/', roleValidator.createRole, centerController.createCenter);
  *       404:
  *         description: Center not found
  */
-router.get('/:id', centerController.getCenterById);
+router.get('/:id', authenication.verify, authenication.isHR, centerController.getCenterById);
 
 /**
  * @swagger
@@ -114,7 +109,7 @@ router.get('/:id', centerController.getCenterById);
  *       404:
  *         description: Center not found
  */
-router.put('/:id', roleValidator.createRole, centerController.updateCenter);
+router.put('/:id', authenication.verify, authenication.isHR, validation(centerSchema.createCenter), centerController.updateCenter);
 
 /**
  * @swagger
@@ -137,6 +132,6 @@ router.put('/:id', roleValidator.createRole, centerController.updateCenter);
  *       404:
  *         description: Center not found
  */
-router.delete('/:id', centerController.deleteCenter);
+router.delete('/:id', authenication.verify, authenication.isHR, centerController.deleteCenter);
 
 export default router;

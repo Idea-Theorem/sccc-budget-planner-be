@@ -10,5 +10,7 @@ export const programSchema = {
         income: Joi.object().required(),
         supply_expense: Joi.object().required(),
         salary_expense: Joi.object().required(),
+        created_at: Joi.date().default('now'),
+        updated_at: Joi.date().allow(null).optional()
     })
 }
