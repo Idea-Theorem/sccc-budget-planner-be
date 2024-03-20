@@ -20,6 +20,13 @@ export const BUDGET_STATUSES = {
     REJECTED: "Rejected"
 };
 
+export const PROGRAM_STATUSES = {
+    PENDING: "Pending",
+    REJECTED: "Rejected",
+    APPROVED: "Approved",
+    RECEIVED: "Drafted"
+};
+
 export const RESPONSE_MESSAGES = {
     OK: 200,
     NO_CONTENT: 204,

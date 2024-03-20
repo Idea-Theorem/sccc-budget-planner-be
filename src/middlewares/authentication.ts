@@ -3,8 +3,8 @@ import helpers from "../utils/helpers";
 import { AuthRequest, User } from "../utils/types";
 import asyncErrorHandler from "./asyncErrorHandler";
 import ErrorHandler from '../utils/errorHandler';
-import roleService from "../services/RoleService";
-import { USER_ROLES, RESPONSE_MESSAGES } from "../../config/constants";
+import { RESPONSE_MESSAGES, USER_ROLES } from "../../config/constants";
+import prisma from '../../config/prisma';
 
 export const authenication = {
   verify: asyncErrorHandler(async (req: AuthRequest, res, next) => {
@@ -33,10 +33,18 @@ export const authenication = {
     next();
   }),
   isHR: asyncErrorHandler(async (req: AuthRequest, res, next) => {
-    const user = req.user;
-    if (user) {
-      const role = await roleService.getRoleById(user.role_id as string);
-      if (role?.name === USER_ROLES.HR) {
+    const userId = req.user?.id;
+    if (userId) {
+      const userRoles = await prisma.userRole.findMany({
+        where: {
+          user_id: userId,
+        },
+        include: {
+          role: true,
+        },
+      });
+      const hrRole = userRoles.find(userRole => userRole.role.name === USER_ROLES.HR);
+      if (hrRole) {
         return next();
       }
     }

@@ -53,7 +53,13 @@ const createHRUser = async () => {
                     lastname: 'User',
                     email: 'hr@gmail.com',
                     password: hashedPassword,
-                    role: { connect: { id: hrRole.id, } },
+                    roles: {
+                        create: [{
+                            role: {
+                                connect: { id: hrRole.id }
+                            }
+                        }]
+                    },
                     hire_date: new Date(),
                     employment_type: "FULL_TIME",
                     compensation_type: "SALARY",

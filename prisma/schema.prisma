@@ -19,18 +19,17 @@ model User {
   lastname          String
   email             String           @unique
   password          String
-  role              Role             @relation(fields: [role_id], references: [id])
-  role_id           String
+  roles             UserRole[]
   reset_token       String?
   phone_number      String?
   hire_date         DateTime
-  department        Department?      @relation(fields: [department_id], references: [id])
   department_id     String?
+  department        Department?      @relation(fields: [department_id], references: [id])
   employment_type   EmploymentType
   compensation_type CompensationType
   salary_rate       Float
-  center            Center?          @relation(fields: [center_id], references: [id])
   center_id         String?
+  center            Center?          @relation(fields: [center_id], references: [id])
   created_at        DateTime         @default(now())
   updated_at        DateTime?
 }
@@ -46,11 +45,22 @@ enum CompensationType {
 }
 
 model Role {
-  id         String    @id @default(uuid())
-  name       String    @unique
+  id         String     @id @default(uuid())
+  name       String     @unique
+  created_at DateTime   @default(now())
+  updated_at DateTime?
+  users      UserRole[]
+}
+
+model UserRole {
+  user_id    String
+  user       User      @relation(fields: [user_id], references: [id])
+  role_id    String
+  role       Role      @relation(fields: [role_id], references: [id])
   created_at DateTime  @default(now())
   updated_at DateTime?
-  users      User[]
+
+  @@id([user_id, role_id])
 }
 
 model Department {
@@ -71,16 +81,24 @@ model Center {
 }
 
 model Program {
-  id             String     @id @default(uuid())
+  id             String        @id @default(uuid())
   name           String
   code           String
-  department     Department @relation(fields: [department_id], references: [id])
   department_id  String
+  department     Department    @relation(fields: [department_id], references: [id])
   from_date      DateTime
   to_date        DateTime
   income         Json
   supply_expense Json
   salary_expense Json
-  created_at     DateTime   @default(now())
+  status         ProgramStatus @default(DRAFTED)
+  created_at     DateTime      @default(now())
   updated_at     DateTime?
+}
+
+enum ProgramStatus {
+  PENDING
+  REJECTED
+  APPROVED
+  DRAFTED
 }

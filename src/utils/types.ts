@@ -17,7 +17,6 @@ export interface User {
     lastname: string;
     email: string;
     password: string;
-    role_id: string;
     reset_token?: string | null;
     phone_number?: string | null;
     hire_date: Date;
@@ -30,12 +29,36 @@ export interface User {
     updated_at?: Date;
 }
 
+export interface UserRole {
+    id: string;
+    user: User;
+    user_id: string;
+    role: Role;
+    role_id: string;
+    created_at: Date;
+    updated_at?: Date;
+}
+
+export interface Role {
+    id: string;
+    name: string;
+    created_at: Date;
+    updated_at?: Date;
+}
+
 export interface AuthRequest extends Request {
     user?: User;
 }
 
 export interface TokenPayload extends JwtPayload {
     id: number;
+}
+
+export enum ProgramStatus {
+    PENDING = 'PENDING',
+    REJECTED = 'REJECTED',
+    APPROVED = 'APPROVED',
+    DRAFTED = 'DRAFTED'
 }
 
 export interface Program {
@@ -48,6 +71,7 @@ export interface Program {
     income: Record<string, number>;
     supply_expense: Record<string, number>;
     salary_expense: Record<string, number>;
+    status: ProgramStatus;
     created_at: Date;
     updated_at?: Date;
 }
