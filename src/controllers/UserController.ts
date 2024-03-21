@@ -26,9 +26,6 @@ export default {
         try {
             const hashedPassword = await helpers.hashPassword(password);
 
-            // Get the role ID based on the role name
-            // const role = await prisma.role.findUnique({ where: { name: roleName } });
-
             const payload = {
                 ...data,
                 password: hashedPassword
@@ -80,9 +77,8 @@ export default {
 
     updateUser: async (req: Request, res: Response) => {
         const userId = req.params.id;
-        const { name, email, password } = req.body;
         try {
-            await userService.updateUser(userId, name, email, password);
+            await userService.updateUser(userId, req.body);
             return res.status(200).json({ message: 'User updated successfully' });
         } catch (error) {
             console.error('Error updating user:', error);

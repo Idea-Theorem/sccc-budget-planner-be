@@ -4,14 +4,28 @@ import { User as UserType } from "../utils/types";
 export default {
     fetchUsers: async () => {
         return await prisma.user.findMany({
-            // select: {
-            //     password: true
-            // },
+            include: {
+                roles: {
+                    select: {
+                        role: true
+                    }
+                }
+            }
         });
     },
 
     createUser: async (body: UserType) => {
-        return await prisma.user.create({ data: body });
+        const { roles } = body
+        return await prisma.user.create({
+            data: {
+                ...body,
+                roles: {
+                    create: roles?.map((roleId: string) => ({
+                        role_id: roleId
+                    }))
+                }
+            }
+        });
     },
 
     getUserById: async (userId: string) => {
@@ -19,18 +33,25 @@ export default {
             where: {
                 id: userId,
             },
+            include: {
+                roles: true
+            }
         });
     },
 
-    updateUser: async (userId: string, firstname: string, email: string, password: string) => {
+    updateUser: async (userId: string, body: UserType) => {
+        const { roles } = body
         return await prisma.user.update({
             where: {
                 id: userId,
             },
             data: {
-                firstname,
-                email,
-                password,
+                ...body,
+                roles: {
+                    create: roles?.map((roleId: string) => ({
+                        role_id: roleId
+                    }))
+                }
             },
         });
     },

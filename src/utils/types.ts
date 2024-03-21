@@ -17,10 +17,11 @@ export interface User {
     lastname: string;
     email: string;
     password: string;
+    roles: [];
     reset_token?: string | null;
     phone_number?: string | null;
     hire_date: Date;
-    department_id: string | null;
+    department_id?: string | null;
     employment_type: EmploymentType;
     compensation_type: CompensationType;
     salary_rate: number;
@@ -30,7 +31,6 @@ export interface User {
 }
 
 export interface UserRole {
-    id: string;
     user: User;
     user_id: string;
     role: Role;

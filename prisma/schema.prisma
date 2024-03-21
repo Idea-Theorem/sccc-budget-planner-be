@@ -19,7 +19,6 @@ model User {
   lastname          String
   email             String           @unique
   password          String
-  roles             UserRole[]
   reset_token       String?
   phone_number      String?
   hire_date         DateTime
@@ -32,6 +31,7 @@ model User {
   center            Center?          @relation(fields: [center_id], references: [id])
   created_at        DateTime         @default(now())
   updated_at        DateTime?
+  roles             UserRole[]
 }
 
 enum EmploymentType {
