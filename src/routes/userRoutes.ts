@@ -3,6 +3,7 @@ import UserController from "../controllers/UserController";
 import { authenication } from "../middlewares/authentication";
 import validation from "../middlewares/validation";
 import { userSchema } from "../validators/user";
+import { USER_ROLES } from "../../config/constants";
 
 const router = Router();
 
@@ -29,7 +30,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/User'
  */
-router.get("/", authenication.verify, authenication.isHR, UserController.fetchUsers);
+router.get("/", authenication.verify, authenication.hasPermission, UserController.fetchUsers);
 
 /**
  * @swagger

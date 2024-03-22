@@ -2,7 +2,15 @@ import prisma from '../../config/prisma';
 
 const roleService = {
     fetchRoles: async () => {
-        const roles = await prisma.role.findMany();
+        const roles = await prisma.role.findMany({
+            include: {
+                permissions: {
+                    select: {
+                        permission: true
+                    }
+                }
+            }
+        });
         return roles;
     },
 
