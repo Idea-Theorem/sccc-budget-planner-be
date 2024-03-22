@@ -3,65 +3,85 @@ import { User as UserType } from "../utils/types";
 
 export default {
     fetchUsers: async () => {
-        return await prisma.user.findMany({
-            include: {
-                roles: {
-                    select: {
-                        role: true
+        try {
+            return await prisma.user.findMany({
+                include: {
+                    roles: {
+                        select: {
+                            role: true
+                        }
                     }
                 }
-            }
-        });
+            });
+        } catch (error) {
+            throw error;
+        }
     },
 
     createUser: async (body: UserType) => {
-        const { roles } = body
-        return await prisma.user.create({
-            data: {
-                ...body,
-                roles: {
-                    create: roles?.map((roleId: string) => ({
-                        role_id: roleId
-                    }))
+        try {
+            const { roles } = body;
+            return await prisma.user.create({
+                data: {
+                    ...body,
+                    roles: {
+                        create: roles?.map((roleId: string) => ({
+                            role_id: roleId
+                        }))
+                    }
                 }
-            }
-        });
+            });
+        } catch (error) {
+            throw error;
+        }
     },
 
     getUserById: async (userId: string) => {
-        return await prisma.user.findUnique({
-            where: {
-                id: userId,
-            },
-            include: {
-                roles: true
-            }
-        });
+        try {
+            return await prisma.user.findUnique({
+                where: {
+                    id: userId,
+                },
+                include: {
+                    roles: true
+                }
+            });
+        } catch (error) {
+            throw error;
+        }
     },
 
     updateUser: async (userId: string, body: UserType) => {
-        const { roles } = body
-        return await prisma.user.update({
-            where: {
-                id: userId,
-            },
-            data: {
-                ...body,
-                roles: {
-                    create: roles?.map((roleId: string) => ({
-                        role_id: roleId
-                    }))
-                }
-            },
-        });
+        try {
+            const { roles } = body;
+            return await prisma.user.update({
+                where: {
+                    id: userId,
+                },
+                data: {
+                    ...body,
+                    roles: {
+                        create: roles?.map((roleId: string) => ({
+                            role_id: roleId
+                        }))
+                    }
+                },
+            });
+        } catch (error) {
+            throw error;
+        }
     },
 
     deleteUser: async (userId: string) => {
-        return await prisma.user.delete({
-            where: {
-                id: userId,
-            },
-        });
+        try {
+            return await prisma.user.delete({
+                where: {
+                    id: userId,
+                },
+            });
+        } catch (error) {
+            throw error;
+        }
     },
 
     checkEmail: async (email: string) => {

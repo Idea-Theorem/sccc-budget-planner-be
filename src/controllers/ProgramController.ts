@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import programService from '../services/ProgramService';
+import asyncErrorHandler from '../middlewares/asyncErrorHandler';
 
 export default {
-    fetchPrograms: async (req: Request, res: Response) => {
+    fetchPrograms: asyncErrorHandler(async (req: Request, res: Response) => {
         try {
             const programs = await programService.fetchPrograms();
             return res.status(200).json({ programs });
@@ -10,9 +11,9 @@ export default {
             console.error('Error fetching programs:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 
-    createProgram: async (req: Request, res: Response) => {
+    createProgram: asyncErrorHandler(async (req: Request, res: Response) => {
         const data = req.body;
 
         try {
@@ -22,9 +23,9 @@ export default {
             console.error('Error creating program:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 
-    getProgramById: async (req: Request, res: Response) => {
+    getProgramById: asyncErrorHandler(async (req: Request, res: Response) => {
         const programId = req.params.id;
 
         try {
@@ -37,9 +38,9 @@ export default {
             console.error('Error fetching program by id:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 
-    updateProgram: async (req: Request, res: Response) => {
+    updateProgram: asyncErrorHandler(async (req: Request, res: Response) => {
         const programId = req.params.id;
         const data = req.body;
 
@@ -50,9 +51,9 @@ export default {
             console.error('Error updating program:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 
-    deleteProgram: async (req: Request, res: Response) => {
+    deleteProgram: asyncErrorHandler(async (req: Request, res: Response) => {
         const programId = req.params.id;
 
         try {
@@ -62,5 +63,5 @@ export default {
             console.error('Error deleting program:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 };

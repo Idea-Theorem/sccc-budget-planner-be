@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import roleService from '../services/RoleService';
+import asyncErrorHandler from '../middlewares/asyncErrorHandler';
 
 export default {
-    fetchRoles: async (req: Request, res: Response) => {
+    fetchRoles: asyncErrorHandler(async (req: Request, res: Response) => {
         try {
             const roles = await roleService.fetchRoles();
             return res.status(200).json({ roles });
@@ -10,9 +11,9 @@ export default {
             console.error('Error fetching roles:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 
-    getRoleById: async (req: Request, res: Response) => {
+    getRoleById: asyncErrorHandler(async (req: Request, res: Response) => {
         const roleId = req.params.id;
 
         try {
@@ -25,5 +26,5 @@ export default {
             console.error('Error fetching role by id:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 };

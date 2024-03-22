@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import departmentService from '../services/DepartmentService';
+import asyncErrorHandler from '../middlewares/asyncErrorHandler';
 
 export default {
-    fetchDepartments: async (req: Request, res: Response) => {
+    fetchDepartments: asyncErrorHandler(async (req: Request, res: Response) => {
         try {
             const departments = await departmentService.fetchDepartments();
             return res.status(200).json({ departments });
@@ -10,9 +11,9 @@ export default {
             console.error('Error fetching departments:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 
-    createDepartment: async (req: Request, res: Response) => {
+    createDepartment: asyncErrorHandler(async (req: Request, res: Response) => {
         const { name } = req.body;
 
         try {
@@ -22,9 +23,9 @@ export default {
             console.error('Error creating department:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 
-    getDepartmentById: async (req: Request, res: Response) => {
+    getDepartmentById: asyncErrorHandler(async (req: Request, res: Response) => {
         const departmentId = req.params.id;
 
         try {
@@ -37,9 +38,9 @@ export default {
             console.error('Error fetching department by id:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 
-    updateDepartment: async (req: Request, res: Response) => {
+    updateDepartment: asyncErrorHandler(async (req: Request, res: Response) => {
         const departmentId = req.params.id;
         const { name } = req.body;
 
@@ -50,9 +51,9 @@ export default {
             console.error('Error updating department:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 
-    deleteDepartment: async (req: Request, res: Response) => {
+    deleteDepartment: asyncErrorHandler(async (req: Request, res: Response) => {
         const departmentId = req.params.id;
 
         try {
@@ -62,5 +63,5 @@ export default {
             console.error('Error deleting department:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 };

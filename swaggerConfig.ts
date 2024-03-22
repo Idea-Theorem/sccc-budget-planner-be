@@ -67,6 +67,15 @@ export default (app: Express) => {
                             updatedAt: { type: "string", format: "date-time" },
                         },
                     },
+                    Permission: {
+                        type: "object",
+                        properties: {
+                            id: { type: "string" },
+                            name: { type: "string" },
+                            createdAt: { type: "string", format: "date-time" },
+                            updatedAt: { type: "string", format: "date-time" },
+                        },
+                    },
                     Department: {
                         type: "object",
                         properties: {

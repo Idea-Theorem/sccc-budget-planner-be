@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import centerService from '../services/CenterService';
+import asyncErrorHandler from '../middlewares/asyncErrorHandler';
 
 export default {
-    fetchCenters: async (req: Request, res: Response) => {
+    fetchCenters: asyncErrorHandler(async (req: Request, res: Response) => {
         try {
             const centers = await centerService.fetchCenters();
             return res.status(200).json({ centers });
@@ -10,9 +11,9 @@ export default {
             console.error('Error fetching centers:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 
-    createCenter: async (req: Request, res: Response) => {
+    createCenter: asyncErrorHandler(async (req: Request, res: Response) => {
         const { name } = req.body;
 
         try {
@@ -22,9 +23,9 @@ export default {
             console.error('Error creating center:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 
-    getCenterById: async (req: Request, res: Response) => {
+    getCenterById: asyncErrorHandler(async (req: Request, res: Response) => {
         const centerId = req.params.id;
 
         try {
@@ -37,9 +38,9 @@ export default {
             console.error('Error fetching center by id:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 
-    updateCenter: async (req: Request, res: Response) => {
+    updateCenter: asyncErrorHandler(async (req: Request, res: Response) => {
         const centerId = req.params.id;
         const { name } = req.body;
 
@@ -50,9 +51,9 @@ export default {
             console.error('Error updating center:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 
-    deleteCenter: async (req: Request, res: Response) => {
+    deleteCenter: asyncErrorHandler(async (req: Request, res: Response) => {
         const centerId = req.params.id;
 
         try {
@@ -62,5 +63,5 @@ export default {
             console.error('Error deleting center:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-    },
+    }),
 };

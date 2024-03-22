@@ -1,26 +1,33 @@
 import { Request, Response } from 'express';
 import userService from '../services/UserService';
 import helpers from "../utils/helpers";
+import asyncErrorHandler from '../middlewares/asyncErrorHandler';
+import { isValidUUID } from '../utils/uuidValidator';
 
 export default {
-    fetchUsers: async (req: Request, res: Response) => {
+    fetchUsers: asyncErrorHandler(async (req: Request, res: Response) => {
         try {
             const users = await userService.fetchUsers();
             return res.status(200).json({ users });
         } catch (error) {
             console.error('Error fetching users:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
+            return res.status(500).json({ message: error });
         }
-    },
+    }),
 
-    createUser: async (req: Request, res: Response) => {
+    createUser: asyncErrorHandler(async (req: Request, res: Response) => {
         const data = req.body;
-        const { email, password } = data;
+        const { email, password, roles } = data;
 
         const user = await userService.checkEmail(email);
 
         if (user) {
             return res.status(409).json({ message: 'User already registered' });
+        }
+
+        const isValid = isValidUUID(roles);
+        if (!isValid) {
+            return res.status(401).json({ message: 'Invalid role IDs in the roles array' });
         }
 
         try {
@@ -36,32 +43,37 @@ export default {
 
             return res.status(200).json({ token, user: createdUser });
         } catch (error) {
-            console.error('Error signing up user:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
+            console.error('Error creating user:', error);
+            return res.status(401).json({ message: error });
         }
-    },
+    }),
 
-    signin: async (req: Request, res: Response) => {
-        const { email, password } = req.body;
+    signin: asyncErrorHandler(async (req: Request, res: Response) => {
+        try {
+            const { email, password } = req.body;
 
-        const user = await userService.checkEmail(email);
+            const user = await userService.checkEmail(email);
 
-        if (!user) {
-            return res.status(401).json({ message: 'User not found' });
+            if (!user) {
+                return res.status(401).json({ message: 'User not found' });
+            }
+
+            const isValidPassword = await helpers.verifyPassword(password, user.password || '');
+
+            if (!isValidPassword) {
+                return res.status(401).json({ message: 'Invalid password' });
+            }
+
+            const token = helpers.encodeJWT(user.id);
+
+            return res.status(200).json({ token, user });
+        } catch (error) {
+            console.error('Error signing in user:', error);
+            return res.status(500).json({ message: 'An error occurred while signing in' });
         }
+    }),
 
-        const isValidPassword = await helpers.verifyPassword(password, user.password || '');
-
-        if (!isValidPassword) {
-            return res.status(401).json({ message: 'Invalid password' });
-        }
-
-        const token = helpers.encodeJWT(user.id);
-
-        return res.status(200).json({ token, user });
-    },
-
-    getUserById: async (req: Request, res: Response) => {
+    getUserById: asyncErrorHandler(async (req: Request, res: Response) => {
         const userId = req.params.id;
         try {
             const user = await userService.getUserById(userId);
@@ -71,29 +83,29 @@ export default {
             return res.status(200).json({ user });
         } catch (error) {
             console.error('Error fetching user by id:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
+            return res.status(500).json({ message: error });
         }
-    },
+    }),
 
-    updateUser: async (req: Request, res: Response) => {
+    updateUser: asyncErrorHandler(async (req: Request, res: Response) => {
         const userId = req.params.id;
         try {
             await userService.updateUser(userId, req.body);
             return res.status(200).json({ message: 'User updated successfully' });
         } catch (error) {
             console.error('Error updating user:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
+            return res.status(500).json({ message: error });
         }
-    },
+    }),
 
-    deleteUser: async (req: Request, res: Response) => {
+    deleteUser: asyncErrorHandler(async (req: Request, res: Response) => {
         const userId = req.params.id;
         try {
             await userService.deleteUser(userId);
             return res.status(200).json({ message: 'User deleted successfully' });
         } catch (error) {
             console.error('Error deleting user:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
+            return res.status(500).json({ message: error });
         }
-    }
+    })
 }
