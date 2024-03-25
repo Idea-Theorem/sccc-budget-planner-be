@@ -30,7 +30,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/User'
  */
-router.get("/", authenication.verify, authenication.hasPermission, UserController.fetchUsers);
+router.get("/", authenication.verify, authenication.isHR, UserController.fetchUsers);
 
 /**
  * @swagger
