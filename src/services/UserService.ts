@@ -98,6 +98,12 @@ export default {
 
     deleteUser: async (userId: string) => {
         try {
+            await prisma.userRole.deleteMany({
+                where: {
+                    user_id: userId,
+                },
+            });
+
             return await prisma.user.delete({
                 where: {
                     id: userId,

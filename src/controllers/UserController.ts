@@ -3,6 +3,7 @@ import userService from '../services/UserService';
 import helpers from "../utils/helpers";
 import asyncErrorHandler from '../middlewares/asyncErrorHandler';
 import { isValidUUID } from '../utils/uuidValidator';
+import prisma from '../../config/prisma';
 
 export default {
     fetchUsers: asyncErrorHandler(async (req: Request, res: Response) => {
@@ -25,9 +26,29 @@ export default {
             return res.status(409).json({ message: 'User already registered' });
         }
 
+        // check if role id is a valid uuid
         const isValid = isValidUUID(roles);
         if (!isValid) {
             return res.status(401).json({ message: 'Invalid role IDs in the roles array' });
+        }
+
+        // check if role id is exist or not
+        const roleExists = await prisma.role.findMany({
+            where: {
+                id: {
+                    in: roles,
+                },
+            },
+            select: {
+                id: true,
+            },
+        });
+
+        const existingRoleIds = roleExists.map((role) => role.id);
+        const missingRoleIds = roles.filter((roleId: string) => !existingRoleIds.includes(roleId));
+
+        if (missingRoleIds.length > 0) {
+            return res.status(401).json({ message: 'Role IDs do not exist', missingRoleIds });
         }
 
         try {

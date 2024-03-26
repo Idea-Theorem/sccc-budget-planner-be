@@ -6,12 +6,21 @@ const roleService = {
             include: {
                 permissions: {
                     select: {
-                        permission: true
+                        permission: {
+                            select: {
+                                id: true,
+                                name: true
+                            }
+                        }
                     }
                 }
             }
         });
-        return roles;
+
+        return roles.map((role) => {
+            const permissions = role.permissions.map((permission) => permission.permission);
+            return { ...role, permissions };
+        });
     },
 
     getRoleById: async (roleId: string) => {
@@ -19,7 +28,23 @@ const roleService = {
             where: {
                 id: roleId,
             },
+            include: {
+                permissions: {
+                    select: {
+                        permission: {
+                            select: {
+                                id: true,
+                                name: true,
+                            },
+                        },
+                    },
+                },
+            }
         });
+        if (role) {
+            const permissions = role.permissions.map((permission) => permission.permission);
+            return { ...role, permissions };
+        }
         return role;
     },
 };
