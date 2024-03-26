@@ -16,6 +16,12 @@ export default {
                             },
                         },
                     },
+                    department: {
+                        select: {
+                            id: true,
+                            name: true
+                        }
+                    }
                 },
             });
 
