@@ -3,7 +3,6 @@ import UserController from "../controllers/UserController";
 import { authenication } from "../middlewares/authentication";
 import validation from "../middlewares/validation";
 import { userSchema } from "../validators/user";
-import { USER_ROLES } from "../../config/constants";
 
 const router = Router();
 
@@ -30,7 +29,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/User'
  */
-router.get("/", authenication.verify, authenication.isHR, UserController.fetchUsers);
+router.get("/", authenication.verify, UserController.fetchUsers);
 
 /**
  * @swagger
@@ -57,7 +56,7 @@ router.get("/", authenication.verify, authenication.isHR, UserController.fetchUs
  *       404:
  *         description: User not found
  */
-router.get("/:id", authenication.verify, authenication.isHR, UserController.getUserById);
+router.get("/:id", authenication.verify, UserController.getUserById);
 
 /**
  * @swagger
@@ -79,7 +78,7 @@ router.get("/:id", authenication.verify, authenication.isHR, UserController.getU
  *       400:
  *         description: Invalid request
  */
-router.post("/", authenication.verify, authenication.isHR, validation(userSchema.createUser), UserController.createUser);
+router.post("/", authenication.verify, validation(userSchema.createUser), UserController.createUser);
 
 /**
  * @swagger
@@ -132,7 +131,7 @@ router.post("/login", validation(userSchema.login), UserController.signin);
  *       404:
  *         description: User not found
  */
-router.put("/:id", authenication.verify, authenication.isHR, validation(userSchema.createUser), UserController.updateUser);
+router.put("/:id", authenication.verify, validation(userSchema.createUser), UserController.updateUser);
 
 /**
  * @swagger
@@ -155,6 +154,6 @@ router.put("/:id", authenication.verify, authenication.isHR, validation(userSche
  *       404:
  *         description: User not found
  */
-router.delete("/:id", authenication.verify, authenication.isHR, UserController.deleteUser);
+router.delete("/:id", authenication.verify, UserController.deleteUser);
 
 export default router;

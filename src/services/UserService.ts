@@ -4,14 +4,24 @@ import { User as UserType } from "../utils/types";
 export default {
     fetchUsers: async () => {
         try {
-            return await prisma.user.findMany({
+            const users = await prisma.user.findMany({
                 include: {
                     roles: {
                         select: {
-                            role: true
-                        }
-                    }
-                }
+                            role: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+
+            return users.map((user) => {
+                const roles = user.roles.map((role) => role.role);
+                return { ...user, roles };
             });
         } catch (error) {
             throw error;
@@ -38,14 +48,28 @@ export default {
 
     getUserById: async (userId: string) => {
         try {
-            return await prisma.user.findUnique({
+            const user = await prisma.user.findUnique({
                 where: {
                     id: userId,
                 },
                 include: {
-                    roles: true
-                }
+                    roles: {
+                        select: {
+                            role: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                },
+                            },
+                        },
+                    },
+                },
             });
+
+            if (user) {
+                const roles = user.roles.map((role) => role.role);
+                return { ...user, roles };
+            }
         } catch (error) {
             throw error;
         }
@@ -86,8 +110,25 @@ export default {
 
     checkEmail: async (email: string) => {
         try {
-            const user = await prisma.user.findUnique({ where: { email } });
-            return user;
+            const user = await prisma.user.findUnique({
+                where: { email },
+                include: {
+                    roles: {
+                        select: {
+                            role: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+            if (user) {
+                const roles = user.roles.map((role) => role.role);
+                return { ...user, roles };
+            }
         } catch (error) {
             throw error;
         }

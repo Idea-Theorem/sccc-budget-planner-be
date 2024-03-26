@@ -29,7 +29,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Program'
  */
-router.get("/", authenication.verify, authenication.isHR, ProgramController.fetchPrograms);
+router.get("/", authenication.verify, ProgramController.fetchPrograms);
 
 /**
  * @swagger
@@ -56,7 +56,7 @@ router.get("/", authenication.verify, authenication.isHR, ProgramController.fetc
  *       404:
  *         description: Program not found
  */
-router.get("/:id", authenication.verify, authenication.isHR, ProgramController.getProgramById);
+router.get("/:id", authenication.verify, ProgramController.getProgramById);
 
 /**
  * @swagger
@@ -78,7 +78,7 @@ router.get("/:id", authenication.verify, authenication.isHR, ProgramController.g
  *       400:
  *         description: Invalid request
  */
-router.post("/", authenication.verify, authenication.isHR, validation(programSchema.createProgram), ProgramController.createProgram);
+router.post("/", authenication.verify, validation(programSchema.createProgram), ProgramController.createProgram);
 
 /**
  * @swagger
@@ -109,7 +109,7 @@ router.post("/", authenication.verify, authenication.isHR, validation(programSch
  *       404:
  *         description: Program not found
  */
-router.put("/:id", authenication.verify, authenication.isHR, validation(programSchema.createProgram), ProgramController.updateProgram);
+router.put("/:id", authenication.verify, validation(programSchema.createProgram), ProgramController.updateProgram);
 
 /**
  * @swagger
@@ -132,6 +132,6 @@ router.put("/:id", authenication.verify, authenication.isHR, validation(programS
  *       404:
  *         description: Program not found
  */
-router.delete("/:id", authenication.verify, authenication.isHR, ProgramController.deleteProgram);
+router.delete("/:id", authenication.verify, ProgramController.deleteProgram);
 
 export default router;

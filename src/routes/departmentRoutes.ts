@@ -29,7 +29,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Department'
  */
-router.get("/", authenication.verify, authenication.isHR, DepartmentController.fetchDepartments);
+router.get("/", authenication.verify, DepartmentController.fetchDepartments);
 
 /**
  * @swagger
@@ -56,7 +56,7 @@ router.get("/", authenication.verify, authenication.isHR, DepartmentController.f
  *       404:
  *         description: Department not found
  */
-router.get("/:id", authenication.verify, authenication.isHR, DepartmentController.getDepartmentById);
+router.get("/:id", authenication.verify, DepartmentController.getDepartmentById);
 
 /**
  * @swagger
@@ -78,7 +78,7 @@ router.get("/:id", authenication.verify, authenication.isHR, DepartmentControlle
  *       400:
  *         description: Invalid request
  */
-router.post("/", authenication.verify, authenication.isHR, validation(departmentSchema.createDepartment), DepartmentController.createDepartment);
+router.post("/", authenication.verify, validation(departmentSchema.createDepartment), DepartmentController.createDepartment);
 
 /**
  * @swagger
@@ -109,7 +109,7 @@ router.post("/", authenication.verify, authenication.isHR, validation(department
  *       404:
  *         description: Department not found
  */
-router.put("/:id", authenication.verify, authenication.isHR, validation(departmentSchema.createDepartment), DepartmentController.updateDepartment);
+router.put("/:id", authenication.verify, validation(departmentSchema.createDepartment), DepartmentController.updateDepartment);
 
 /**
  * @swagger
@@ -132,6 +132,6 @@ router.put("/:id", authenication.verify, authenication.isHR, validation(departme
  *       404:
  *         description: Department not found
  */
-router.delete("/:id", authenication.verify, authenication.isHR, DepartmentController.deleteDepartment);
+router.delete("/:id", authenication.verify, DepartmentController.deleteDepartment);
 
 export default router;
