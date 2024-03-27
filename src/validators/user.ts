@@ -5,7 +5,7 @@ export const userSchema = {
         firstname: Joi.string().required(),
         lastname: Joi.string().required(),
         email: Joi.string().email().required(),
-        password: Joi.string().required(),
+        password: Joi.string().optional(),
         roles: Joi.array().items(Joi.string().trim().min(1)).min(1).required().messages({
             'array.base': 'Roles must be an array',
             'array.min': 'At least one role must be provided',
