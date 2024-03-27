@@ -124,8 +124,8 @@ export default {
 
         // Check if the user already exists
         const user = await userService.checkEmail(email);
-        if (user) {
-            return res.status(409).json({ message: 'User already registered' });
+        if (user && user.id !== userId) {
+            return res.status(409).json({ message: 'Email already exist' });
         }
 
         // Check if role IDs are valid UUIDs
