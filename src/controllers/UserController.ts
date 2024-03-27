@@ -4,6 +4,7 @@ import helpers from "../utils/helpers";
 import asyncErrorHandler from '../middlewares/asyncErrorHandler';
 import { isValidUUID } from '../utils/uuidValidator';
 import prisma from '../../config/prisma';
+import DepartmentService from '../services/DepartmentService';
 
 export default {
     fetchUsers: asyncErrorHandler(async (req: Request, res: Response) => {
@@ -18,7 +19,7 @@ export default {
 
     createUser: asyncErrorHandler(async (req: Request, res: Response) => {
         const data = req.body;
-        const { email, password, roles } = data;
+        const { email, password, roles, department_id } = data;
 
         const user = await userService.checkEmail(email);
 
@@ -27,8 +28,8 @@ export default {
         }
 
         // check if role id is a valid uuid
-        const isValid = isValidUUID(roles);
-        if (!isValid) {
+        const isValidRoleId = isValidUUID(roles);
+        if (!isValidRoleId) {
             return res.status(401).json({ message: 'Invalid role IDs in the roles array' });
         }
 
@@ -48,7 +49,18 @@ export default {
         const missingRoleIds = roles.filter((roleId: string) => !existingRoleIds.includes(roleId));
 
         if (missingRoleIds.length > 0) {
-            return res.status(401).json({ message: 'Role IDs do not exist', missingRoleIds });
+            return res.status(401).json({ message: 'Role IDs does not exist', missingRoleIds });
+        }
+
+        // check if department id is a valid uuid
+        const isValidDepartmentId = isValidUUID(department_id);
+        if (!isValidDepartmentId) {
+            return res.status(401).json({ message: 'Invalid department id' });
+        }
+
+        const existingDepartmentId = await DepartmentService.getDepartmentById(department_id)
+        if (!existingDepartmentId) {
+            return res.status(401).json({ message: 'Department id does not exist' });
         }
 
         try {
