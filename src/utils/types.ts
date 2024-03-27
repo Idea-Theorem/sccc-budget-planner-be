@@ -16,7 +16,7 @@ export interface User {
     firstname: string;
     lastname: string;
     email: string;
-    password: string;
+    password?: string;
     roles: [];
     reset_token?: string | null;
     phone_number?: string | null;

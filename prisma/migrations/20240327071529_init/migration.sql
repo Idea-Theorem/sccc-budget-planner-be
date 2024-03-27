@@ -13,7 +13,7 @@ CREATE TABLE "User" (
     "firstname" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "password" TEXT,
     "reset_token" TEXT,
     "phone_number" TEXT,
     "hire_date" TIMESTAMP(3) NOT NULL,

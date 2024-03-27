@@ -11,7 +11,7 @@ export default {
             return res.status(200).json({ programs });
         } catch (error) {
             console.error('Error fetching programs:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
+            return res.status(500).json({ message: error });
         }
     }),
 
@@ -35,7 +35,7 @@ export default {
             return res.status(200).json({ program: createdProgram });
         } catch (error) {
             console.error('Error creating program:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
+            return res.status(500).json({ message: error });
         }
     }),
 
@@ -50,7 +50,7 @@ export default {
             return res.status(200).json({ program });
         } catch (error) {
             console.error('Error fetching program by id:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
+            return res.status(500).json({ message: error });
         }
     }),
 
@@ -63,7 +63,7 @@ export default {
             return res.status(200).json({ message: 'Program updated successfully' });
         } catch (error) {
             console.error('Error updating program:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
+            return res.status(500).json({ message: error });
         }
     }),
 
@@ -75,7 +75,7 @@ export default {
             return res.status(200).json({ message: 'Program deleted successfully' });
         } catch (error) {
             console.error('Error deleting program:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
+            return res.status(500).json({ message: error });
         }
     }),
 };
