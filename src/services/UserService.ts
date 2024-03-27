@@ -84,6 +84,24 @@ export default {
     updateUser: async (userId: string, body: UserType) => {
         try {
             const { roles } = body;
+
+            // Delete existing relations
+            await prisma.userRole.deleteMany({
+                where: {
+                    user_id: userId,
+                },
+            });
+
+            // Create new relations
+            const roleConnections = roles?.map((roleId: string) => ({
+                role: {
+                    connect: {
+                        id: roleId,
+                    },
+                },
+            }));
+
+            // Update the user with the new roles
             return await prisma.user.update({
                 where: {
                     id: userId,
@@ -91,10 +109,12 @@ export default {
                 data: {
                     ...body,
                     roles: {
-                        create: roles?.map((roleId: string) => ({
-                            role_id: roleId
-                        }))
-                    }
+                        // Connect the user with the new roles
+                        create: roleConnections,
+                    },
+                },
+                include: {
+                    roles: true,
                 },
             });
         } catch (error) {

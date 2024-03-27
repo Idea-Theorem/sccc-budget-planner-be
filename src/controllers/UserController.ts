@@ -18,66 +18,64 @@ export default {
     }),
 
     createUser: asyncErrorHandler(async (req: Request, res: Response) => {
+
         const data = req.body;
         const { email, password, roles, department_id } = data;
-
-        const user = await userService.checkEmail(email);
-
-        if (user) {
-            return res.status(409).json({ message: 'User already registered' });
-        }
-
-        // check if role id is a valid uuid
-        const isValidRoleId = isValidUUID(roles);
-        if (!isValidRoleId) {
-            return res.status(401).json({ message: 'Invalid role IDs in the roles array' });
-        }
-
-        // check if role id is exist or not
-        const roleExists = await prisma.role.findMany({
-            where: {
-                id: {
-                    in: roles,
-                },
-            },
-            select: {
-                id: true,
-            },
-        });
-
-        const existingRoleIds = roleExists.map((role) => role.id);
-        const missingRoleIds = roles.filter((roleId: string) => !existingRoleIds.includes(roleId));
-
-        if (missingRoleIds.length > 0) {
-            return res.status(401).json({ message: 'Role IDs does not exist', missingRoleIds });
-        }
-
-        // check if department id is a valid uuid
-        const isValidDepartmentId = isValidUUID(department_id);
-        if (!isValidDepartmentId) {
-            return res.status(401).json({ message: 'Invalid department id' });
-        }
-
-        const existingDepartmentId = await DepartmentService.getDepartmentById(department_id)
-        if (!existingDepartmentId) {
-            return res.status(401).json({ message: 'Department id does not exist' });
-        }
-
         try {
+            // Check if the user already exists
+            const user = await userService.checkEmail(email);
+            if (user) {
+                return res.status(409).json({ message: 'User already registered' });
+            }
+
+            // Validate role IDs
+            const areValidRoleIds = roles.every(isValidUUID);
+            if (!areValidRoleIds) {
+                return res.status(400).json({ message: 'Invalid role IDs in the roles array' });
+            }
+
+            // Validate department ID
+            const isValidDepartmentId = isValidUUID(department_id);
+            if (!isValidDepartmentId) {
+                return res.status(400).json({ message: 'Invalid department ID' });
+            }
+
+            // Check if all role IDs exist
+            const existingRoleIds = await prisma.role.findMany({
+                where: {
+                    id: {
+                        in: roles,
+                    },
+                },
+                select: {
+                    id: true,
+                },
+            }).then((roles) => roles.map((role) => role.id));
+
+            const missingRoleIds = roles.filter((roleId: string) => !existingRoleIds.includes(roleId));
+            if (missingRoleIds.length > 0) {
+                return res.status(400).json({ message: 'Role IDs do not exist', missingRoleIds });
+            }
+
+            // Check if the department exists
+            const existingDepartment = await DepartmentService.getDepartmentById(department_id);
+            if (!existingDepartment) {
+                return res.status(400).json({ message: 'Department ID does not exist' });
+            }
+
+            // Hash the password
             const hashedPassword = await helpers.hashPassword(password);
 
-            const payload = {
-                ...data,
-                password: hashedPassword
-            }
-            const createdUser = await userService.createUser(payload);
+            // Create the user
+            const createdUser = await userService.createUser({ ...data, password: hashedPassword });
 
+            // Generate JWT token
             const token = helpers.encodeJWT(createdUser?.id);
 
             return res.status(200).json({ token, user: createdUser });
         } catch (error) {
             console.error('Error creating user:', error);
-            return res.status(401).json({ message: error });
+            return res.status(500).json({ message: 'Internal server error' });
         }
     }),
 
@@ -122,12 +120,45 @@ export default {
 
     updateUser: asyncErrorHandler(async (req: Request, res: Response) => {
         const userId = req.params.id;
+        const { email, roles } = req.body;
+
+        // Check if the user already exists
+        const user = await userService.checkEmail(email);
+        if (user) {
+            return res.status(409).json({ message: 'User already registered' });
+        }
+
+        // Check if role IDs are valid UUIDs
+        const areValidRoleIds = roles.every(isValidUUID);
+        if (!areValidRoleIds) {
+            return res.status(400).json({ message: 'Invalid role IDs in the roles array' });
+        }
+
         try {
+            // Check if all role IDs exist
+            const existingRoleIds = await prisma.role.findMany({
+                where: {
+                    id: {
+                        in: roles,
+                    },
+                },
+                select: {
+                    id: true,
+                },
+            }).then((roles) => roles.map((role) => role.id));
+
+            const missingRoleIds = roles.filter((roleId: string) => !existingRoleIds.includes(roleId));
+            if (missingRoleIds.length > 0) {
+                return res.status(400).json({ message: 'Role IDs do not exist', missingRoleIds });
+            }
+
+            // Update the user
             await userService.updateUser(userId, req.body);
+
             return res.status(200).json({ message: 'User updated successfully' });
         } catch (error) {
             console.error('Error updating user:', error);
-            return res.status(500).json({ message: error });
+            return res.status(500).json({ message: 'Internal server error' });
         }
     }),
 
