@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import programService from '../services/ProgramService';
 import asyncErrorHandler from '../middlewares/asyncErrorHandler';
+import { isValidUUID } from '../utils/uuidValidator';
+import DepartmentService from '../services/DepartmentService';
 
 export default {
     fetchPrograms: asyncErrorHandler(async (req: Request, res: Response) => {
@@ -15,6 +17,18 @@ export default {
 
     createProgram: asyncErrorHandler(async (req: Request, res: Response) => {
         const data = req.body;
+        const { department_id } = data
+
+        // check if department id is a valid uuid
+        const isValidDepartmentId = isValidUUID(department_id);
+        if (!isValidDepartmentId) {
+            return res.status(401).json({ message: 'Invalid department id' });
+        }
+
+        const existingDepartmentId = await DepartmentService.getDepartmentById(department_id)
+        if (!existingDepartmentId) {
+            return res.status(401).json({ message: 'Department id does not exist' });
+        }
 
         try {
             const createdProgram = await programService.createProgram(data);
