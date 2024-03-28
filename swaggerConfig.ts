@@ -103,9 +103,27 @@ export default (app: Express) => {
                             department_id: { type: "string" },
                             from_date: { type: "string", format: "date-time" },
                             to_date: { type: "string", format: "date-time" },
-                            income: { type: "array", items: { type: "object" } },
-                            supply_expense: { type: "array", items: { type: "object" } },
-                            salary_expense: { type: "array", items: { type: "object" } },
+                            income: {
+                                type: "array", items: { type: "object" }, example: {
+                                    id: "string",
+                                    name: "string",
+                                    amount: 0
+                                }
+                            },
+                            supply_expense: {
+                                type: "array", items: { type: "object" }, example: {
+                                    id: "string",
+                                    name: "string",
+                                    amount: 0
+                                }
+                            },
+                            salary_expense: {
+                                type: "array", items: { type: "object" }, example: {
+                                    id: "string",
+                                    name: "string",
+                                    amount: 0
+                                }
+                            },
                             createdAt: { type: "string", format: "date-time" },
                             updatedAt: { type: "string", format: "date-time" },
                         },

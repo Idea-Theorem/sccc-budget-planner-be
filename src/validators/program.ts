@@ -11,21 +11,21 @@ export const programSchema = {
             Joi.object({
                 id: Joi.string().required(),
                 name: Joi.string().required(),
-                amount: Joi.number().required()
+                amount: Joi.number().required().options({ convert: false })
             })
         ).required(),
         supply_expense: Joi.array().items(
             Joi.object({
                 id: Joi.string().required(),
                 name: Joi.string().required(),
-                amount: Joi.number().required()
+                amount: Joi.number().required().options({ convert: false })
             })
         ).required(),
         salary_expense: Joi.array().items(
             Joi.object({
                 id: Joi.string().required(),
                 name: Joi.string().required(),
-                amount: Joi.number().required()
+                amount: Joi.number().required().options({ convert: false })
             })
         ).required(),
         status: Joi.string().valid('PENDING', 'REJECTED', 'APPROVED', 'DRAFTED').required(),
