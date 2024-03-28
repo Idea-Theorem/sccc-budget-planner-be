@@ -5,7 +5,7 @@ export const userSchema = {
         firstname: Joi.string().required(),
         lastname: Joi.string().required(),
         email: Joi.string().email().required(),
-        password: Joi.string().optional(),
+        password: Joi.string().required(),
         roles: Joi.array().items(Joi.string().trim().min(1)).min(1).required().messages({
             'array.base': 'Roles must be an array',
             'array.min': 'At least one role must be provided',
@@ -21,6 +21,23 @@ export const userSchema = {
         center_id: Joi.string().allow(null).optional(),
         created_at: Joi.date().default('now'),
         updated_at: Joi.date().allow(null).optional()
+    }),
+    updateUser: Joi.object({
+        firstname: Joi.string().required(),
+        lastname: Joi.string().required(),
+        email: Joi.string().email().required(),
+        password: Joi.string().optional(),
+        roles: Joi.array().items(Joi.string().trim().min(1)).min(1).required().messages({
+            'array.base': 'Roles must be an array',
+            'array.min': 'At least one role must be provided',
+            'string.empty': 'Role cannot be an empty string'
+        }),
+        hire_date: Joi.date().required(),
+        department_id: Joi.string().allow(null).optional(),
+        employment_type: Joi.string().valid('FULL_TIME', 'PART_TIME').required(),
+        compensation_type: Joi.string().valid('HOURLY', 'SALARY').required(),
+        salary_rate: Joi.number().positive().required().options({ convert: false }),
+        center_id: Joi.string().allow(null).optional()
     }),
     login: Joi.object({
         email: Joi.string().email().required(),

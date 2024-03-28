@@ -131,7 +131,7 @@ router.post("/login", validation(userSchema.login), UserController.signin);
  *       404:
  *         description: User not found
  */
-router.put("/:id", authenication.verify, validation(userSchema.createUser), UserController.updateUser);
+router.put("/:id", authenication.verify, validation(userSchema.updateUser), UserController.updateUser);
 
 /**
  * @swagger

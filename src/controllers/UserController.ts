@@ -120,7 +120,7 @@ export default {
 
     updateUser: asyncErrorHandler(async (req: Request, res: Response) => {
         const userId = req.params.id;
-        const { email, roles } = req.body;
+        const { email, roles, department_id } = req.body;
 
         // Check if the user already exists
         const user = await userService.checkEmail(email);
@@ -132,6 +132,12 @@ export default {
         const areValidRoleIds = roles.every(isValidUUID);
         if (!areValidRoleIds) {
             return res.status(400).json({ message: 'Invalid role IDs in the roles array' });
+        }
+
+        // Validate department ID
+        const isValidDepartmentId = isValidUUID(department_id);
+        if (!isValidDepartmentId) {
+            return res.status(400).json({ message: 'Invalid department ID' });
         }
 
         try {
@@ -150,6 +156,12 @@ export default {
             const missingRoleIds = roles.filter((roleId: string) => !existingRoleIds.includes(roleId));
             if (missingRoleIds.length > 0) {
                 return res.status(400).json({ message: 'Role IDs do not exist', missingRoleIds });
+            }
+
+            // Check if the department exists
+            const existingDepartment = await DepartmentService.getDepartmentById(department_id);
+            if (!existingDepartment) {
+                return res.status(400).json({ message: 'Department ID does not exist' });
             }
 
             // Update the user

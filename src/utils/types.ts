@@ -16,7 +16,7 @@ export interface User {
     firstname: string;
     lastname: string;
     email: string;
-    password?: string;
+    password: string;
     roles: [];
     reset_token?: string | null;
     phone_number?: string | null;
@@ -28,6 +28,21 @@ export interface User {
     center_id?: string;
     created_at: Date;
     updated_at?: Date;
+}
+
+export interface UpdateUser {
+    id: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    password?: string;
+    roles: [];
+    hire_date: Date;
+    department_id?: string | null;
+    employment_type: EmploymentType;
+    compensation_type: CompensationType;
+    salary_rate: number;
+    center_id?: string;
 }
 
 export interface UserRole {

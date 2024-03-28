@@ -1,5 +1,5 @@
 import prisma from '../../config/prisma';
-import { User as UserType } from "../utils/types";
+import { UpdateUser, User as UserType } from "../utils/types";
 
 export default {
     fetchUsers: async () => {
@@ -81,7 +81,7 @@ export default {
         }
     },
 
-    updateUser: async (userId: string, body: UserType) => {
+    updateUser: async (userId: string, body: UpdateUser) => {
         try {
             const { roles } = body;
 
