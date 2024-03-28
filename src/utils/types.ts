@@ -83,28 +83,10 @@ export interface Program {
     department_id: string;
     from_date: Date;
     to_date: Date;
-    income: IncomeEntry[];
-    supply_expense: SupplyExpenseEntry[];
-    salary_expense: SalaryExpenseEntry[];
+    income: Record<string, number>[];
+    supply_expense: Record<string, number>[];
+    salary_expense: Record<string, number>[];
     status: ProgramStatus;
     created_at: Date;
     updated_at?: Date;
-}
-
-interface IncomeEntry {
-    id: string;
-    name: string;
-    amount: number;
-}
-
-interface SupplyExpenseEntry {
-    id: string;
-    name: string;
-    amount: number;
-}
-
-interface SalaryExpenseEntry {
-    id: string;
-    name: string;
-    amount: number;
 }
