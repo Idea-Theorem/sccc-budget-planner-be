@@ -108,9 +108,9 @@ model Program {
   department     Department    @relation(fields: [department_id], references: [id])
   from_date      DateTime
   to_date        DateTime
-  income         Json
-  supply_expense Json
-  salary_expense Json
+  income         Json[]
+  supply_expense Json[]
+  salary_expense Json[]
   status         ProgramStatus @default(DRAFTED)
   created_at     DateTime      @default(now())
   updated_at     DateTime?
