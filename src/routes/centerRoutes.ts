@@ -29,7 +29,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Center'
  */
-router.get('/', authenication.verify, centerController.fetchCenters);
+router.get('/', authenication.verify, authenication.isHR, centerController.fetchCenters);
 
 /**
  * @swagger
@@ -51,7 +51,7 @@ router.get('/', authenication.verify, centerController.fetchCenters);
  *       400:
  *         description: Invalid request
  */
-router.post('/', authenication.verify, validation(centerSchema.createCenter), centerController.createCenter);
+router.post('/', authenication.verify, authenication.isHR, validation(centerSchema.createCenter), centerController.createCenter);
 
 /**
  * @swagger
@@ -78,7 +78,7 @@ router.post('/', authenication.verify, validation(centerSchema.createCenter), ce
  *       404:
  *         description: Center not found
  */
-router.get('/:id', authenication.verify, centerController.getCenterById);
+router.get('/:id', authenication.verify, authenication.isHR, centerController.getCenterById);
 
 /**
  * @swagger
@@ -109,7 +109,7 @@ router.get('/:id', authenication.verify, centerController.getCenterById);
  *       404:
  *         description: Center not found
  */
-router.put('/:id', authenication.verify, validation(centerSchema.createCenter), centerController.updateCenter);
+router.put('/:id', authenication.verify, authenication.isHR, validation(centerSchema.createCenter), centerController.updateCenter);
 
 /**
  * @swagger
@@ -132,6 +132,6 @@ router.put('/:id', authenication.verify, validation(centerSchema.createCenter), 
  *       404:
  *         description: Center not found
  */
-router.delete('/:id', authenication.verify, centerController.deleteCenter);
+router.delete('/:id', authenication.verify, authenication.isHR, centerController.deleteCenter);
 
 export default router;

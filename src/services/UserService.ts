@@ -5,6 +5,17 @@ export default {
     fetchUsers: async () => {
         try {
             const users = await prisma.user.findMany({
+                where: {
+                    NOT: {
+                        roles: {
+                            some: {
+                                role: {
+                                    name: "HR"
+                                }
+                            }
+                        }
+                    }
+                },
                 include: {
                     roles: {
                         select: {
@@ -14,7 +25,7 @@ export default {
                                     name: true,
                                 },
                             },
-                        },
+                        }
                     },
                     department: {
                         select: {

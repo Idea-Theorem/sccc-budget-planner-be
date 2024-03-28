@@ -50,6 +50,78 @@ export const authenication = {
     }
     return next(new ErrorHandler('You are not authorized to perform this operation.', RESPONSE_MESSAGES.UNAUTHORIZED));
   }),
+  isAdmin: asyncErrorHandler(async (req: AuthRequest, res, next) => {
+    const userId = req.user?.id;
+    if (userId) {
+      const userRoles = await prisma.userRole.findMany({
+        where: {
+          user_id: userId,
+        },
+        include: {
+          role: true,
+        },
+      });
+      const hrRole = userRoles.find(userRole => userRole.role.name === USER_ROLES.ADMIN);
+      if (hrRole) {
+        return next();
+      }
+    }
+    return next(new ErrorHandler('You are not authorized to perform this operation.', RESPONSE_MESSAGES.UNAUTHORIZED));
+  }),
+  isSuperAdmin: asyncErrorHandler(async (req: AuthRequest, res, next) => {
+    const userId = req.user?.id;
+    if (userId) {
+      const userRoles = await prisma.userRole.findMany({
+        where: {
+          user_id: userId,
+        },
+        include: {
+          role: true,
+        },
+      });
+      const hrRole = userRoles.find(userRole => userRole.role.name === USER_ROLES.SUPER_ADMIN);
+      if (hrRole) {
+        return next();
+      }
+    }
+    return next(new ErrorHandler('You are not authorized to perform this operation.', RESPONSE_MESSAGES.UNAUTHORIZED));
+  }),
+  isProgramHead: asyncErrorHandler(async (req: AuthRequest, res, next) => {
+    const userId = req.user?.id;
+    if (userId) {
+      const userRoles = await prisma.userRole.findMany({
+        where: {
+          user_id: userId,
+        },
+        include: {
+          role: true,
+        },
+      });
+      const hrRole = userRoles.find(userRole => userRole.role.name === USER_ROLES.PROGRAM_HEAD);
+      if (hrRole) {
+        return next();
+      }
+    }
+    return next(new ErrorHandler('You are not authorized to perform this operation.', RESPONSE_MESSAGES.UNAUTHORIZED));
+  }),
+  isDepartmentHead: asyncErrorHandler(async (req: AuthRequest, res, next) => {
+    const userId = req.user?.id;
+    if (userId) {
+      const userRoles = await prisma.userRole.findMany({
+        where: {
+          user_id: userId,
+        },
+        include: {
+          role: true,
+        },
+      });
+      const hrRole = userRoles.find(userRole => userRole.role.name === USER_ROLES.DEPARTMENT_HEAD);
+      if (hrRole) {
+        return next();
+      }
+    }
+    return next(new ErrorHandler('You are not authorized to perform this operation.', RESPONSE_MESSAGES.UNAUTHORIZED));
+  }),
   hasPermission: asyncErrorHandler(async (req: AuthRequest, res, next) => {
     const userId = req.user?.id;
     if (!userId) {
