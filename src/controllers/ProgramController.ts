@@ -3,11 +3,13 @@ import programService from '../services/ProgramService';
 import asyncErrorHandler from '../middlewares/asyncErrorHandler';
 import { isValidUUID } from '../utils/uuidValidator';
 import DepartmentService from '../services/DepartmentService';
+import { ProgramStatus } from '../utils/types';
 
 export default {
     fetchPrograms: asyncErrorHandler(async (req: Request, res: Response) => {
         try {
-            const programs = await programService.fetchPrograms();
+            const { status } = req.params;
+            const programs = await programService.fetchPrograms(status as ProgramStatus);
             return res.status(200).json({ programs });
         } catch (error) {
             console.error('Error fetching programs:', error);

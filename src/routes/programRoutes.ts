@@ -29,7 +29,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Program'
  */
-router.get("/", authenication.verify, authenication.isHR, ProgramController.fetchPrograms);
+router.get("/:status?", authenication.verify, authenication.isHR, ProgramController.fetchPrograms);
 
 /**
  * @swagger

@@ -1,10 +1,12 @@
 import prisma from '../../config/prisma';
-import { Program as ProgramType } from "../utils/types";
+import { ProgramStatus, Program as ProgramType } from "../utils/types";
 
 export default {
-    fetchPrograms: async () => {
+    fetchPrograms: async (status?: ProgramStatus) => {
         try {
-            const programs = await prisma.program.findMany();
+            const programs = await prisma.program.findMany({
+                where: status ? { status } : undefined,
+            });
             return programs;
         } catch (error) {
             throw new Error('Failed to fetch programs');
