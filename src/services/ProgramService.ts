@@ -6,6 +6,14 @@ export default {
         try {
             const programs = await prisma.program.findMany({
                 where: status ? { status } : undefined,
+                include: {
+                    department: {
+                        select: {
+                            id: true,
+                            name: true
+                        }
+                    }
+                },
             });
             return programs;
         } catch (error) {
@@ -27,6 +35,14 @@ export default {
             const program = await prisma.program.findUnique({
                 where: {
                     id: programId,
+                },
+                include: {
+                    department: {
+                        select: {
+                            id: true,
+                            name: true
+                        }
+                    }
                 },
             });
             return program;

@@ -15,12 +15,20 @@ const router = Router();
 
 /**
  * @swagger
- * /api/program:
+ * /api/program/{status}:
  *   get:
  *     tags:
  *       - Programs
  *     summary: Get all programs
- *     description: Retrieve a list of all programs
+ *     description: Retrieve a list of all programs. If the status parameter is not provided, it defaults to undefined.
+ *     parameters:
+ *       - in: path
+ *         name: status
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum: [PENDING, REJECTED, APPROVED, DRAFTED]
+ *         description: Optional status parameter to filter programs by status
  *     responses:
  *       200:
  *         description: Successful operation
@@ -29,11 +37,12 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Program'
  */
-router.get("/:status?", authenication.verify, authenication.isHR, ProgramController.fetchPrograms);
+router.get("/:status", authenication.verify, authenication.isHR, ProgramController.fetchPrograms);
+
 
 /**
  * @swagger
- * /api/program/{id}:
+ * /api/program/programById/{id}:
  *   get:
  *     tags:
  *       - Programs
@@ -56,7 +65,7 @@ router.get("/:status?", authenication.verify, authenication.isHR, ProgramControl
  *       404:
  *         description: Program not found
  */
-router.get("/:id", authenication.verify, authenication.isHR, ProgramController.getProgramById);
+router.get("/programById/:id", authenication.verify, authenication.isHR, ProgramController.getProgramById);
 
 /**
  * @swagger
