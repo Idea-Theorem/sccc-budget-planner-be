@@ -80,4 +80,14 @@ export default {
             return res.status(500).json({ message: error });
         }
     }),
+
+    updateProgramStatus: asyncErrorHandler(async (req: Request, res: Response) => {
+        try {
+            await programService.updateProgramStatus(req.body);
+            return res.status(200).json({ message: 'Program statuses updated successfully' });
+        } catch (error) {
+            console.error('Error deleting program:', error);
+            return res.status(500).json({ message: error });
+        }
+    }),
 };

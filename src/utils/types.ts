@@ -90,3 +90,10 @@ export interface Program {
     created_at: Date;
     updated_at?: Date;
 }
+
+export interface UpdateProgramStatus {
+    progamIds: [];
+    status: ProgramStatus;
+    created_at: Date;
+    updated_at?: Date;
+}

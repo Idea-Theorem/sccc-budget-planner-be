@@ -1,5 +1,5 @@
 import prisma from '../../config/prisma';
-import { ProgramStatus, Program as ProgramType } from "../utils/types";
+import { ProgramStatus, Program as ProgramType, UpdateProgramStatus } from "../utils/types";
 
 export default {
     fetchPrograms: async (status?: ProgramStatus) => {
@@ -73,6 +73,24 @@ export default {
             });
         } catch (error) {
             throw new Error('Failed to delete program');
+        }
+    },
+
+    updateProgramStatus: async (body: UpdateProgramStatus) => {
+        try {
+            const { progamIds, status } = body;
+            await prisma.program.updateMany({
+                where: {
+                    id: {
+                        in: progamIds,
+                    },
+                },
+                data: {
+                    status: status,
+                },
+            });
+        } catch (error) {
+            throw new Error('Failed to update program statuses');
         }
     },
 };

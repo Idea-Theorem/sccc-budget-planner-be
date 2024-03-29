@@ -128,6 +128,21 @@ export default (app: Express) => {
                             updatedAt: { type: "string", format: "date-time" },
                         },
                     },
+                    UpdateProgram: {
+                        type: "object",
+                        properties: {
+                            array: {
+                                type: "array",
+                                items: {
+                                    type: "string"
+                                }
+                            },
+                            status: {
+                                type: "string",
+                                enum: ["PENDING", "REJECTED", "APPROVED", "DRAFTED"]
+                            }
+                        },
+                    },
                 },
             },
             security: [{ bearerAuth: [] }],

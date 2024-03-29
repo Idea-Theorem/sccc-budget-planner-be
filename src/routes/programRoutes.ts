@@ -20,13 +20,14 @@ const router = Router();
  *     tags:
  *       - Programs
  *     summary: Get all programs
- *     description: Retrieve a list of all programs. If the status parameter is not provided, it defaults to undefined.
+ *     description: Retrieve a list of all programs
  *     parameters:
  *       - in: path
  *         name: status
  *         required: false
  *         schema:
  *           type: string
+ *           default: undefined
  *           enum: [PENDING, REJECTED, APPROVED, DRAFTED]
  *         description: Optional status parameter to filter programs by status
  *     responses:
@@ -37,8 +38,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Program'
  */
-router.get("/:status", authenication.verify, authenication.isHR, ProgramController.fetchPrograms);
-
+router.get("/:status?", authenication.verify, authenication.isHR, ProgramController.fetchPrograms);
 
 /**
  * @swagger
@@ -88,6 +88,31 @@ router.get("/programById/:id", authenication.verify, authenication.isHR, Program
  *         description: Invalid request
  */
 router.post("/", authenication.verify, authenication.isHR, validation(programSchema.createProgram), ProgramController.createProgram);
+
+/**
+ * @swagger
+ * /api/program/updateStatus:
+ *   put:
+ *     tags:
+ *       - Programs
+ *     summary: Update programs status by IDs
+ *     description: Updates the status of programs with the provided IDs
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateProgram'
+ *     responses:
+ *       200:
+ *         description: Programs updated successfully
+ *       400:
+ *         description: Invalid request body
+ *       500:
+ *         description: Internal server error
+ */
+
+router.put("/updateStatus", authenication.verify, authenication.isHR, validation(programSchema.updateProgramStatus), ProgramController.updateProgramStatus);
 
 /**
  * @swagger
