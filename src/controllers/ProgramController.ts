@@ -59,6 +59,18 @@ export default {
     updateProgram: asyncErrorHandler(async (req: Request, res: Response) => {
         const programId = req.params.id;
         const data = req.body;
+        const { department_id } = data
+
+        // check if department id is a valid uuid
+        const isValidDepartmentId = isValidUUID(department_id);
+        if (!isValidDepartmentId) {
+            return res.status(401).json({ message: 'Invalid department id' });
+        }
+
+        const existingDepartmentId = await DepartmentService.getDepartmentById(department_id)
+        if (!existingDepartmentId) {
+            return res.status(401).json({ message: 'Department id does not exist' });
+        }
 
         try {
             await programService.updateProgram(programId, data);
