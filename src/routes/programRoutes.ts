@@ -91,6 +91,31 @@ router.post("/", authenication.verify, validation(programSchema.createProgram), 
 
 /**
  * @swagger
+ * /api/program/searchProgram:
+ *   post:
+ *     tags:
+ *       - Programs
+ *     summary: Search the programs
+ *     description: Search the programs by name
+ *     parameters:
+ *       - name: name
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             name:
+ *               type: string
+ *     responses:
+ *       200:
+ *         description: Programs searched successfully
+ *       400:
+ *         description: Invalid request
+ */
+router.post('/searchProgram', authenication.verify, ProgramController.searchPrograms);
+
+/**
+ * @swagger
  * /api/program/updateStatus:
  *   put:
  *     tags:

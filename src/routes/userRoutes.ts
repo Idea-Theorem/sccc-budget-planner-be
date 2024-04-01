@@ -82,6 +82,31 @@ router.post("/", authenication.verify, validation(userSchema.createUser), UserCo
 
 /**
  * @swagger
+ * /api/user/searchUser:
+ *   post:
+ *     tags:
+ *       - Users
+ *     summary: Search the users
+ *     description: Search the users by name
+ *     parameters:
+ *       - name: name
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             name:
+ *               type: string
+ *     responses:
+ *       200:
+ *         description: Users searched successfully
+ *       400:
+ *         description: Invalid request
+ */
+router.post('/searchUser', authenication.verify, UserController.searchUsers);
+
+/**
+ * @swagger
  * /api/user/login:
  *   post:
  *     tags:

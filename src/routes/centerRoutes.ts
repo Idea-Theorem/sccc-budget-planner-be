@@ -55,6 +55,31 @@ router.post('/', authenication.verify, validation(centerSchema.createCenter), ce
 
 /**
  * @swagger
+ * /api/center/searchCenter:
+ *   post:
+ *     tags:
+ *       - Centers
+ *     summary: Search the centers
+ *     description: Search the centers by name
+ *     parameters:
+ *       - name: name
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             name:
+ *               type: string
+ *     responses:
+ *       200:
+ *         description: Centers searched successfully
+ *       400:
+ *         description: Invalid request
+ */
+router.post('/searchCenter', authenication.verify, centerController.searchCenters);
+
+/**
+ * @swagger
  * /api/center/{id}:
  *   get:
  *     tags:

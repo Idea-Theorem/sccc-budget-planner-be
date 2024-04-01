@@ -60,6 +60,31 @@ router.get("/:id", authenication.verify, DepartmentController.getDepartmentById)
 
 /**
  * @swagger
+ * /api/department/searchDepartment:
+ *   post:
+ *     tags:
+ *       - Departments
+ *     summary: Search the departments
+ *     description: Search the departments by name
+ *     parameters:
+ *       - name: name
+ *         in: body
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             name:
+ *               type: string
+ *     responses:
+ *       200:
+ *         description: Departments searched successfully
+ *       400:
+ *         description: Invalid request
+ */
+router.post('/searchDepartment', authenication.verify, DepartmentController.searchDepartments);
+
+/**
+ * @swagger
  * /api/department:
  *   post:
  *     tags:

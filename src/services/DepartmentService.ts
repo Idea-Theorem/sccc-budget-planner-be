@@ -21,6 +21,25 @@ export default {
         return createdDepartment;
     },
 
+    searchDepartments: async (name: string) => {
+        const departments = await prisma.department.findMany({
+            where: {
+                name: {
+                    contains: name
+                }
+            },
+            include: {
+                center: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
+            }
+        });
+        return departments;
+    },
+
     getDepartmentById: async (departmentId: string) => {
         const department = await prisma.department.findUnique({
             where: {
