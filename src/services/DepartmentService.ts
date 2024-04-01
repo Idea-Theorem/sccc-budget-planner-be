@@ -1,17 +1,23 @@
 import prisma from '../../config/prisma';
+import { Department as DepartmentType } from '../utils/types';
 
 export default {
     fetchDepartments: async () => {
-        const departments = await prisma.department.findMany();
+        const departments = await prisma.department.findMany({
+            include: {
+                center: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
+            }
+        });
         return departments;
     },
 
-    createDepartment: async (name: string) => {
-        const createdDepartment = await prisma.department.create({
-            data: {
-                name,
-            },
-        });
+    createDepartment: async (data: DepartmentType) => {
+        const createdDepartment = await prisma.department.create({ data: data });
         return createdDepartment;
     },
 
@@ -24,14 +30,12 @@ export default {
         return department;
     },
 
-    updateDepartment: async (departmentId: string, name: string) => {
+    updateDepartment: async (departmentId: string, data: DepartmentType) => {
         await prisma.department.update({
             where: {
                 id: departmentId,
             },
-            data: {
-                name,
-            },
+            data: data,
         });
     },
 

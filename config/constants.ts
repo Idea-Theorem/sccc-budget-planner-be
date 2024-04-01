@@ -6,25 +6,18 @@ export const USER_ROLES = {
     PROGRAM_HEAD: "Program_Head"
 };
 
-export const USER_STATUSES = {
-    ACTIVE: "Active",
-    INACTIVE: "Inactive",
-    REJECTED: "Rejected",
-    SUSPENDED: "Suspended"
-};
-
 export const BUDGET_STATUSES = {
-    PENDING: "Pending",
-    RECEIVED: "Received",
-    APPROVED: "Approved",
-    REJECTED: "Rejected"
+    PENDING: 'PENDING',
+    REJECTED: 'REJECTED',
+    APPROVED: 'APPROVED',
+    DRAFTED: 'DRAFTED'
 };
 
 export const PROGRAM_STATUSES = {
-    PENDING: "Pending",
-    REJECTED: "Rejected",
-    APPROVED: "Approved",
-    RECEIVED: "Drafted"
+    PENDING: 'PENDING',
+    REJECTED: 'REJECTED',
+    APPROVED: 'APPROVED',
+    DRAFTED: 'DRAFTED'
 };
 
 export const RESPONSE_MESSAGES = {

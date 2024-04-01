@@ -1,6 +1,6 @@
 import prisma from '../../config/prisma';
 
-const centerService = {
+export default {
     fetchCenters: async () => {
         const centers = await prisma.center.findMany();
         return centers;
@@ -43,5 +43,3 @@ const centerService = {
         });
     },
 };
-
-export default centerService;

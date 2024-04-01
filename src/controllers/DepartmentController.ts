@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import departmentService from '../services/DepartmentService';
 import asyncErrorHandler from '../middlewares/asyncErrorHandler';
+import { isValidUUID } from '../utils/uuidValidator';
+import centerService from '../services/CenterService';
 
 export default {
     fetchDepartments: asyncErrorHandler(async (req: Request, res: Response) => {
@@ -14,10 +16,22 @@ export default {
     }),
 
     createDepartment: asyncErrorHandler(async (req: Request, res: Response) => {
-        const { name } = req.body;
+        const data = req.body;
+        const { center_id } = data;
+
+        // check if center id is a valid uuid
+        const isValidCenterId = isValidUUID(center_id);
+        if (!isValidCenterId) {
+            return res.status(401).json({ message: 'Invalid center id' });
+        }
+
+        const existingCenterId = await centerService.getCenterById(center_id)
+        if (!existingCenterId) {
+            return res.status(401).json({ message: 'Center id does not exist' });
+        }
 
         try {
-            const createdDepartment = await departmentService.createDepartment(name);
+            const createdDepartment = await departmentService.createDepartment(data);
             return res.status(200).json({ department: createdDepartment });
         } catch (error) {
             console.error('Error creating department:', error);
@@ -42,10 +56,22 @@ export default {
 
     updateDepartment: asyncErrorHandler(async (req: Request, res: Response) => {
         const departmentId = req.params.id;
-        const { name } = req.body;
+        const data = req.body;
+        const { center_id } = data;
+
+        // check if center id is a valid uuid
+        const isValidCenterId = isValidUUID(center_id);
+        if (!isValidCenterId) {
+            return res.status(401).json({ message: 'Invalid center id' });
+        }
+
+        const existingCenterId = await centerService.getCenterById(center_id)
+        if (!existingCenterId) {
+            return res.status(401).json({ message: 'Center id does not exist' });
+        }
 
         try {
-            await departmentService.updateDepartment(departmentId, name);
+            await departmentService.updateDepartment(departmentId, data);
             return res.status(200).json({ message: 'Department updated successfully' });
         } catch (error) {
             console.error('Error updating department:', error);

@@ -97,3 +97,11 @@ export interface UpdateProgramStatus {
     created_at: Date;
     updated_at?: Date;
 }
+
+export interface Department {
+    id: string;
+    name: string;
+    center_id: string;
+    created_at: Date;
+    updated_at?: Date;
+}

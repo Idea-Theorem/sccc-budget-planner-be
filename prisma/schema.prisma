@@ -86,6 +86,8 @@ model RolePermission {
 model Department {
   id         String    @id @default(uuid())
   name       String
+  center_id  String
+  center     Center    @relation(fields: [center_id], references: [id])
   created_at DateTime  @default(now())
   updated_at DateTime?
   User       User[]
@@ -93,11 +95,12 @@ model Department {
 }
 
 model Center {
-  id         String    @id @default(uuid())
+  id         String       @id @default(uuid())
   name       String
-  created_at DateTime  @default(now())
+  created_at DateTime     @default(now())
   updated_at DateTime?
   User       User[]
+  Department Department[]
 }
 
 model Program {
