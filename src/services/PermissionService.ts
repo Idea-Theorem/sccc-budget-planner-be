@@ -1,6 +1,6 @@
 import prisma from '../../config/prisma';
 
-const permissionService = {
+export default {
     fetchPermissions: async () => {
         try {
             const permissions = await prisma.permission.findMany();
@@ -23,5 +23,3 @@ const permissionService = {
         }
     },
 };
-
-export default permissionService;

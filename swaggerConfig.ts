@@ -81,6 +81,7 @@ export default (app: Express) => {
                         properties: {
                             id: { type: "string" },
                             name: { type: "string" },
+                            center_id: { type: "string" },
                             createdAt: { type: "string", format: "date-time" },
                             updatedAt: { type: "string", format: "date-time" },
                         },

@@ -68,8 +68,35 @@ export default {
             where: {
                 firstname: {
                     contains: name
+                },
+                NOT: {
+                    roles: {
+                        some: {
+                            role: {
+                                name: "HR"
+                            }
+                        }
+                    }
                 }
-            }
+            },
+            include: {
+                roles: {
+                    select: {
+                        role: {
+                            select: {
+                                id: true,
+                                name: true,
+                            },
+                        },
+                    }
+                },
+                department: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
+            },
         });
         return users;
     },

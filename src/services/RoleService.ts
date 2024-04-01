@@ -1,6 +1,6 @@
 import prisma from '../../config/prisma';
 
-const roleService = {
+export default {
     fetchRoles: async () => {
         const roles = await prisma.role.findMany({
             include: {
@@ -48,5 +48,3 @@ const roleService = {
         return role;
     },
 };
-
-export default roleService;

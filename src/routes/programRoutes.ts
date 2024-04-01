@@ -97,15 +97,15 @@ router.post("/", authenication.verify, validation(programSchema.createProgram), 
  *       - Programs
  *     summary: Search the programs
  *     description: Search the programs by name
- *     parameters:
- *       - name: name
- *         in: body
- *         required: true
- *         schema:
- *           type: object
- *           properties:
- *             name:
- *               type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Programs searched successfully
