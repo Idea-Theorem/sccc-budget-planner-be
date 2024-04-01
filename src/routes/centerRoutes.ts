@@ -61,15 +61,15 @@ router.post('/', authenication.verify, validation(centerSchema.createCenter), ce
  *       - Centers
  *     summary: Search the centers
  *     description: Search the centers by name
- *     parameters:
- *       - name: name
- *         in: body
- *         required: true
- *         schema:
- *           type: object
- *           properties:
- *             name:
- *               type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Centers searched successfully

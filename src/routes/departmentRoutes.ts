@@ -66,15 +66,15 @@ router.get("/:id", authenication.verify, DepartmentController.getDepartmentById)
  *       - Departments
  *     summary: Search the departments
  *     description: Search the departments by name
- *     parameters:
- *       - name: name
- *         in: body
- *         required: true
- *         schema:
- *           type: object
- *           properties:
- *             name:
- *               type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Departments searched successfully
