@@ -104,6 +104,18 @@ export default {
         }
     }),
 
+    searchUsers: asyncErrorHandler(async (req: Request, res: Response) => {
+        const { name } = req.body;
+
+        try {
+            const users = await userService.searchUsers(name);
+            return res.status(200).json({ users });
+        } catch (error) {
+            console.error('Error searching users:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }),
+
     getUserById: asyncErrorHandler(async (req: Request, res: Response) => {
         const userId = req.params.id;
         try {

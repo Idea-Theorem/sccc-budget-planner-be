@@ -63,6 +63,17 @@ export default {
         }
     },
 
+    searchUsers: async (name: string) => {
+        const users = await prisma.user.findMany({
+            where: {
+                firstname: {
+                    contains: name
+                }
+            }
+        });
+        return users;
+    },
+
     getUserById: async (userId: string) => {
         try {
             const user = await prisma.user.findUnique({

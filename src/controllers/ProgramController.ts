@@ -41,6 +41,18 @@ export default {
         }
     }),
 
+    searchPrograms: asyncErrorHandler(async (req: Request, res: Response) => {
+        const { name } = req.body;
+
+        try {
+            const programs = await programService.searchPrograms(name);
+            return res.status(200).json({ programs });
+        } catch (error) {
+            console.error('Error searching programs:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }),
+
     getProgramById: asyncErrorHandler(async (req: Request, res: Response) => {
         const programId = req.params.id;
 

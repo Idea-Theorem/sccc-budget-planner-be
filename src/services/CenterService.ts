@@ -15,6 +15,17 @@ export default {
         return createdCenter;
     },
 
+    searchCenters: async (name: string) => {
+        const centers = await prisma.center.findMany({
+            where: {
+                name: {
+                    contains: name
+                }
+            }
+        });
+        return centers;
+    },
+
     getCenterById: async (centerId: string) => {
         const center = await prisma.center.findUnique({
             where: {

@@ -20,7 +20,19 @@ export default {
             const createdCenter = await centerService.createCenter(name);
             return res.status(200).json({ center: createdCenter });
         } catch (error) {
-            console.error('Error creating center:', error);
+            console.error('Error creating centers:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }),
+
+    searchCenters: asyncErrorHandler(async (req: Request, res: Response) => {
+        const { name } = req.body;
+
+        try {
+            const centers = await centerService.searchCenters(name);
+            return res.status(200).json({ centers });
+        } catch (error) {
+            console.error('Error searching center:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
     }),

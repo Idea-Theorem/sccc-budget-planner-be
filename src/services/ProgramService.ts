@@ -30,6 +30,25 @@ export default {
         }
     },
 
+    searchPrograms: async (name: string) => {
+        const programs = await prisma.program.findMany({
+            where: {
+                name: {
+                    contains: name
+                }
+            },
+            include: {
+                department: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
+            },
+        });
+        return programs;
+    },
+
     getProgramById: async (programId: string) => {
         try {
             const program = await prisma.program.findUnique({
