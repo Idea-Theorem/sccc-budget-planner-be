@@ -43,7 +43,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Program'
  */
-router.get("/status/:status?/name/:name?", authenication.verify, ProgramController.fetchPrograms);
+router.get("/:status?/:name?", authenication.verify, ProgramController.fetchPrograms);
 
 /**
  * @swagger
