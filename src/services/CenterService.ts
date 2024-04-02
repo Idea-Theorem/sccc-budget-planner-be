@@ -1,8 +1,14 @@
 import prisma from '../../config/prisma';
 
 export default {
-    fetchCenters: async () => {
-        const centers = await prisma.center.findMany();
+    fetchCenters: async (name?: string) => {
+        const centers = await prisma.center.findMany({
+            where: {
+                name: {
+                    contains: name
+                }
+            }
+        });
         return centers;
     },
 
@@ -13,17 +19,6 @@ export default {
             },
         });
         return createdCenter;
-    },
-
-    searchCenters: async (name: string) => {
-        const centers = await prisma.center.findMany({
-            where: {
-                name: {
-                    contains: name
-                }
-            }
-        });
-        return centers;
     },
 
     getCenterById: async (centerId: string) => {

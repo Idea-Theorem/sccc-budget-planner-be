@@ -6,8 +6,9 @@ import centerService from '../services/CenterService';
 
 export default {
     fetchDepartments: asyncErrorHandler(async (req: Request, res: Response) => {
+        const { name } = req.params;
         try {
-            const departments = await departmentService.fetchDepartments();
+            const departments = await departmentService.fetchDepartments(name);
             return res.status(200).json({ departments });
         } catch (error) {
             console.error('Error fetching departments:', error);
@@ -35,18 +36,6 @@ export default {
             return res.status(200).json({ department: createdDepartment });
         } catch (error) {
             console.error('Error creating department:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
-        }
-    }),
-
-    searchDepartments: asyncErrorHandler(async (req: Request, res: Response) => {
-        const { name } = req.body;
-
-        try {
-            const departments = await departmentService.searchDepartments(name);
-            return res.status(200).json({ departments });
-        } catch (error) {
-            console.error('Error searching departments:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
     }),

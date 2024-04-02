@@ -15,21 +15,26 @@ const router = Router();
 
 /**
  * @swagger
- * /api/program/{status}:
+ * /api/program/{status}/{name}:
  *   get:
  *     tags:
  *       - Programs
- *     summary: Get all programs
- *     description: Retrieve a list of all programs
+ *     summary: Get all programs or search by status or name
+ *     description: Retrieve a list of all programs or search by status or name
  *     parameters:
  *       - in: path
  *         name: status
  *         required: false
  *         schema:
  *           type: string
- *           default: undefined
- *           enum: [PENDING, REJECTED, APPROVED, DRAFTED]
+ *           enum: [null, PENDING, REJECTED, APPROVED, DRAFTED]
  *         description: Optional status parameter to filter programs by status
+ *       - name: name
+ *         in: path
+ *         required: false
+ *         description: search by name (optional)
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Successful operation
@@ -38,7 +43,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Program'
  */
-router.get("/:status?", authenication.verify, ProgramController.fetchPrograms);
+router.get("/status/:status?/name/:name?", authenication.verify, ProgramController.fetchPrograms);
 
 /**
  * @swagger
@@ -88,31 +93,6 @@ router.get("/programById/:id", authenication.verify, ProgramController.getProgra
  *         description: Invalid request
  */
 router.post("/", authenication.verify, validation(programSchema.createProgram), ProgramController.createProgram);
-
-/**
- * @swagger
- * /api/program/searchProgram:
- *   post:
- *     tags:
- *       - Programs
- *     summary: Search the programs
- *     description: Search the programs by name
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *     responses:
- *       200:
- *         description: Programs searched successfully
- *       400:
- *         description: Invalid request
- */
-router.post('/searchProgram', authenication.verify, ProgramController.searchPrograms);
 
 /**
  * @swagger

@@ -15,12 +15,19 @@ const router = Router();
 
 /**
  * @swagger
- * /api/user:
+ * /api/user/{name}:
  *   get:
  *     tags:
  *       - Users
- *     summary: Get all users
- *     description: Retrieve a list of all users
+ *     summary: Get all users or search by name
+ *     description: Retrieve a list of all users or search by name
+ *     parameters:
+ *       - name: name
+ *         in: path
+ *         required: false
+ *         description: search by name (optional)
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Successful operation
@@ -29,7 +36,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/User'
  */
-router.get("/", authenication.verify, UserController.fetchUsers);
+router.get("/:name?", authenication.verify, UserController.fetchUsers);
 
 /**
  * @swagger
@@ -79,31 +86,6 @@ router.get("/:id", authenication.verify, UserController.getUserById);
  *         description: Invalid request
  */
 router.post("/", authenication.verify, validation(userSchema.createUser), UserController.createUser);
-
-/**
- * @swagger
- * /api/user/searchUser:
- *   post:
- *     tags:
- *       - Users
- *     summary: Search the users
- *     description: Search the users by name
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *     responses:
- *       200:
- *         description: Users searched successfully
- *       400:
- *         description: Invalid request
- */
-router.post('/searchUser', authenication.verify, UserController.searchUsers);
 
 /**
  * @swagger

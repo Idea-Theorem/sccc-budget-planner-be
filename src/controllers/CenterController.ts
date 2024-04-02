@@ -4,8 +4,9 @@ import asyncErrorHandler from '../middlewares/asyncErrorHandler';
 
 export default {
     fetchCenters: asyncErrorHandler(async (req: Request, res: Response) => {
+        const { name } = req.params;
         try {
-            const centers = await centerService.fetchCenters();
+            const centers = await centerService.fetchCenters(name);
             return res.status(200).json({ centers });
         } catch (error) {
             console.error('Error fetching centers:', error);
@@ -21,18 +22,6 @@ export default {
             return res.status(200).json({ center: createdCenter });
         } catch (error) {
             console.error('Error creating centers:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
-        }
-    }),
-
-    searchCenters: asyncErrorHandler(async (req: Request, res: Response) => {
-        const { name } = req.body;
-
-        try {
-            const centers = await centerService.searchCenters(name);
-            return res.status(200).json({ centers });
-        } catch (error) {
-            console.error('Error searching center:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
     }),

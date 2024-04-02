@@ -2,10 +2,13 @@ import prisma from '../../config/prisma';
 import { UpdateUser, User as UserType } from "../utils/types";
 
 export default {
-    fetchUsers: async () => {
+    fetchUsers: async (name?: string) => {
         try {
             const users = await prisma.user.findMany({
                 where: {
+                    firstname: {
+                        contains: name
+                    },
                     NOT: {
                         roles: {
                             some: {
@@ -61,44 +64,6 @@ export default {
         } catch (error) {
             throw error;
         }
-    },
-
-    searchUsers: async (name: string) => {
-        const users = await prisma.user.findMany({
-            where: {
-                firstname: {
-                    contains: name
-                },
-                NOT: {
-                    roles: {
-                        some: {
-                            role: {
-                                name: "HR"
-                            }
-                        }
-                    }
-                }
-            },
-            include: {
-                roles: {
-                    select: {
-                        role: {
-                            select: {
-                                id: true,
-                                name: true,
-                            },
-                        },
-                    }
-                },
-                department: {
-                    select: {
-                        id: true,
-                        name: true
-                    }
-                }
-            },
-        });
-        return users;
     },
 
     getUserById: async (userId: string) => {
