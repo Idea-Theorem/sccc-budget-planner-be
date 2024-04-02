@@ -8,8 +8,8 @@ import { ProgramStatus } from '../utils/types';
 export default {
     fetchPrograms: asyncErrorHandler(async (req: Request, res: Response) => {
         try {
-            const { status } = req.params;
-            const programs = await programService.fetchPrograms(status as ProgramStatus);
+            const { status, name } = req.params;
+            const programs = await programService.fetchPrograms(status as ProgramStatus, name);
             return res.status(200).json({ programs });
         } catch (error) {
             console.error('Error fetching programs:', error);
@@ -38,18 +38,6 @@ export default {
         } catch (error) {
             console.error('Error creating program:', error);
             return res.status(500).json({ message: error });
-        }
-    }),
-
-    searchPrograms: asyncErrorHandler(async (req: Request, res: Response) => {
-        const { name } = req.body;
-
-        try {
-            const programs = await programService.searchPrograms(name);
-            return res.status(200).json({ programs });
-        } catch (error) {
-            console.error('Error searching programs:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
         }
     }),
 

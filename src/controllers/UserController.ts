@@ -8,8 +8,9 @@ import DepartmentService from '../services/DepartmentService';
 
 export default {
     fetchUsers: asyncErrorHandler(async (req: Request, res: Response) => {
+        const { name } = req.params;
         try {
-            const users = await userService.fetchUsers();
+            const users = await userService.fetchUsers(name);
             return res.status(200).json({ users });
         } catch (error) {
             console.error('Error fetching users:', error);
@@ -101,18 +102,6 @@ export default {
         } catch (error) {
             console.error('Error signing in user:', error);
             return res.status(500).json({ message: 'An error occurred while signing in' });
-        }
-    }),
-
-    searchUsers: asyncErrorHandler(async (req: Request, res: Response) => {
-        const { name } = req.body;
-
-        try {
-            const users = await userService.searchUsers(name);
-            return res.status(200).json({ users });
-        } catch (error) {
-            console.error('Error searching users:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
         }
     }),
 

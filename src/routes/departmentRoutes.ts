@@ -15,12 +15,19 @@ const router = Router();
 
 /**
  * @swagger
- * /api/department:
+ * /api/department/{name}:
  *   get:
  *     tags:
  *       - Departments
- *     summary: Get all departments
- *     description: Retrieve a list of all departments
+ *     summary: Get all departments or search by name
+ *     description: Retrieve a list of all departments or search by name
+ *     parameters:
+ *       - name: name
+ *         in: path
+ *         required: false
+ *         description: search by name (optional)
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Successful operation
@@ -29,7 +36,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Department'
  */
-router.get("/", authenication.verify, DepartmentController.fetchDepartments);
+router.get("/:name?", authenication.verify, DepartmentController.fetchDepartments);
 
 /**
  * @swagger
@@ -57,31 +64,6 @@ router.get("/", authenication.verify, DepartmentController.fetchDepartments);
  *         description: Department not found
  */
 router.get("/:id", authenication.verify, DepartmentController.getDepartmentById);
-
-/**
- * @swagger
- * /api/department/searchDepartment:
- *   post:
- *     tags:
- *       - Departments
- *     summary: Search the departments
- *     description: Search the departments by name
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *     responses:
- *       200:
- *         description: Departments searched successfully
- *       400:
- *         description: Invalid request
- */
-router.post('/searchDepartment', authenication.verify, DepartmentController.searchDepartments);
 
 /**
  * @swagger

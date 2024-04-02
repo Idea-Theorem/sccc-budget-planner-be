@@ -2,10 +2,13 @@ import prisma from '../../config/prisma';
 import { ProgramStatus, Program as ProgramType, UpdateProgramStatus } from "../utils/types";
 
 export default {
-    fetchPrograms: async (status?: ProgramStatus) => {
+    fetchPrograms: async (status?: ProgramStatus, name?: string) => {
         try {
             const programs = await prisma.program.findMany({
-                where: status ? { status } : undefined,
+                where: {
+                    ...(status ? { status } : {}),
+                    ...(name ? { name: { contains: name } } : {})
+                },
                 include: {
                     department: {
                         select: {
@@ -28,25 +31,6 @@ export default {
         } catch (error) {
             throw new Error('Failed to create program');
         }
-    },
-
-    searchPrograms: async (name: string) => {
-        const programs = await prisma.program.findMany({
-            where: {
-                name: {
-                    contains: name
-                }
-            },
-            include: {
-                department: {
-                    select: {
-                        id: true,
-                        name: true
-                    }
-                }
-            },
-        });
-        return programs;
     },
 
     getProgramById: async (programId: string) => {

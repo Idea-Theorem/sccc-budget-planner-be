@@ -15,12 +15,19 @@ const router = Router();
 
 /**
  * @swagger
- * /api/center:
+ * /api/center/{name}:
  *   get:
  *     tags:
  *       - Centers
- *     summary: Get all centers
- *     description: Retrieve a list of all centers
+ *     summary: Get all centers or search by name
+ *     description: Retrieve a list of all centers or search by name
+ *     parameters:
+ *       - name: name
+ *         in: path
+ *         required: false
+ *         description: search by name (optional)
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Successful operation
@@ -29,7 +36,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Center'
  */
-router.get('/', authenication.verify, centerController.fetchCenters);
+router.get('/:name?', authenication.verify, centerController.fetchCenters);
 
 /**
  * @swagger
@@ -52,31 +59,6 @@ router.get('/', authenication.verify, centerController.fetchCenters);
  *         description: Invalid request
  */
 router.post('/', authenication.verify, validation(centerSchema.createCenter), centerController.createCenter);
-
-/**
- * @swagger
- * /api/center/searchCenter:
- *   post:
- *     tags:
- *       - Centers
- *     summary: Search the centers
- *     description: Search the centers by name
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *     responses:
- *       200:
- *         description: Centers searched successfully
- *       400:
- *         description: Invalid request
- */
-router.post('/searchCenter', authenication.verify, centerController.searchCenters);
 
 /**
  * @swagger
