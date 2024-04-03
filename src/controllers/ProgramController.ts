@@ -8,8 +8,9 @@ import { ProgramStatus } from '../utils/types';
 export default {
     fetchPrograms: asyncErrorHandler(async (req: Request, res: Response) => {
         try {
-            const { status, name } = req.params;
-            const programs = await programService.fetchPrograms(status as ProgramStatus, name);
+            const { status, name } = req.query;
+            const nameString = typeof name === 'string' ? name : '';
+            const programs = await programService.fetchPrograms(status as ProgramStatus, nameString);
             return res.status(200).json({ programs });
         } catch (error) {
             console.error('Error fetching programs:', error);

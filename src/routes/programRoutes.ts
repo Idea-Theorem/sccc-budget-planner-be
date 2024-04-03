@@ -15,26 +15,26 @@ const router = Router();
 
 /**
  * @swagger
- * /api/program/{status}/{name}:
+ * /api/program:
  *   get:
  *     tags:
  *       - Programs
  *     summary: Get all programs or search by status or name
  *     description: Retrieve a list of all programs or search by status or name
  *     parameters:
- *       - in: path
+ *       - in: query
  *         name: status
  *         required: false
  *         schema:
  *           type: string
- *           enum: [null, PENDING, REJECTED, APPROVED, DRAFTED]
+ *           enum: [PENDING, REJECTED, APPROVED, DRAFTED]
  *         description: Optional status parameter to filter programs by status
- *       - name: name
- *         in: path
+ *       - in: query
+ *         name: name
  *         required: false
- *         description: search by name (optional)
  *         schema:
  *           type: string
+ *         description: Optional name parameter to search programs by name
  *     responses:
  *       200:
  *         description: Successful operation
@@ -43,7 +43,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Program'
  */
-router.get("/:status?/:name?", authenication.verify, ProgramController.fetchPrograms);
+router.get("/", authenication.verify, ProgramController.fetchPrograms);
 
 /**
  * @swagger

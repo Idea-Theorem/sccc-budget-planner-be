@@ -2,7 +2,7 @@ import prisma from '../../config/prisma';
 import { ProgramStatus, Program as ProgramType, UpdateProgramStatus } from "../utils/types";
 
 export default {
-    fetchPrograms: async (status?: ProgramStatus, name?: string) => {
+    fetchPrograms: async (status?: ProgramStatus | undefined, name?: string | undefined) => {
         try {
             const programs = await prisma.program.findMany({
                 where: {
