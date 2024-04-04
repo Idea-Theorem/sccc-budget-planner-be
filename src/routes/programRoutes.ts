@@ -47,7 +47,7 @@ router.get("/", authenication.verify, ProgramController.fetchPrograms);
 
 /**
  * @swagger
- * /api/program/programById/{id}:
+ * /api/program/byId/{id}:
  *   get:
  *     tags:
  *       - Programs
@@ -70,7 +70,7 @@ router.get("/", authenication.verify, ProgramController.fetchPrograms);
  *       404:
  *         description: Program not found
  */
-router.get("/programById/:id", authenication.verify, ProgramController.getProgramById);
+router.get("/byId/:id", authenication.verify, ProgramController.getProgramById);
 
 /**
  * @swagger

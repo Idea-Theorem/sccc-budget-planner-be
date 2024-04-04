@@ -7,6 +7,14 @@ export default {
                 name: {
                     contains: name
                 }
+            },
+            include: {
+                Department: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
             }
         });
         return centers;

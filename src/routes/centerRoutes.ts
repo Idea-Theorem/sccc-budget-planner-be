@@ -62,7 +62,7 @@ router.post('/', authenication.verify, validation(centerSchema.createCenter), ce
 
 /**
  * @swagger
- * /api/center/{id}:
+ * /api/center/byId/{id}:
  *   get:
  *     tags:
  *       - Centers
@@ -85,7 +85,7 @@ router.post('/', authenication.verify, validation(centerSchema.createCenter), ce
  *       404:
  *         description: Center not found
  */
-router.get('/:id', authenication.verify, centerController.getCenterById);
+router.get('/byId/:id', authenication.verify, centerController.getCenterById);
 
 /**
  * @swagger
