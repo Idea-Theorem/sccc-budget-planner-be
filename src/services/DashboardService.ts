@@ -7,7 +7,7 @@ export default {
             const departmentsCount = await prisma.department.count();
 
             // Fetch count of departments where all associated programs have status 'APPROVED'
-            const departmentsWithApprovedPrograms = await prisma.department.count({
+            const approvedCount = await prisma.department.count({
                 where: {
                     Program: {
                         every: {
@@ -17,7 +17,7 @@ export default {
                 }
             });
 
-            return { departmentsCount, departmentsWithApprovedPrograms };
+            return { departmentsCount, approvedCount };
         } catch (error) {
             console.error('Error fetching departments count:', error);
             throw new Error('Failed to fetch departments count');
@@ -30,16 +30,43 @@ export default {
             const programsCount = await prisma.program.count();
 
             // Fetch count of programs with status 'APPROVED'
-            const approvedProgramsCount = await prisma.program.count({
+            const approvedCount = await prisma.program.count({
                 where: {
                     status: 'APPROVED'
                 }
             });
 
-            return { programsCount, approvedProgramsCount };
+            return { programsCount, approvedCount };
         } catch (error) {
             console.error('Error fetching programs count:', error);
             throw new Error('Failed to fetch programs count');
+        }
+    },
+
+    fetchCentersCount: async () => {
+        try {
+            // Fetch count of all centers
+            const centersCount = await prisma.center.count();
+
+            // Fetch count of centers where all associated departments have programs with status 'APPROVED'
+            const approvedCount = await prisma.center.count({
+                where: {
+                    Department: {
+                        every: {
+                            Program: {
+                                some: {
+                                    status: 'APPROVED'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            return { centersCount, approvedCount };
+        } catch (error) {
+            console.error('Error fetching centers count:', error);
+            throw new Error('Failed to fetch centers count');
         }
     },
 };

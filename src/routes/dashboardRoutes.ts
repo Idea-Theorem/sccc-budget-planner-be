@@ -16,7 +16,7 @@ const router = Router();
  *   get:
  *     tags:
  *       - Dashboards
- *     summary: Get department counts for dashboards
+ *     summary: Get departments count for dashboards
  *     description: Retrieve the count of all departments and departments with approved programs
  *     responses:
  *       200:
@@ -29,7 +29,7 @@ const router = Router();
  *                 departmentsCount:
  *                   type: integer
  *                   description: Count of all departments
- *                 departmentsWithApprovedPrograms:
+ *                 approvedCount:
  *                   type: integer
  *                   description: Count of departments with all approved programs
  */
@@ -41,8 +41,8 @@ router.get("/departmentsCount", DashboardController.fetchDepartmentsCount);
  *   get:
  *     tags:
  *       - Dashboards
- *     summary: Get program counts for dashboards
- *     description: Retrieve the count of all programs and programs with approved programs
+ *     summary: Get programs count for dashboards
+ *     description: Retrieve the count of all programs and approved programs
  *     responses:
  *       200:
  *         description: Successful operation
@@ -54,10 +54,35 @@ router.get("/departmentsCount", DashboardController.fetchDepartmentsCount);
  *                 programsCount:
  *                   type: integer
  *                   description: Count of all programs
- *                 approvedProgramsCount:
+ *                 approvedCount:
  *                   type: integer
- *                   description: Count of programs with all approved programs
+ *                   description: Count of all approved programs
  */
 router.get("/programsCount", DashboardController.fetchProgramsCount);
+
+/**
+ * @swagger
+ * /api/dashboard/centersCount:
+ *   get:
+ *     tags:
+ *       - Dashboards
+ *     summary: Get centers count for dashboards
+ *     description: Retrieve the count of all centers and centers with approved departments
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 centersCount:
+ *                   type: integer
+ *                   description: Count of all centers
+ *                 approvedCount:
+ *                   type: integer
+ *                   description: Count of centers with all approved departments
+ */
+router.get("/centersCount", DashboardController.fetchCentersCount);
 
 export default router;

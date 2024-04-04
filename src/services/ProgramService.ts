@@ -82,6 +82,7 @@ export default {
     updateProgramStatus: async (body: UpdateProgramStatus) => {
         try {
             const { progamIds, status } = body;
+            const currentDateTime = new Date();
             await prisma.program.updateMany({
                 where: {
                     id: {
@@ -90,6 +91,9 @@ export default {
                 },
                 data: {
                     status: status,
+                    updated_at: {
+                        push: currentDateTime,
+                    },
                 },
             });
         } catch (error) {

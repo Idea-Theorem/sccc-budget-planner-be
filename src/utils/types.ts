@@ -88,14 +88,12 @@ export interface Program {
     salary_expense: Record<string, number>[];
     status: ProgramStatus;
     created_at: Date;
-    updated_at?: Date;
+    updated_at?: Date[];
 }
 
 export interface UpdateProgramStatus {
     progamIds: [];
     status: ProgramStatus;
-    created_at: Date;
-    updated_at?: Date;
 }
 
 export interface Department {
