@@ -40,7 +40,7 @@ router.get("/:name?", authenication.verify, UserController.fetchUsers);
 
 /**
  * @swagger
- * /api/user/{id}:
+ * /api/user/byId/{id}:
  *   get:
  *     tags:
  *       - Users
@@ -63,7 +63,7 @@ router.get("/:name?", authenication.verify, UserController.fetchUsers);
  *       404:
  *         description: User not found
  */
-router.get("/:id", authenication.verify, UserController.getUserById);
+router.get("/byId/:id", authenication.verify, UserController.getUserById);
 
 /**
  * @swagger

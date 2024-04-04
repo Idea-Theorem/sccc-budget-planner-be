@@ -15,6 +15,12 @@ export default {
                         id: true,
                         name: true
                     }
+                },
+                Program: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
                 }
             }
         });

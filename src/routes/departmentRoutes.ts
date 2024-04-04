@@ -40,7 +40,7 @@ router.get("/:name?", authenication.verify, DepartmentController.fetchDepartment
 
 /**
  * @swagger
- * /api/department/{id}:
+ * /api/department/byId/{id}:
  *   get:
  *     tags:
  *       - Departments
@@ -63,7 +63,7 @@ router.get("/:name?", authenication.verify, DepartmentController.fetchDepartment
  *       404:
  *         description: Department not found
  */
-router.get("/:id", authenication.verify, DepartmentController.getDepartmentById);
+router.get("/byId/:id", authenication.verify, DepartmentController.getDepartmentById);
 
 /**
  * @swagger
