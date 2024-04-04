@@ -18,7 +18,17 @@ export default {
             const counts = await dashboardService.fetchProgramsCount();
             return res.status(200).json(counts);
         } catch (error) {
-            console.error('Error fetching department counts:', error);
+            console.error('Error fetching programs count:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }),
+
+    fetchCentersCount: asyncErrorHandler(async (req: Request, res: Response) => {
+        try {
+            const counts = await dashboardService.fetchCentersCount();
+            return res.status(200).json(counts);
+        } catch (error) {
+            console.error('Error fetching centers count:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
     }),

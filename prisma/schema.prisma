@@ -116,7 +116,7 @@ model Program {
   salary_expense Json[]
   status         ProgramStatus @default(DRAFTED)
   created_at     DateTime      @default(now())
-  updated_at     DateTime?
+  updated_at     DateTime[]
 }
 
 enum ProgramStatus {
