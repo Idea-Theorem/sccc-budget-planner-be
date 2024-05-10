@@ -116,9 +116,7 @@ const createHRUser = async () => {
                         }]
                     },
                     hire_date: new Date(),
-                    employment_type: "FULL_TIME",
-                    compensation_type: "SALARY",
-                    salary_rate: 0
+
                 },
             });
         }

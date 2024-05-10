@@ -21,7 +21,8 @@ export default {
     createUser: asyncErrorHandler(async (req: Request, res: Response) => {
 
         const data = req.body;
-        const { email, password, roles, department_id } = data;
+        console.log("data::::::::", data)
+        const { email, password, roles } = data;
         try {
             // Check if the user already exists
             const user = await userService.checkEmail(email);
@@ -36,10 +37,10 @@ export default {
             }
 
             // Validate department ID
-            const isValidDepartmentId = isValidUUID(department_id);
-            if (!isValidDepartmentId) {
-                return res.status(400).json({ message: 'Invalid department ID' });
-            }
+            // const isValidDepartmentId = isValidUUID(department_id);
+            // if (!isValidDepartmentId) {
+            //     return res.status(400).json({ message: 'Invalid department ID' });
+            // }
 
             // Check if all role IDs exist
             const existingRoleIds = await prisma.role.findMany({
@@ -59,17 +60,17 @@ export default {
             }
 
             // Check if the department exists
-            const existingDepartment = await DepartmentService.getDepartmentById(department_id);
-            if (!existingDepartment) {
-                return res.status(400).json({ message: 'Department ID does not exist' });
-            }
+            // const existingDepartment = await DepartmentService.getDepartmentById(department_id);
+            // if (!existingDepartment) {
+            //     return res.status(400).json({ message: 'Department ID does not exist' });
+            // }
 
             // Hash the password
             const hashedPassword = await helpers.hashPassword(password);
 
             // Create the user
             const createdUser = await userService.createUser({ ...data, password: hashedPassword });
-
+            console.log("createdUser::::::::::", createdUser)
             // Generate JWT token
             const token = helpers.encodeJWT(createdUser?.id);
 

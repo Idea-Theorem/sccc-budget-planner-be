@@ -22,16 +22,37 @@ model User {
   reset_token       String?
   phone_number      String?
   hire_date         DateTime
-  department_id     String?
-  department        Department?      @relation(fields: [department_id], references: [id])
-  employment_type   EmploymentType
-  compensation_type CompensationType
-  salary_rate       Float
   center_id         String?
   center            Center?          @relation(fields: [center_id], references: [id])
+  employeDepartments             EmployeeDepartment[] 
   created_at        DateTime         @default(now())
   updated_at        DateTime?
   roles             UserRole[]
+  Department        Department?      @relation(fields: [departmentId], references: [id])
+  departmentId      String?
+}
+
+model EmployeeDepartment {
+  id            String     @id @default(uuid())
+  title         String
+  salaryRate    String 
+  hourlyRate    String
+  department    Department @relation(fields: [department_id], references: [id])
+  department_id String
+  user          User       @relation(fields: [user_id], references: [id])
+  user_id       String
+  created_at    DateTime   @default(now())
+}
+model Department {
+  id         String    @id @default(uuid())
+  name       String
+  center_id  String
+  center     Center    @relation(fields: [center_id], references: [id])
+  created_at DateTime  @default(now())
+  updated_at DateTime?
+  User       User[]
+  Program    Program[]
+  EmployeeDepartment       EmployeeDepartment[]
 }
 
 enum EmploymentType {
@@ -83,16 +104,7 @@ model RolePermission {
   @@id([role_id, permission_id])
 }
 
-model Department {
-  id         String    @id @default(uuid())
-  name       String
-  center_id  String
-  center     Center    @relation(fields: [center_id], references: [id])
-  created_at DateTime  @default(now())
-  updated_at DateTime?
-  User       User[]
-  Program    Program[]
-}
+
 
 model Center {
   id         String       @id @default(uuid())
