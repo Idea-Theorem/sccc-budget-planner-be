@@ -30,16 +30,29 @@ export default {
                             },
                         }
                     },
-                    department: {
+                    employeDepartments: {
                         select: {
                             id: true,
-                            name: true
+                            // name: true,
+                            hourlyRate: true,
+                            salaryRate: true,
+                            title: true,
+                            department: {
+                                select: {
+                                    id: true,
+                                    name: true,
+                                    // include other fields from Department model if needed
+                                }
+                            }
+
                         }
                     }
                 },
             });
 
-            return users.map((user) => {
+
+
+            return users?.map((user) => {
                 const roles = user.roles.map((role) => role.role);
                 return { ...user, roles };
             });
@@ -48,9 +61,11 @@ export default {
         }
     },
 
-    createUser: async (body: UserType) => {
+    createUser: async (body: UserType | any) => {
+        console.log("body::::::::::", body)
+
         try {
-            const { roles } = body;
+            const { roles, employeDepartments } = body;
             return await prisma.user.create({
                 data: {
                     ...body,
@@ -58,7 +73,17 @@ export default {
                         create: roles?.map((roleId: string) => ({
                             role_id: roleId
                         }))
-                    }
+                    },
+                    employeDepartments: {
+                        create: employeDepartments.map((department: any) => ({
+                            title: department.title,
+                            hourlyRate: department.hourlyRate,
+                            salaryRate: department.salaryRate,
+                            department: {
+                                connect: { id: department.department_id },
+                            },
+                        })),
+                    },
                 }
             });
         } catch (error) {

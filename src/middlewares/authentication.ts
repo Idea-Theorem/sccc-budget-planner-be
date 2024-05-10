@@ -26,7 +26,8 @@ export const authenication = {
     if (!payload)
       return next(new ErrorHandler('You are unauthorized to access.', RESPONSE_MESSAGES.UNAUTHORIZED));
 
-    const user = (await UserService.getUserById(payload)) as User;
+    // const user = (await UserService.getUserById(payload)) as User;
+    const user = (await UserService.getUserById(payload)) as unknown | any;
 
     req.user = user;
 

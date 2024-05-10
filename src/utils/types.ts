@@ -28,6 +28,7 @@ export interface User {
     center_id?: string;
     created_at: Date;
     updated_at?: Date;
+    employeDepartments?: any
 }
 
 export interface UpdateUser {

@@ -15,12 +15,14 @@ export const userSchema = {
         phone_number: Joi.string().allow(null).optional(),
         hire_date: Joi.date().required(),
         department_id: Joi.string().allow(null).optional(),
-        employment_type: Joi.string().valid('FULL_TIME', 'PART_TIME').required(),
-        compensation_type: Joi.string().valid('HOURLY', 'SALARY').required(),
-        salary_rate: Joi.number().positive().required().options({ convert: false }),
+        employment_type: Joi.string().valid('FULL_TIME', 'PART_TIME').optional(),
+        compensation_type: Joi.string().valid('HOURLY', 'SALARY').optional(),
+        salary_rate: Joi.number().positive().optional().options({ convert: false }),
         center_id: Joi.string().allow(null).optional(),
         created_at: Joi.date().default('now'),
-        updated_at: Joi.date().allow(null).optional()
+        updated_at: Joi.date().allow(null).optional(),
+        employeDepartments: Joi.optional()
+
     }),
     updateUser: Joi.object({
         firstname: Joi.string().required(),
@@ -34,8 +36,8 @@ export const userSchema = {
         }),
         hire_date: Joi.date().required(),
         department_id: Joi.string().allow(null).optional(),
-        employment_type: Joi.string().valid('FULL_TIME', 'PART_TIME').required(),
-        compensation_type: Joi.string().valid('HOURLY', 'SALARY').required(),
+        employment_type: Joi.string().valid('FULL_TIME', 'PART_TIME').optional(),
+        compensation_type: Joi.string().valid('HOURLY', 'SALARY').optional(),
         salary_rate: Joi.number().positive().required().options({ convert: false }),
         center_id: Joi.string().allow(null).optional()
     }),
