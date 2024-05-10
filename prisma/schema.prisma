@@ -53,6 +53,7 @@ model Department {
   User       User[]
   Program    Program[]
   EmployeeDepartment       EmployeeDepartment[]
+  status         DepartmentStatus @default(PENDING)
 }
 
 enum EmploymentType {
@@ -129,6 +130,7 @@ model Program {
   status         ProgramStatus @default(DRAFTED)
   created_at     DateTime      @default(now())
   updated_at     DateTime[]
+  employee       Json[]
 }
 
 enum ProgramStatus {
@@ -136,4 +138,10 @@ enum ProgramStatus {
   REJECTED
   APPROVED
   DRAFTED
+}
+
+enum DepartmentStatus {
+  PENDING
+  REJECTED
+  APPROVED
 }

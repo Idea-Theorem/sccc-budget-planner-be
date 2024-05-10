@@ -40,6 +40,30 @@ router.get("/:name?", authenication.verify, DepartmentController.fetchDepartment
 
 /**
  * @swagger
+ * /api/department/{departmentId}:
+ *   get:
+ *     tags:
+ *       - Departments
+ *     summary: Get all departments or search by name
+ *     description: Retrieve a list of all departments or search by name
+ *     parameters:
+ *       - departmentId: departmentId
+ *         in: path
+ *         required: false
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Department'
+ */
+router.get("/employees/:departmentId?", authenication.verify, DepartmentController.fetchEmployeeAgainstDepartment);
+
+/**
+ * @swagger
  * /api/department/byId/{id}:
  *   get:
  *     tags:
@@ -140,5 +164,8 @@ router.put("/:id", authenication.verify, validation(departmentSchema.createDepar
  *         description: Department not found
  */
 router.delete("/:id", authenication.verify, DepartmentController.deleteDepartment);
+router.post("/update-status", authenication.verify, DepartmentController.updateDepartmentStatus);
+
+
 
 export default router;
