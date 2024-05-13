@@ -39,5 +39,6 @@ export const programSchema = {
     updateProgram: Joi.object({
         name: Joi.string().required(),
         code: Joi.string().required(),
+        department_id: Joi.string().required(),
     })
 }
