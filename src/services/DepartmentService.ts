@@ -31,9 +31,9 @@ export default {
             where: {
                 department_id: departmentId
             },
-            distinct: ['user_id']
+            // distinct: ['user_id']
         }).then(users => users.map(user => user.user_id));
-
+        console.log("uniqueUserIds:::::::::::::", uniqueUserIds)
         // Fetch complete user data based on unique user IDs
         const employees = await prisma.user.findMany({
             where: {
@@ -93,7 +93,7 @@ export default {
         });
 
         departments.forEach(async (department) => {
-            const allProgramsApproved = department.Program.every(program => program.status === 'APPROVED');
+            const allProgramsApproved = department.Program.every(program => program.status === 'APPROVED' || program.status === 'DRAFTED');
             if (allProgramsApproved && department.status === 'PENDING') {
                 await prisma.department.update({
                     where: { id: department.id },
