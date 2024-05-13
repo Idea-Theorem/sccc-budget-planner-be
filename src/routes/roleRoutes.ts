@@ -1,5 +1,7 @@
 import { Router } from "express";
 import RoleController from "../controllers/RoleController";
+import validation from "../middlewares/validation";
+import { roleSchema } from "../validators/role";
 
 const router = Router();
 
@@ -53,6 +55,11 @@ router.get("/", RoleController.fetchRoles);
  *       404:
  *         description: Role not found
  */
+router.get("/employee-role", RoleController.fetchEmployeeRole);
+router.post("/employee-role", validation(roleSchema.createRole), RoleController.createEmployeeRole);
+router.put("/employee-role/:id", validation(roleSchema.createRole), RoleController.updateEmployeeRole);
+router.delete("/employee-role/:id", RoleController.deleteEmployeeRole);
 router.get("/:id", RoleController.getRoleById);
+
 
 export default router;

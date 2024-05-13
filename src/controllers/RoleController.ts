@@ -14,6 +14,7 @@ export default {
     }),
 
     getRoleById: asyncErrorHandler(async (req: Request, res: Response) => {
+        console.log("object::::::::::::::::::::::")
         const roleId = req.params.id;
 
         try {
@@ -21,6 +22,53 @@ export default {
             if (!role) {
                 return res.status(404).json({ message: 'Role not found' });
             }
+            return res.status(200).json({ role });
+        } catch (error) {
+            console.error('Error fetching role by id:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }),
+
+    createEmployeeRole: asyncErrorHandler(async (req: Request, res: Response) => {
+        const { name } = req.body;
+        try {
+            const role = await roleService.postRoles(name);
+
+            return res.status(200).json({ role });
+        } catch (error) {
+            console.error('Error posting role by id:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }),
+    updateEmployeeRole: asyncErrorHandler(async (req: Request, res: Response) => {
+        const { id } = req.params;
+        const { name } = req.body;
+        try {
+            const role = await roleService.updateRoles(id, name);
+
+            return res.status(200).json({ role });
+        } catch (error) {
+            console.error('Error posting role by id:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }),
+    fetchEmployeeRole: asyncErrorHandler(async (req: Request, res: Response) => {
+        console.log("::::::::::::::::::::::::::::::")
+        try {
+            const role = await roleService.fetchEmployeeRoles();
+
+            return res.status(200).json({ role });
+        } catch (error) {
+            console.error('Error fetching role by id:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }),
+    deleteEmployeeRole: asyncErrorHandler(async (req: Request, res: Response) => {
+        const { id } = req.params;
+
+        try {
+            const role = await roleService.deleteEmployeeRoles(id);
+
             return res.status(200).json({ role });
         } catch (error) {
             console.error('Error fetching role by id:', error);

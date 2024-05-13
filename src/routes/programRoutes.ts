@@ -148,7 +148,7 @@ router.put("/updateStatus", authenication.verify, validation(programSchema.updat
  *       404:
  *         description: Program not found
  */
-router.put("/:id", authenication.verify, validation(programSchema.createProgram), ProgramController.updateProgram);
+router.put("/:id", authenication.verify, validation(programSchema.updateProgram), ProgramController.updateProgram);
 
 /**
  * @swagger
