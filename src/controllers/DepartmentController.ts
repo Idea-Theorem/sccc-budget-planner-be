@@ -115,4 +115,14 @@ export default {
             return res.status(500).json({ message: 'Internal Server Error' });
         }
     }),
+    programCountInDepartment: asyncErrorHandler(async (req: Request, res: Response) => {
+        const { id } = req.params;
+        try {
+            const createdDepartment = await departmentService.getProgramCount(id);
+            return res.status(200).json(createdDepartment);
+        } catch (error) {
+            console.error('Error creating department:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }),
 };

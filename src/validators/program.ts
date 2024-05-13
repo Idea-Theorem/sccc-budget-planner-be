@@ -42,5 +42,27 @@ export const programSchema = {
         department_id: Joi.string().required(),
         from_date: Joi.string().optional(),
         to_date: Joi.string().optional(),
+        income: Joi.array().items(
+            Joi.object({
+                id: Joi.string().required(),
+                name: Joi.string().required(),
+                amount: Joi.number().required().options({ convert: false })
+            })
+        ).optional(),
+        supply_expense: Joi.array().items(
+            Joi.object({
+                id: Joi.string().required(),
+                name: Joi.string().required(),
+                amount: Joi.number().required().options({ convert: false })
+            })
+        ).optional(),
+        salary_expense: Joi.array().items(
+            Joi.object({
+                id: Joi.string().required(),
+                name: Joi.string().required(),
+                amount: Joi.number().required().options({ convert: false })
+            })
+        ).optional(),
+        status: Joi.string().optional(),
     })
 }

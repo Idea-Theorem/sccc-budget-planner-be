@@ -165,6 +165,7 @@ router.put("/:id", authenication.verify, validation(departmentSchema.createDepar
  */
 router.delete("/:id", authenication.verify, DepartmentController.deleteDepartment);
 router.post("/update-status", authenication.verify, DepartmentController.updateDepartmentStatus);
+router.get("/program-count/:id", authenication.verify, DepartmentController.programCountInDepartment);
 
 
 
