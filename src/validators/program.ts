@@ -40,5 +40,7 @@ export const programSchema = {
         name: Joi.string().required(),
         code: Joi.string().required(),
         department_id: Joi.string().required(),
+        from_date: Joi.date().iso().optional(),
+        to_date: Joi.date().iso().optional(),
     })
 }
