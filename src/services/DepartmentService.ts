@@ -105,6 +105,21 @@ export default {
                 console.log(`Department ${department.id} status remains as ${department.status}`);
             }
         });
+    },
+    getProgramCount: async (departmentIds: any) => {
+        const programs = await prisma.program.findMany({
+            where: {
+                department_id: departmentIds
+            }
+        });
+
+        // Count the number of programs with "APPROVED" and "PENDING" statuses
+        const approvedCount = programs.filter(program => program.status === 'APPROVED').length;
+        const pendingCount = programs.filter(program => program.status === 'PENDING').length;
+
+        // Return counts in the API response
+        return { approvedCount, pendingCount };
+
     }
 
 };
