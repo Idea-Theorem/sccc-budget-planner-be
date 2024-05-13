@@ -103,6 +103,7 @@ export interface Department {
     center_id: string;
     created_at: Date;
     updated_at?: Date;
+    status?: string
 }
 
 export interface EmployeeRole {

@@ -44,11 +44,10 @@ export default {
         });
 
         return employees;
-        return employees;
     },
 
 
-    createDepartment: async (data: DepartmentType) => {
+    createDepartment: async (data: any) => {
         const createdDepartment = await prisma.department.create({ data: data });
         return createdDepartment;
     },
@@ -62,7 +61,7 @@ export default {
         return department;
     },
 
-    updateDepartment: async (departmentId: string, data: DepartmentType) => {
+    updateDepartment: async (departmentId: string, data: any) => {
         await prisma.department.update({
             where: {
                 id: departmentId,
@@ -113,13 +112,25 @@ export default {
             }
         });
 
-        // Count the number of programs with "APPROVED" and "PENDING" statuses
         const approvedCount = programs.filter(program => program.status === 'APPROVED').length;
         const pendingCount = programs.filter(program => program.status === 'PENDING').length;
 
-        // Return counts in the API response
         return { approvedCount, pendingCount };
 
-    }
+    },
+    fetchDepartmentsStatus: async (status?: any) => {
+        const departments = await prisma.department.findMany({
+            where: {
+                status: status
+            },
+            // include: {
+            //     center: true,
+            //     User: true,
+            //     Program: true,
+            //     EmployeeDepartment: true
+            // }
+        });
+        return departments;
+    },
 
 };
