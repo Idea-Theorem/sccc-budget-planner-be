@@ -16,6 +16,18 @@ export default {
         }
     }),
 
+    fetchEmployeeAgainstDepartment: asyncErrorHandler(async (req: Request, res: Response) => {
+        const departmentId = req.params.departmentId;
+        console.log("departmentId:::::::::", departmentId)
+        try {
+            const departments = await departmentService.fetchEmployeeInDepartment(departmentId);
+            return res.status(200).json({ departments });
+        } catch (error) {
+            console.error('Error fetching departments:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }),
+
     createDepartment: asyncErrorHandler(async (req: Request, res: Response) => {
         const data = req.body;
         const { center_id } = data;
@@ -88,6 +100,18 @@ export default {
             return res.status(200).json({ message: 'Department deleted successfully' });
         } catch (error) {
             console.error('Error deleting department:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }),
+    updateDepartmentStatus: asyncErrorHandler(async (req: Request, res: Response) => {
+        const data = req.body;
+        const { departmentIds } = data;
+
+        try {
+            const createdDepartment = await departmentService.updateStaus(departmentIds);
+            return res.status(200).json({ message: 'Department status updated successfully' });
+        } catch (error) {
+            console.error('Error creating department:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
     }),

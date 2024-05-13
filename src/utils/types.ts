@@ -104,3 +104,11 @@ export interface Department {
     created_at: Date;
     updated_at?: Date;
 }
+
+export interface EmployeeRole {
+    id: string;
+    name: string;
+    center_id: string;
+    created_at: Date;
+    updated_at?: Date;
+}

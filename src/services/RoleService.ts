@@ -47,4 +47,34 @@ export default {
         }
         return role;
     },
+    postRoles: async (name: string) => {
+        const employeeRole = await prisma.employeeRole.create({
+            data: {
+                name,
+            },
+        });
+
+        return employeeRole;
+    },
+    updateRoles: async (id: any, name: string) => {
+        const employeeRole = await prisma.employeeRole.update({
+            where: { id },
+            data: {
+                name,
+            },
+        });
+
+        return employeeRole;
+    },
+    fetchEmployeeRoles: async () => {
+        const employeeRoles = await prisma.employeeRole.findMany();
+
+        return employeeRoles;
+    },
+    deleteEmployeeRoles: async (id: any) => {
+        const employeeRoles = await prisma.employeeRole.delete({
+            where: { id },
+        });
+        return employeeRoles
+    }
 };

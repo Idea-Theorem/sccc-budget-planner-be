@@ -35,5 +35,9 @@ export const programSchema = {
     updateProgramStatus: Joi.object({
         progamIds: Joi.array().items(Joi.string().required()),
         status: Joi.string().valid('PENDING', 'REJECTED', 'APPROVED', 'DRAFTED').required(),
+    }),
+    updateProgram: Joi.object({
+        name: Joi.array().items(Joi.string().required()),
+        code: Joi.array().items(Joi.string().required()),
     })
 }

@@ -14,28 +14,28 @@ datasource db {
 }
 
 model User {
-  id                String           @id @default(uuid())
-  firstname         String
-  lastname          String
-  email             String           @unique
-  password          String
-  reset_token       String?
-  phone_number      String?
-  hire_date         DateTime
-  center_id         String?
-  center            Center?          @relation(fields: [center_id], references: [id])
-  employeDepartments             EmployeeDepartment[] 
-  created_at        DateTime         @default(now())
-  updated_at        DateTime?
-  roles             UserRole[]
-  Department        Department?      @relation(fields: [departmentId], references: [id])
-  departmentId      String?
+  id                 String               @id @default(uuid())
+  firstname          String
+  lastname           String
+  email              String               @unique
+  password           String
+  reset_token        String?
+  phone_number       String?
+  hire_date          DateTime
+  center_id          String?
+  center             Center?              @relation(fields: [center_id], references: [id])
+  employeDepartments EmployeeDepartment[]
+  created_at         DateTime             @default(now())
+  updated_at         DateTime?
+  roles              UserRole[]
+  Department         Department?          @relation(fields: [departmentId], references: [id])
+  departmentId       String?
 }
 
 model EmployeeDepartment {
   id            String     @id @default(uuid())
   title         String
-  salaryRate    String 
+  salaryRate    String
   hourlyRate    String
   department    Department @relation(fields: [department_id], references: [id])
   department_id String
@@ -43,16 +43,18 @@ model EmployeeDepartment {
   user_id       String
   created_at    DateTime   @default(now())
 }
+
 model Department {
-  id         String    @id @default(uuid())
-  name       String
-  center_id  String
-  center     Center    @relation(fields: [center_id], references: [id])
-  created_at DateTime  @default(now())
-  updated_at DateTime?
-  User       User[]
-  Program    Program[]
-  EmployeeDepartment       EmployeeDepartment[]
+  id                 String               @id @default(uuid())
+  name               String
+  center_id          String
+  center             Center               @relation(fields: [center_id], references: [id])
+  created_at         DateTime             @default(now())
+  updated_at         DateTime?
+  User               User[]
+  Program            Program[]
+  EmployeeDepartment EmployeeDepartment[]
+  status             DepartmentStatus     @default(PENDING)
 }
 
 enum EmploymentType {
@@ -72,6 +74,13 @@ model Role {
   updated_at  DateTime?
   users       UserRole[]
   permissions RolePermission[]
+}
+
+model EmployeeRole {
+  id         String    @id @default(uuid())
+  name       String    @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime?
 }
 
 model UserRole {
@@ -104,8 +113,6 @@ model RolePermission {
   @@id([role_id, permission_id])
 }
 
-
-
 model Center {
   id         String       @id @default(uuid())
   name       String
@@ -129,6 +136,7 @@ model Program {
   status         ProgramStatus @default(DRAFTED)
   created_at     DateTime      @default(now())
   updated_at     DateTime[]
+  employee       Json[]
 }
 
 enum ProgramStatus {
@@ -136,4 +144,10 @@ enum ProgramStatus {
   REJECTED
   APPROVED
   DRAFTED
+}
+
+enum DepartmentStatus {
+  PENDING
+  REJECTED
+  APPROVED
 }
