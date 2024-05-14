@@ -38,29 +38,7 @@ const router = Router();
  */
 router.get("/:name?", authenication.verify, DepartmentController.fetchDepartments);
 
-/**
- * @swagger
- * /api/department/{departmentId}:
- *   get:
- *     tags:
- *       - Departments
- *     summary: Get all departments or search by name
- *     description: Retrieve a list of all departments or search by name
- *     parameters:
- *       - departmentId: departmentId
- *         in: path
- *         required: false
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Successful operation
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Department'
- */
-router.get("/employees/:departmentId?", authenication.verify, DepartmentController.fetchEmployeeAgainstDepartment);
+
 
 /**
  * @swagger
@@ -167,6 +145,9 @@ router.delete("/:id", authenication.verify, DepartmentController.deleteDepartmen
 router.post("/update-status", authenication.verify, DepartmentController.updateDepartmentStatus);
 router.get("/program-count/:id", authenication.verify, DepartmentController.programCountInDepartment);
 router.get("/status/:status?", authenication.verify, DepartmentController.fetchDepartmentsViaStatus);
+router.get("/employees/:departmentId?", authenication.verify, DepartmentController.fetchEmployeeAgainstDepartment);
+router.get("/programs/:departmentId?", authenication.verify, DepartmentController.fetchProgramsAgainstDepartment);
+
 
 
 

@@ -54,7 +54,7 @@ model Department {
   User               User[]
   Program            Program[]
   EmployeeDepartment EmployeeDepartment[]
-  status             DepartmentStatus     @default(PENDING)
+  status             DepartmentStatus     @default(INIT)
 }
 
 enum EmploymentType {
@@ -122,6 +122,13 @@ model Center {
   Department Department[]
 }
 
+model Benefit {
+  id         String       @id @default(uuid())
+  name       String       @unique
+  created_at DateTime     @default(now())
+  updated_at DateTime?
+}
+
 model Program {
   id             String        @id @default(uuid())
   name           String
@@ -147,6 +154,7 @@ enum ProgramStatus {
 }
 
 enum DepartmentStatus {
+  INIT
   PENDING
   REJECTED
   APPROVED
