@@ -21,7 +21,6 @@ export default {
     createUser: asyncErrorHandler(async (req: Request, res: Response) => {
 
         const data = req.body;
-        console.log("data::::::::", data)
         const { email, password, roles } = data;
         try {
             // Check if the user already exists
@@ -70,7 +69,6 @@ export default {
 
             // Create the user
             const createdUser = await userService.createUser({ ...data, password: hashedPassword });
-            console.log("createdUser::::::::::", createdUser)
             // Generate JWT token
             const token = helpers.encodeJWT(createdUser?.id);
 

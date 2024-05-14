@@ -62,7 +62,6 @@ export default {
     },
 
     createUser: async (body: UserType | any) => {
-        console.log("body::::::::::", body)
 
         try {
             const { roles, employeDepartments } = body;

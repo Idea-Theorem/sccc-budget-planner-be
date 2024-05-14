@@ -38,6 +38,15 @@ export default {
         return center;
     },
 
+    getDepartmentById: async (centerId: string) => {
+        const departments = await prisma.department.findMany({
+            where: {
+                center_id: centerId
+            }
+        });
+        return departments;
+    },
+
     updateCenter: async (centerId: string, name: string) => {
         await prisma.center.update({
             where: {
