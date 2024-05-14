@@ -140,5 +140,7 @@ router.put('/:id', authenication.verify, validation(centerSchema.createCenter), 
  *         description: Center not found
  */
 router.delete('/:id', authenication.verify, centerController.deleteCenter);
+router.get('/department/:id', authenication.verify, centerController.getDepartmentInCenters);
+
 
 export default router;

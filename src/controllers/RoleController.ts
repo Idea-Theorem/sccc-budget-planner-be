@@ -14,7 +14,6 @@ export default {
     }),
 
     getRoleById: asyncErrorHandler(async (req: Request, res: Response) => {
-        console.log("object::::::::::::::::::::::")
         const roleId = req.params.id;
 
         try {
@@ -32,7 +31,6 @@ export default {
     createEmployeeRole: asyncErrorHandler(async (req: Request, res: Response) => {
         const { name } = req.body;
 
-        console.log("name::::::", name)
         try {
             const role = await roleService.postRoles(name);
 
@@ -55,7 +53,6 @@ export default {
         }
     }),
     fetchEmployeeRole: asyncErrorHandler(async (req: Request, res: Response) => {
-        console.log("::::::::::::::::::::::::::::::")
         try {
             const role = await roleService.fetchEmployeeRoles();
 
