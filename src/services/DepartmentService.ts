@@ -31,9 +31,8 @@ export default {
             where: {
                 department_id: departmentId
             },
-            distinct: ['user_id']
+            // distinct: ['user_id']
         }).then(users => users.map(user => user.user_id));
-
         // Fetch complete user data based on unique user IDs
         const employees = await prisma.user.findMany({
             where: {
@@ -45,7 +44,18 @@ export default {
 
         return employees;
     },
+    fetchProgramInDepartment: async (departmentId?: any) => {
+        const programs = await prisma.program.findMany({
+            where: {
+                department_id: departmentId
+            },
+            include: {
+                department: true // Include the department details for each program
+            }
+        });
 
+        return programs;
+    },
 
     createDepartment: async (data: any) => {
         const createdDepartment = await prisma.department.create({ data: data });
@@ -86,18 +96,18 @@ export default {
         });
     },
 
-    updateStaus: async (departmentIds: any) => {
+    updateStaus: async (departmentIds: any, status: any) => {
         const departments = await prisma.department.findMany({
             where: { id: { in: departmentIds } },
             include: { Program: true }
         });
 
         departments.forEach(async (department) => {
-            const allProgramsApproved = department.Program.every(program => program.status === 'APPROVED');
+            const allProgramsApproved = department.Program.every(program => program.status === 'APPROVED' || program.status === 'DRAFTED');
             if (allProgramsApproved && department.status === 'PENDING') {
                 await prisma.department.update({
                     where: { id: department.id },
-                    data: { status: 'APPROVED' }
+                    data: { status: status }
                 });
                 console.log(`Department ${department.id} status updated to APPROVED`);
             } else {

@@ -6,12 +6,14 @@ import programRoutes from "./programRoutes";
 import roleRoutes from "./roleRoutes";
 import permissionRoutes from "./permissionRoutes";
 import dashboardRoutes from "./dashboardRoutes";
+import benefitRoutes from "./benefitRoute";
 
 const router = Router();
 
 router.use("/user", userRoutes);
 router.use("/department", departmentRoutes);
 router.use("/center", centerRoutes);
+router.use("/benefit", benefitRoutes);
 router.use("/program", programRoutes);
 router.use("/role", roleRoutes);
 router.use("/permission", permissionRoutes);

@@ -31,6 +31,8 @@ export default {
 
     createEmployeeRole: asyncErrorHandler(async (req: Request, res: Response) => {
         const { name } = req.body;
+
+        console.log("name::::::", name)
         try {
             const role = await roleService.postRoles(name);
 
