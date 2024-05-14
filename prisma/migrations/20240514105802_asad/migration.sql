@@ -7,6 +7,9 @@ CREATE TYPE "CompensationType" AS ENUM ('HOURLY', 'SALARY');
 -- CreateEnum
 CREATE TYPE "ProgramStatus" AS ENUM ('PENDING', 'REJECTED', 'APPROVED', 'DRAFTED');
 
+-- CreateEnum
+CREATE TYPE "DepartmentStatus" AS ENUM ('DRAFTED', 'PENDING', 'REJECTED', 'APPROVED');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -17,9 +20,6 @@ CREATE TABLE "User" (
     "reset_token" TEXT,
     "phone_number" TEXT,
     "hire_date" TIMESTAMP(3) NOT NULL,
-    "employment_type" "EmploymentType" NOT NULL,
-    "compensation_type" "CompensationType" NOT NULL,
-    "salary_rate" DOUBLE PRECISION NOT NULL,
     "center_id" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3),
@@ -29,14 +29,28 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
-CREATE TABLE "Book" (
+CREATE TABLE "EmployeeDepartment" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
+    "salaryRate" TEXT NOT NULL,
+    "hourlyRate" TEXT NOT NULL,
     "department_id" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "Book_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "EmployeeDepartment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Department" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "center_id" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3),
+    "status" "DepartmentStatus" NOT NULL DEFAULT 'DRAFTED',
+
+    CONSTRAINT "Department_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -47,6 +61,16 @@ CREATE TABLE "Role" (
     "updated_at" TIMESTAMP(3),
 
     CONSTRAINT "Role_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "EmployeeRole" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3),
+
+    CONSTRAINT "EmployeeRole_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -80,17 +104,6 @@ CREATE TABLE "RolePermission" (
 );
 
 -- CreateTable
-CREATE TABLE "Department" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "center_id" TEXT NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3),
-
-    CONSTRAINT "Department_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "Center" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -98,6 +111,16 @@ CREATE TABLE "Center" (
     "updated_at" TIMESTAMP(3),
 
     CONSTRAINT "Center_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Benefit" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3),
+
+    CONSTRAINT "Benefit_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -114,6 +137,7 @@ CREATE TABLE "Program" (
     "status" "ProgramStatus" NOT NULL DEFAULT 'DRAFTED',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3)[],
+    "employee" JSONB[],
 
     CONSTRAINT "Program_pkey" PRIMARY KEY ("id")
 );
@@ -125,7 +149,13 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Role_name_key" ON "Role"("name");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "EmployeeRole_name_key" ON "EmployeeRole"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Permission_name_key" ON "Permission"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Benefit_name_key" ON "Benefit"("name");
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_center_id_fkey" FOREIGN KEY ("center_id") REFERENCES "Center"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -134,10 +164,13 @@ ALTER TABLE "User" ADD CONSTRAINT "User_center_id_fkey" FOREIGN KEY ("center_id"
 ALTER TABLE "User" ADD CONSTRAINT "User_departmentId_fkey" FOREIGN KEY ("departmentId") REFERENCES "Department"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Book" ADD CONSTRAINT "Book_department_id_fkey" FOREIGN KEY ("department_id") REFERENCES "Department"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "EmployeeDepartment" ADD CONSTRAINT "EmployeeDepartment_department_id_fkey" FOREIGN KEY ("department_id") REFERENCES "Department"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Book" ADD CONSTRAINT "Book_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "EmployeeDepartment" ADD CONSTRAINT "EmployeeDepartment_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Department" ADD CONSTRAINT "Department_center_id_fkey" FOREIGN KEY ("center_id") REFERENCES "Center"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserRole" ADD CONSTRAINT "UserRole_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -150,9 +183,6 @@ ALTER TABLE "RolePermission" ADD CONSTRAINT "RolePermission_role_id_fkey" FOREIG
 
 -- AddForeignKey
 ALTER TABLE "RolePermission" ADD CONSTRAINT "RolePermission_permission_id_fkey" FOREIGN KEY ("permission_id") REFERENCES "Permission"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Department" ADD CONSTRAINT "Department_center_id_fkey" FOREIGN KEY ("center_id") REFERENCES "Center"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Program" ADD CONSTRAINT "Program_department_id_fkey" FOREIGN KEY ("department_id") REFERENCES "Department"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

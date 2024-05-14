@@ -102,9 +102,9 @@ export default {
             include: { Program: true }
         });
 
-        departments.forEach(async (department) => {
-            const allProgramsApproved = department.Program.every(program => program.status === 'APPROVED' || program.status === 'DRAFTED');
-            if (allProgramsApproved && department.status === 'PENDING') {
+        departments.forEach(async (department: any) => {
+            const allProgramsApproved = department.Program.every((program: any) => program.status === 'APPROVED' || program.status === 'DRAFTED');
+            if (allProgramsApproved) {
                 await prisma.department.update({
                     where: { id: department.id },
                     data: { status: status }
