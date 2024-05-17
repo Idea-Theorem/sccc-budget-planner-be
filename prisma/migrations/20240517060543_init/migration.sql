@@ -138,6 +138,7 @@ CREATE TABLE "Program" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3)[],
     "employee" JSONB[],
+    "user_id" TEXT NOT NULL,
 
     CONSTRAINT "Program_pkey" PRIMARY KEY ("id")
 );
@@ -186,3 +187,6 @@ ALTER TABLE "RolePermission" ADD CONSTRAINT "RolePermission_permission_id_fkey" 
 
 -- AddForeignKey
 ALTER TABLE "Program" ADD CONSTRAINT "Program_department_id_fkey" FOREIGN KEY ("department_id") REFERENCES "Department"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Program" ADD CONSTRAINT "Program_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
