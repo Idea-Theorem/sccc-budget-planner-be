@@ -3,14 +3,15 @@ import programService from '../services/ProgramService';
 import asyncErrorHandler from '../middlewares/asyncErrorHandler';
 import { isValidUUID } from '../utils/uuidValidator';
 import DepartmentService from '../services/DepartmentService';
-import { ProgramStatus } from '../utils/types';
+import { ProgramStatus, User } from '../utils/types';
 
 export default {
-    fetchPrograms: asyncErrorHandler(async (req: Request, res: Response) => {
+    fetchPrograms: asyncErrorHandler(async (req: Request | any, res: Response) => {
         try {
             const { status, name } = req.query;
+            const { id } = req.user
             const nameString = typeof name === 'string' ? name : '';
-            const programs = await programService.fetchPrograms(status as ProgramStatus, nameString);
+            const programs = await programService.fetchPrograms(id, status as ProgramStatus, nameString);
             return res.status(200).json({ programs });
         } catch (error) {
             console.error('Error fetching programs:', error);
@@ -18,10 +19,10 @@ export default {
         }
     }),
 
-    createProgram: asyncErrorHandler(async (req: Request, res: Response) => {
-        const data = req.body;
+    createProgram: asyncErrorHandler(async (req: Request | any, res: Response) => {
+        const data: any = req.body;
+        data.user_id = req.user.id
         const { department_id } = data
-
         // check if department id is a valid uuid
         const isValidDepartmentId = isValidUUID(department_id);
         if (!isValidDepartmentId) {
