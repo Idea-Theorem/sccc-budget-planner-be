@@ -90,6 +90,7 @@ export interface Program {
     status: ProgramStatus;
     created_at: Date;
     updated_at?: Date[];
+    user_id?: any
 }
 
 export interface UpdateProgramStatus {
