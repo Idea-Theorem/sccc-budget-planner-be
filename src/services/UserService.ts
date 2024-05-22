@@ -6,9 +6,26 @@ export default {
         try {
             const users = await prisma.user.findMany({
                 where: {
-                    firstname: {
-                        contains: name
-                    },
+                    OR: [
+                        {
+                            firstname: {
+                                contains: name,
+                                mode: 'insensitive' // case-insensitive search
+                            }
+                        },
+                        {
+                            lastname: {
+                                contains: name,
+                                mode: 'insensitive' // case-insensitive search
+                            }
+                        },
+                        {
+                            email: {
+                                contains: name,
+                                mode: 'insensitive' // case-insensitive search
+                            }
+                        }
+                    ],
                     NOT: {
                         roles: {
                             some: {
