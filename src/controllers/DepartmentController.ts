@@ -6,9 +6,10 @@ import centerService from '../services/CenterService';
 
 export default {
     fetchDepartments: asyncErrorHandler(async (req: Request, res: Response) => {
-        const { name } = req.params;
+        const { name } = req.query;
+        const nameString = typeof name === 'string' ? name : '';
         try {
-            const departments = await departmentService.fetchDepartments(name);
+            const departments = await departmentService.fetchDepartments(nameString);
             return res.status(200).json({ departments });
         } catch (error) {
             console.error('Error fetching departments:', error);
@@ -136,8 +137,9 @@ export default {
     }),
     fetchDepartmentsViaStatus: asyncErrorHandler(async (req: Request, res: Response) => {
         const { status } = req.params;
+        const { name } = req.query;
         try {
-            const departments = await departmentService.fetchDepartmentsStatus(status);
+            const departments = await departmentService.fetchDepartmentsStatus(status, name);
             return res.status(200).json({ departments });
         } catch (error) {
             console.error('Error fetching departments:', error);

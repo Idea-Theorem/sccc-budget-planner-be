@@ -3,11 +3,12 @@ import prisma from '../../config/prisma';
 export default {
     fetchCenters: async (name?: string) => {
         const centers = await prisma.center.findMany({
-            where: {
+            where: name ? {
                 name: {
-                    contains: name
+                    contains: name,
+                    mode: 'insensitive' // Optional: makes the search case-insensitive
                 }
-            },
+            } : {},
             include: {
                 Department: {
                     select: {

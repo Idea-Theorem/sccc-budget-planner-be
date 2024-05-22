@@ -4,9 +4,10 @@ import asyncErrorHandler from '../middlewares/asyncErrorHandler';
 
 export default {
     fetchCenters: asyncErrorHandler(async (req: Request, res: Response) => {
-        const { name } = req.params;
+        const { name } = req.query;
+        const nameString = typeof name === 'string' ? name : '';
         try {
-            const centers = await centerService.fetchCenters(name);
+            const centers = await centerService.fetchCenters(nameString);
             return res.status(200).json({ centers });
         } catch (error) {
             console.error('Error fetching centers:', error);

@@ -6,7 +6,7 @@ export default {
         try {
             const programs = await prisma.program.findMany({
                 where: {
-                    ...(id ? { user_id: id } : {}),
+                    // ...(id ? { user_id: id } : {}),
                     ...(status ? { status } : {}),
                     ...(name ? { name: { contains: name } } : {})
                 },

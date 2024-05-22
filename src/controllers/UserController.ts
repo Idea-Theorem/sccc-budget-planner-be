@@ -8,9 +8,10 @@ import DepartmentService from '../services/DepartmentService';
 
 export default {
     fetchUsers: asyncErrorHandler(async (req: Request, res: Response) => {
-        const { name } = req.params;
+        const { name } = req.query;
+        const nameString = typeof name === 'string' ? name : '';
         try {
-            const users = await userService.fetchUsers(name);
+            const users = await userService.fetchUsers(nameString);
             return res.status(200).json({ users });
         } catch (error) {
             console.error('Error fetching users:', error);

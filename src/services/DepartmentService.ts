@@ -2,13 +2,14 @@ import prisma from '../../config/prisma';
 import { Department as DepartmentType } from '../utils/types';
 
 export default {
-    fetchDepartments: async (name?: string) => {
+    fetchDepartments: async (name?: string | any) => {
         const departments = await prisma.department.findMany({
-            where: {
+            where: name ? {
                 name: {
-                    contains: name
+                    contains: name,
+                    mode: 'insensitive' // Optional: makes the search case-insensitive
                 }
-            },
+            } : {},
             include: {
                 center: {
                     select: {
@@ -128,10 +129,14 @@ export default {
         return { approvedCount, pendingCount };
 
     },
-    fetchDepartmentsStatus: async (status?: any) => {
+    fetchDepartmentsStatus: async (status?: any, name?: any) => {
         const departments = await prisma.department.findMany({
             where: {
-                status: status
+                status: status !== undefined ? status : undefined, // null check for status
+                name: {
+                    contains: name, // Assuming you want to search for departments containing the specified name
+                    mode: 'insensitive' // case-insensitive search
+                }
             },
             // include: {
             //     center: true,
