@@ -19,7 +19,7 @@ model User {
   lastname           String
   email              String               @unique
   password           String
-  reset_token        String?
+  reset_token        String?              @unique
   phone_number       String?
   hire_date          DateTime
   center_id          String?
@@ -147,6 +147,7 @@ model Program {
   employee       Json[]
   user           User          @relation(fields: [user_id], references: [id]) // Add this line
   user_id        String
+  Comment        Comment[]
 }
 
 enum ProgramStatus {
@@ -161,4 +162,13 @@ enum DepartmentStatus {
   PENDING
   REJECTED
   APPROVED
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  program    Program  @relation(fields: [program_id], references: [id])
+  program_id String
+  field_id   String
+  text       String
+  created_at DateTime @default(now())
 }

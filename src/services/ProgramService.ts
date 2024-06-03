@@ -24,7 +24,14 @@ export default {
             throw new Error('Failed to fetch programs');
         }
     },
-
+    fetchcomments: async (id?: string, status?: ProgramStatus | undefined, name?: string | undefined) => {
+        try {
+            const comments = await prisma.comment.findMany();
+            return comments
+        } catch (error) {
+            throw new Error('Failed to fetch programs');
+        }
+    },
     createProgram: async (body: ProgramType) => {
         try {
             const createdProgram = await prisma.program.create({ data: body });
@@ -99,6 +106,17 @@ export default {
             });
         } catch (error) {
             throw new Error('Failed to update program statuses');
+        }
+    },
+    adCommentInPrograms: async (body: any) => {
+        try {
+            const newComment = await prisma.comment.create({
+                data: {
+                    ...body
+                },
+            });
+        } catch (error) {
+            throw new Error('Failed to add comment in program');
         }
     },
 };

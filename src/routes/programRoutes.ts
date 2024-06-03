@@ -172,5 +172,7 @@ router.put("/:id", authenication.verify, validation(programSchema.updateProgram)
  *         description: Program not found
  */
 router.delete("/:id", authenication.verify, ProgramController.deleteProgram);
+router.post("/comments", authenication.verify, ProgramController.commentsInPrograms);
+router.get("/comments", authenication.verify, ProgramController.fetchcomments);
 
 export default router;

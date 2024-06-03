@@ -19,6 +19,16 @@ export default {
         }
     }),
 
+    fetchcomments: asyncErrorHandler(async (req: Request | any, res: Response) => {
+        try {
+            const comments = await programService.fetchcomments();
+            return res.status(200).json({ comments });
+        } catch (error) {
+            console.error('Error fetching programs:', error);
+            return res.status(500).json({ message: error });
+        }
+    }),
+
     createProgram: asyncErrorHandler(async (req: Request | any, res: Response) => {
         const data: any = req.body;
         data.user_id = req.user.id
@@ -99,6 +109,15 @@ export default {
         try {
             await programService.updateProgramStatus(req.body);
             return res.status(200).json({ message: 'Program statuses updated successfully' });
+        } catch (error) {
+            console.error('Error deleting program:', error);
+            return res.status(500).json({ message: error });
+        }
+    }),
+    commentsInPrograms: asyncErrorHandler(async (req: Request, res: Response) => {
+        try {
+            await programService.adCommentInPrograms(req.body);
+            return res.status(200).json({ message: 'Comment added successfully' });
         } catch (error) {
             console.error('Error deleting program:', error);
             return res.status(500).json({ message: error });
