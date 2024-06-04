@@ -4,6 +4,7 @@ import asyncErrorHandler from '../middlewares/asyncErrorHandler';
 import { isValidUUID } from '../utils/uuidValidator';
 import DepartmentService from '../services/DepartmentService';
 import { ProgramStatus, User } from '../utils/types';
+import prisma from '../../config/prisma';
 
 export default {
     fetchPrograms: asyncErrorHandler(async (req: Request | any, res: Response) => {
@@ -92,6 +93,18 @@ export default {
             return res.status(500).json({ message: error });
         }
     }),
+    updateComment: asyncErrorHandler(async (req: Request, res: Response) => {
+        const commentId = req.params.id;
+        const { text } = req.body;
+
+        try {
+            await programService.updateComment(commentId, text);
+            return res.status(200).json({ message: 'Program updated successfully' });
+        } catch (error) {
+            console.error('Error updating program:', error);
+            return res.status(500).json({ message: error });
+        }
+    }),
 
     deleteProgram: asyncErrorHandler(async (req: Request, res: Response) => {
         const programId = req.params.id;
@@ -114,13 +127,49 @@ export default {
             return res.status(500).json({ message: error });
         }
     }),
-    commentsInPrograms: asyncErrorHandler(async (req: Request, res: Response) => {
+    commentsInPrograms: asyncErrorHandler(async (req: Request | any, res: Response) => {
         try {
-            await programService.adCommentInPrograms(req.body);
+            await programService.adCommentInPrograms(req.body, req?.user?.id);
             return res.status(200).json({ message: 'Comment added successfully' });
         } catch (error) {
-            console.error('Error deleting program:', error);
             return res.status(500).json({ message: error });
+        }
+    }),
+
+    deletecomment: asyncErrorHandler(async (req: Request, res: Response) => {
+        const commentId = req.params.id;
+
+        try {
+            await programService.deleteComment(commentId);
+            return res.status(200).json({ message: 'coment deleted successfully' });
+        } catch (error) {
+            console.error('Error deleting comment:', error);
+            return res.status(500).json({ message: error });
+        }
+    }),
+    updateCommentstatus: asyncErrorHandler(async (req: Request, res: Response) => {
+        const commentId = req.params.id;
+        try {
+            const comment: any = await prisma.comment.findUnique({ where: { id: commentId } });
+
+            if (!comment) {
+                return res.status(404).json({ error: 'Comment not found.' });
+            }
+
+            if (comment.isResolved) {
+                return res.status(400).json({ error: 'Comment is already resolved.' });
+            }
+
+            const updatedComment = await prisma.comment.update({
+                where: { id: commentId },
+                data: { isResolved: true },
+            });
+
+            res.json({ message: 'Comment is resolved successfully.' });
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: 'An error occurred while resolving the comment.' });
         }
     }),
 };

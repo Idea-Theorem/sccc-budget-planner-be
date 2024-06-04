@@ -142,10 +142,10 @@ export default {
         }
 
         // Validate department ID
-        const isValidDepartmentId = isValidUUID(department_id);
-        if (!isValidDepartmentId) {
-            return res.status(400).json({ message: 'Invalid department ID' });
-        }
+        // const isValidDepartmentId = isValidUUID(department_id);
+        // if (!isValidDepartmentId) {
+        //     return res.status(400).json({ message: 'Invalid department ID' });
+        // }
 
         try {
             // Check if all role IDs exist
@@ -165,11 +165,11 @@ export default {
                 return res.status(400).json({ message: 'Role IDs do not exist', missingRoleIds });
             }
 
-            // Check if the department exists
-            const existingDepartment = await DepartmentService.getDepartmentById(department_id);
-            if (!existingDepartment) {
-                return res.status(400).json({ message: 'Department ID does not exist' });
-            }
+            // // Check if the department exists
+            // const existingDepartment = await DepartmentService.getDepartmentById(department_id);
+            // if (!existingDepartment) {
+            //     return res.status(400).json({ message: 'Department ID does not exist' });
+            // }
 
             // Update the user
             await userService.updateUser(userId, req.body);

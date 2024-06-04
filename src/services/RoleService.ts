@@ -76,5 +76,14 @@ export default {
             where: { id },
         });
         return employeeRoles
-    }
+    },
+    fetchNewHire: async () => {
+        const programs = await prisma.program.findMany();
+        const employeeArrays = programs.map(program => program.employee);
+
+        const flattenedEmployees = employeeArrays.flatMap(employees => employees);
+
+        const filteredEmployees = flattenedEmployees.filter((employee: any) => employee.employee === "New Hire");
+        return filteredEmployees
+    },
 };

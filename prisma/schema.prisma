@@ -31,6 +31,8 @@ model User {
   Department         Department?          @relation(fields: [departmentId], references: [id])
   departmentId       String?
   programs           Program[]
+  
+  userComments UserComment[]
 }
 
 model EmployeeDepartment {
@@ -171,4 +173,15 @@ model Comment {
   field_id   String
   text       String
   created_at DateTime @default(now())
+  isResolved Boolean  @default(false)
+  userComments UserComment[]
 }
+
+model UserComment {
+  id        String   @id @default(uuid())
+  user_id   String
+  comment_id String
+  user      User     @relation(fields: [user_id], references: [id])
+  comment   Comment  @relation(fields: [comment_id], references: [id])
+}
+

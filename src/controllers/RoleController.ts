@@ -74,4 +74,13 @@ export default {
             return res.status(500).json({ message: 'Internal Server Error' });
         }
     }),
+    fetchNewhire: asyncErrorHandler(async (req: Request, res: Response) => {
+        try {
+            const newHire = await roleService.fetchNewHire();
+            return res.status(200).json({ newHire });
+        } catch (error) {
+            console.error('Error fetching new hires:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }),
 };
