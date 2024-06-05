@@ -78,12 +78,59 @@ export default {
         return employeeRoles
     },
     fetchNewHire: async () => {
-        const programs = await prisma.program.findMany();
-        const employeeArrays = programs.map(program => program.employee);
-
+        const programs = await prisma.program.findMany({
+            include: {
+                department: {
+                    select: {
+                        id: true,
+                        name: true,
+                        // include other fields from Department model if needed
+                    }
+                }
+            }
+        });
+        const employeeArrays = programs.map(program => {
+            if (program.employee.length > 0) {
+                program.employee.map((item: any) => (item.otherinfo = {
+                    name: program.name,
+                    department: program.department,
+                    program_id: program.id,
+                    hire_date: program.created_at
+                }))
+            }
+            return program.employee
+        });
         const flattenedEmployees = employeeArrays.flatMap(employees => employees);
 
         const filteredEmployees = flattenedEmployees.filter((employee: any) => employee.employee === "New Hire");
+
         return filteredEmployees
+    },
+    deleteNewHire: async (id: any, empId: any) => {
+
+
+        try {
+            // Fetch the specific program by id
+            const program = await prisma.program.findUnique({
+                where: { id },
+            });
+
+            if (!program) {
+                return { error: 'Program not found' };
+            }
+
+            // Filter out the employee to be deleted
+            const updatedEmployees = program.employee.filter((emp: any) => emp.emp_id !== empId);
+
+            // Update the program with the new employee array
+            const updatedProgram = await prisma.program.update({
+                where: { id },
+                data: { employee: updatedEmployees as any },
+            });
+
+            return updatedProgram
+        } catch (error) {
+            return { error: 'Failed to update program' };
+        }
     },
 };

@@ -185,3 +185,7 @@ model UserComment {
   comment   Comment  @relation(fields: [comment_id], references: [id])
 }
 
+model budget {
+  id    Int    @id @default(autoincrement())
+  total_value String
+}
