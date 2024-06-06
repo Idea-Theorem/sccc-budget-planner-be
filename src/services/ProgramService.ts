@@ -169,4 +169,26 @@ export default {
             throw new Error('Failed to delete program');
         }
     },
+    fetchProgramsByUser: async (id?: string, status?: ProgramStatus | undefined, name?: string | undefined) => {
+        try {
+            const programs = await prisma.program.findMany({
+                where: {
+                    ...(id ? { user_id: id } : {}),
+                    ...(status ? { status } : {}),
+                    ...(name ? { name: { contains: name } } : {})
+                },
+                include: {
+                    department: {
+                        select: {
+                            id: true,
+                            name: true
+                        }
+                    }
+                },
+            });
+            return programs;
+        } catch (error) {
+            throw new Error('Failed to fetch programs');
+        }
+    },
 };

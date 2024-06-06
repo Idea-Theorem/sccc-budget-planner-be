@@ -172,4 +172,17 @@ export default {
             res.status(500).json({ error: 'An error occurred while resolving the comment.' });
         }
     }),
+
+    fetchProgramsByUser: asyncErrorHandler(async (req: Request | any, res: Response) => {
+        try {
+            const { status, name } = req.query;
+            const { id } = req.user
+            const nameString = typeof name === 'string' ? name : '';
+            const programs = await programService.fetchProgramsByUser(id, status as ProgramStatus, nameString);
+            return res.status(200).json({ programs });
+        } catch (error) {
+            console.error('Error fetching programs:', error);
+            return res.status(500).json({ message: error });
+        }
+    }),
 };

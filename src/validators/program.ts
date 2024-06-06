@@ -65,5 +65,6 @@ export const programSchema = {
             })
         ).optional(),
         status: Joi.string().optional(),
+        employee: Joi.optional()
     })
 }

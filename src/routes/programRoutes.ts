@@ -177,5 +177,7 @@ router.get("/comments", authenication.verify, ProgramController.fetchcomments);
 router.delete("/comment/:id", authenication.verify, ProgramController.deletecomment);
 router.put("/comment/:id", authenication.verify, ProgramController.updateComment);
 router.put("/comment/resolved:id", authenication.verify, ProgramController.updateCommentstatus);
+router.get("/fetchProgramByUser", authenication.verify, ProgramController.fetchProgramsByUser);
+
 
 export default router;

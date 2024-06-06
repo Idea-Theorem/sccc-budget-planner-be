@@ -189,3 +189,7 @@ model budget {
   id    Int    @id @default(autoincrement())
   total_value String
 }
+model budgetSuperAdmin {
+  id    Int    @id @default(autoincrement())
+  total_value String
+}
