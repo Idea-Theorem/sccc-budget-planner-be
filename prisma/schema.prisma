@@ -19,7 +19,7 @@ model User {
   lastname           String
   email              String               @unique
   password           String
-  reset_token        String?
+  reset_token        String?              @unique
   phone_number       String?
   hire_date          DateTime
   center_id          String?
@@ -31,6 +31,8 @@ model User {
   Department         Department?          @relation(fields: [departmentId], references: [id])
   departmentId       String?
   programs           Program[]
+  
+  userComments UserComment[]
 }
 
 model EmployeeDepartment {
@@ -147,6 +149,7 @@ model Program {
   employee       Json[]
   user           User          @relation(fields: [user_id], references: [id]) // Add this line
   user_id        String
+  Comment        Comment[]
 }
 
 enum ProgramStatus {
@@ -161,4 +164,32 @@ enum DepartmentStatus {
   PENDING
   REJECTED
   APPROVED
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  program    Program  @relation(fields: [program_id], references: [id])
+  program_id String
+  field_id   String
+  text       String
+  created_at DateTime @default(now())
+  isResolved Boolean  @default(false)
+  userComments UserComment[]
+}
+
+model UserComment {
+  id        String   @id @default(uuid())
+  user_id   String
+  comment_id String
+  user      User     @relation(fields: [user_id], references: [id])
+  comment   Comment  @relation(fields: [comment_id], references: [id])
+}
+
+model budget {
+  id    Int    @id @default(autoincrement())
+  total_value String
+}
+model budgetSuperAdmin {
+  id    Int    @id @default(autoincrement())
+  total_value String
 }

@@ -30,7 +30,8 @@ export const programSchema = {
         ).required(),
         status: Joi.string().valid('PENDING', 'REJECTED', 'APPROVED', 'DRAFTED').required(),
         created_at: Joi.date().default('now'),
-        updated_at: Joi.date().allow(null).optional()
+        updated_at: Joi.date().allow(null).optional(),
+        employee: Joi.optional()
     }),
     updateProgramStatus: Joi.object({
         progamIds: Joi.array().items(Joi.string().required()),
@@ -64,5 +65,6 @@ export const programSchema = {
             })
         ).optional(),
         status: Joi.string().optional(),
+        employee: Joi.optional()
     })
 }

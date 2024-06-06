@@ -38,7 +38,7 @@ export const userSchema = {
         department_id: Joi.string().allow(null).optional(),
         employment_type: Joi.string().valid('FULL_TIME', 'PART_TIME').optional(),
         compensation_type: Joi.string().valid('HOURLY', 'SALARY').optional(),
-        salary_rate: Joi.number().positive().required().options({ convert: false }),
+        salary_rate: Joi.number().positive().optional(),
         center_id: Joi.string().allow(null).optional()
     }),
     login: Joi.object({

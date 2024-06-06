@@ -162,5 +162,7 @@ router.put("/:id", authenication.verify, validation(userSchema.updateUser), User
  *         description: User not found
  */
 router.delete("/:id", authenication.verify, UserController.deleteUser);
+router.post("/forgot-password", UserController.forgotPassword);
+router.post("/reset-password", UserController.resetPassword);
 
 export default router;

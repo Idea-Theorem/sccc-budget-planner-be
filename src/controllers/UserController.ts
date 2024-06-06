@@ -5,6 +5,12 @@ import asyncErrorHandler from '../middlewares/asyncErrorHandler';
 import { isValidUUID } from '../utils/uuidValidator';
 import prisma from '../../config/prisma';
 import DepartmentService from '../services/DepartmentService';
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+import dotenv from "dotenv";
+
+const bcrypt = require('bcryptjs');
+
 
 export default {
     fetchUsers: asyncErrorHandler(async (req: Request, res: Response) => {
@@ -136,10 +142,10 @@ export default {
         }
 
         // Validate department ID
-        const isValidDepartmentId = isValidUUID(department_id);
-        if (!isValidDepartmentId) {
-            return res.status(400).json({ message: 'Invalid department ID' });
-        }
+        // const isValidDepartmentId = isValidUUID(department_id);
+        // if (!isValidDepartmentId) {
+        //     return res.status(400).json({ message: 'Invalid department ID' });
+        // }
 
         try {
             // Check if all role IDs exist
@@ -159,11 +165,11 @@ export default {
                 return res.status(400).json({ message: 'Role IDs do not exist', missingRoleIds });
             }
 
-            // Check if the department exists
-            const existingDepartment = await DepartmentService.getDepartmentById(department_id);
-            if (!existingDepartment) {
-                return res.status(400).json({ message: 'Department ID does not exist' });
-            }
+            // // Check if the department exists
+            // const existingDepartment = await DepartmentService.getDepartmentById(department_id);
+            // if (!existingDepartment) {
+            //     return res.status(400).json({ message: 'Department ID does not exist' });
+            // }
 
             // Update the user
             await userService.updateUser(userId, req.body);
@@ -184,5 +190,73 @@ export default {
             console.error('Error deleting user:', error);
             return res.status(500).json({ message: error });
         }
+    }),
+
+    forgotPassword: asyncErrorHandler(async (req: Request, res: Response) => {
+        const { email } = req.body;
+
+        // Find the user by email
+        const user = await prisma.user.findUnique({ where: { email } });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Generate a reset token
+        const resetToken = crypto.randomBytes(32).toString('hex');
+
+        // Set the reset token in the database
+        await prisma.user.update({
+            where: { email },
+            data: { reset_token: resetToken }
+        });
+
+        const resetUrl = `http://localhost:5173/reset-password?token=${resetToken}`;
+
+
+        // Send the reset token via email (configure your mail settings)
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.NODE_MAILER_USER_NAME,
+                pass: process.env.NODE_MAILER_PASSWORD
+            }
+        });
+
+        const mailOptions = {
+            from: 'your-email@gmail.com',
+            to: email,
+            subject: 'Password Reset',
+            html: `You requested a password reset. Please click on the following link to reset your password: <p>Click <a href="${resetUrl}">Reset Password</a></p>`
+        };
+
+        transporter.sendMail(mailOptions, (error: any, info: any) => {
+            if (error) {
+                return res.status(500).json({ message: 'Error sending email', error });
+            }
+            res.status(200).json({ message: 'Password reset email sent' });
+        });
+    }),
+    resetPassword: asyncErrorHandler(async (req: Request, res: Response) => {
+
+        const { resetToken, newPassword } = req.body;
+
+        const user = await prisma.user.findFirst({ where: { reset_token: resetToken } });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid or expired reset token' });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        await prisma.user.update({
+            where: { id: user.id },
+            data: {
+                password: hashedPassword,
+                reset_token: null
+            }
+        });
+
+        res.status(200).json({ message: 'Password reset successfully' });
     })
 }

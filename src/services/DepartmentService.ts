@@ -20,7 +20,9 @@ export default {
                 Program: {
                     select: {
                         id: true,
-                        name: true
+                        name: true,
+                        income: true,
+                        supply_expense: true
                     }
                 }
             }

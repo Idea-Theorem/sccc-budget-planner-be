@@ -69,4 +69,72 @@ export default {
             throw new Error('Failed to fetch centers count');
         }
     },
+
+    addTotalbudget: async (total_value: any) => {
+        try {
+            const newValue = await prisma.budget.create({
+                data: { total_value },
+            });
+            return newValue
+        } catch (error) {
+            throw new Error('Failed to post total budget');
+        }
+    },
+
+    fetchTotalBudget: async (id: any) => {
+        try {
+            const value = await prisma.budget.findUnique({
+                where: { id: parseInt(id) },
+            });
+            return value
+        } catch (error) {
+            console.error('Error fetching centers count:', error);
+            throw new Error('Failed to fetch centers count');
+        }
+    },
+    fetchSuperAdminTotalBudget: async (id: any) => {
+        try {
+            const value = await prisma.budgetSuperAdmin.findUnique({
+                where: { id: parseInt(id) },
+            });
+            return value
+        } catch (error) {
+            console.error('Error fetching centers count:', error);
+            throw new Error('Failed to fetch centers count');
+        }
+    },
+    updateTotalBudget: async (id: any, total_value: any) => {
+        try {
+            const updatedValue = await prisma.budget.update({
+                where: { id: parseInt(id) },
+                data: { total_value },
+            });
+            return updatedValue
+        } catch (error) {
+            console.error('Error update budget :', error);
+            throw new Error('Failed to budget ');
+        }
+    },
+    updateSuperAdminTotalBudget: async (id: any, total_value: any) => {
+        try {
+            const updatedValue = await prisma.budgetSuperAdmin.update({
+                where: { id: parseInt(id) },
+                data: { total_value },
+            });
+            return updatedValue
+        } catch (error) {
+            console.error('Error update budget :', error);
+            throw new Error('Failed to budget ');
+        }
+    },
+    addSuperAdminTotalbudget: async (total_value: any) => {
+        try {
+            const newValue = await prisma.budgetSuperAdmin.create({
+                data: { total_value },
+            });
+            return newValue
+        } catch (error) {
+            throw new Error('Failed to post total budget');
+        }
+    },
 };
