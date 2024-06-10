@@ -36,7 +36,33 @@ export default {
                 }
             });
 
-            return { programsCount, approvedCount };
+            const departmentCount = await prisma.department.count();
+
+            // Fetch count of programs with status 'APPROVED'
+            const approvedDepartmentCount = await prisma.department.count({
+                where: {
+                    status: 'APPROVED'
+                }
+            });
+
+            const programs = await prisma.program.findMany({
+                where: { status: 'APPROVED' },
+            });
+
+            const totalIncomeSum = programs.reduce((acc: any, program) => {
+                const incomeSum = program.income.reduce((sum, item: any) => sum + item.amount, 0);
+                return acc + incomeSum;
+            }, 0);
+
+            const totalSupplyExpenseSum = programs.reduce((acc: any, program) => {
+                const supplyExpenseSum = program.supply_expense.reduce((sum, item: any) => sum + item.amount, 0);
+                return acc + supplyExpenseSum;
+            }, 0);
+
+            const totalApprovedProgrambudget = Number(totalIncomeSum) + Number(totalSupplyExpenseSum)
+
+
+            return { programsCount, totalApprovedProgrambudget, approvedCount, departmentCount, approvedDepartmentCount };
         } catch (error) {
             console.error('Error fetching programs count:', error);
             throw new Error('Failed to fetch programs count');

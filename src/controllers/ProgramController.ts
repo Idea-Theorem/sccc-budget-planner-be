@@ -13,6 +13,7 @@ export default {
             const { id } = req.user
             const nameString = typeof name === 'string' ? name : '';
             const programs = await programService.fetchPrograms(id, status as ProgramStatus, nameString);
+
             return res.status(200).json({ programs });
         } catch (error) {
             console.error('Error fetching programs:', error);
@@ -179,6 +180,7 @@ export default {
             const { id } = req.user
             const nameString = typeof name === 'string' ? name : '';
             const programs = await programService.fetchProgramsByUser(id, status as ProgramStatus, nameString);
+
             return res.status(200).json({ programs });
         } catch (error) {
             console.error('Error fetching programs:', error);
