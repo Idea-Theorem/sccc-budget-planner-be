@@ -29,6 +29,40 @@ export default {
         });
         return departments;
     },
+    fetchDepartmentsByuser: async (name?: string | any, id?: any,) => {
+        const departments = await prisma.department.findMany({
+            where: {
+                EmployeeDepartment: {
+                    some: {
+                        user_id: id
+                    }
+                },
+                ...(name && {
+                    name: {
+                        contains: name,
+                        mode: 'insensitive' // Optional: makes the search case-insensitive
+                    }
+                })
+            },
+            include: {
+                center: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
+                Program: {
+                    select: {
+                        id: true,
+                        name: true,
+                        income: true,
+                        supply_expense: true
+                    }
+                }
+            }
+        });
+        return departments;
+    },
     fetchEmployeeInDepartment: async (departmentId?: any) => {
         const uniqueUserIds = await prisma.employeeDepartment.findMany({
             where: {
@@ -59,6 +93,7 @@ export default {
 
         return programs;
     },
+
 
     createDepartment: async (data: any) => {
         const createdDepartment = await prisma.department.create({ data: data });
