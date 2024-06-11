@@ -84,14 +84,16 @@ export default {
     },
 
     deleteDepartment: async (departmentId: string) => {
-        // First, delete related EmployeeDepartment records
         await prisma.employeeDepartment.deleteMany({
             where: {
                 department_id: departmentId,
             },
         });
-
-        // Now that there are no more related records, delete the department
+        await prisma.program.deleteMany({
+            where: {
+                department_id: departmentId,
+            },
+        });
         await prisma.department.delete({
             where: {
                 id: departmentId,
