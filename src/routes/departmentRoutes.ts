@@ -147,6 +147,8 @@ router.get("/program-count/:id", authenication.verify, DepartmentController.prog
 router.get("/status/:status?", authenication.verify, DepartmentController.fetchDepartmentsViaStatus);
 router.get("/employees/:departmentId?", authenication.verify, DepartmentController.fetchEmployeeAgainstDepartment);
 router.get("/programs/:departmentId?", authenication.verify, DepartmentController.fetchProgramsAgainstDepartment);
+router.get("/by-user/department", authenication.verify, DepartmentController.fetchDepartmentsByUsers);
+
 
 
 

@@ -190,6 +190,18 @@ export default {
                 },
             });
 
+            await prisma.program.deleteMany({
+                where: {
+                    user_id: userId,
+                },
+            });
+
+            await prisma.userComment.deleteMany({
+                where: {
+                    user_id: userId,
+                },
+            });
+
             return await prisma.user.delete({
                 where: {
                     id: userId,

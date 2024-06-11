@@ -16,6 +16,18 @@ export default {
             return res.status(500).json({ message: 'Internal Server Error' });
         }
     }),
+    fetchDepartmentsByUsers: asyncErrorHandler(async (req: Request | any, res: Response) => {
+        const { name } = req.query;
+        const { id } = req.user
+        const nameString = typeof name === 'string' ? name : '';
+        try {
+            const departments = await departmentService.fetchDepartmentsByuser(nameString, id);
+            return res.status(200).json({ departments });
+        } catch (error) {
+            console.error('Error fetching departments:', error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }),
 
     fetchEmployeeAgainstDepartment: asyncErrorHandler(async (req: Request, res: Response) => {
         const departmentId = req.params.departmentId;
@@ -45,6 +57,7 @@ export default {
 
         // check if center id is a valid uuid
         const isValidCenterId = isValidUUID(center_id);
+
         if (!isValidCenterId) {
             return res.status(401).json({ message: 'Invalid center id' });
         }
