@@ -38,7 +38,31 @@ const helpers = {
     } catch (error) {
       throw error;
     }
-  }
+  },
+  getRandomColor: () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  },
+  getUniqueColor: async (prisma: any) => {
+    let color;
+    let isUnique = false;
+
+    while (!isUnique) {
+      color = helpers.getRandomColor();
+      const existingColor = await prisma.findFirst({
+        where: { color: color },
+      });
+      if (!existingColor) {
+        isUnique = true;
+      }
+    }
+    return color;
+  },
 };
+
 
 export default helpers;

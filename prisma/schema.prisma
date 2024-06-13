@@ -50,6 +50,7 @@ model EmployeeDepartment {
 model Department {
   id                 String               @id @default(uuid())
   name               String
+  color              String?
   center_id          String
   center             Center               @relation(fields: [center_id], references: [id])
   created_at         DateTime             @default(now())
@@ -121,6 +122,7 @@ model Center {
   name       String
   created_at DateTime     @default(now())
   updated_at DateTime?
+  color      String?
   User       User[]
   Department Department[]
 }
@@ -137,6 +139,7 @@ model Program {
   name           String
   code           String
   department_id  String
+  color          String?
   department     Department    @relation(fields: [department_id], references: [id])
   from_date      DateTime
   to_date        DateTime

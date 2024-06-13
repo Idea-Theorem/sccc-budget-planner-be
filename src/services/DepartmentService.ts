@@ -1,9 +1,10 @@
 import prisma from '../../config/prisma';
+import helpers from '../utils/helpers';
 import { Department as DepartmentType } from '../utils/types';
 
 export default {
     fetchDepartments: async (name?: string | any) => {
-        const departments = await prisma.department.findMany({
+        const departmentData = await prisma.department.findMany({
             where: name ? {
                 name: {
                     contains: name,
@@ -27,7 +28,38 @@ export default {
                 }
             }
         });
+        const departments = await fetchProgramsAndCalculateAmounts(departmentData)
         return departments;
+        async function fetchProgramsAndCalculateAmounts(departmentArray: any) {
+            for (const department of departmentArray) {
+                // Fetch programs associated with the department
+                const programs = await prisma.program.findMany({
+                    where: { department_id: department.id },
+                    select: {
+                        income: true,
+                        employee: true,
+                        supply_expense: true,
+                    },
+                });
+
+                // Initialize total amount for the department
+                let totalAmount = 0;
+
+                // Calculate the sum of amounts in income, employee, and supply_expense arrays for each program
+                programs.forEach(program => {
+                    const incomeTotal: any = program.income.length == 0 ? 0 : program.income.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
+                    const employeeTotal: any = program.employee.length == 0 ? 0 : program.employee.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
+                    const supplyExpenseTotal = program.supply_expense.length == 0 ? 0 : program.supply_expense.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
+
+                    totalAmount += incomeTotal + employeeTotal + supplyExpenseTotal;
+                });
+
+                // Store the total amount in the department object
+                department.value = totalAmount;
+            }
+
+            return departmentArray;
+        }
     },
     fetchDepartmentsByuser: async (name?: string | any, id?: any,) => {
         const departments = await prisma.department.findMany({
@@ -96,6 +128,8 @@ export default {
 
 
     createDepartment: async (data: any) => {
+        const randomcolor = await helpers.getUniqueColor(prisma.department);
+        data.color = randomcolor;
         const createdDepartment = await prisma.department.create({ data: data });
         return createdDepartment;
     },
