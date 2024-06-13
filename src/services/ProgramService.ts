@@ -1,4 +1,5 @@
 import prisma from '../../config/prisma';
+import helpers from '../utils/helpers';
 import { ProgramStatus, Program as ProgramType, UpdateProgramStatus } from "../utils/types";
 
 export default {
@@ -52,6 +53,9 @@ export default {
     },
     createProgram: async (body: ProgramType) => {
         try {
+            const uniqueColor = await helpers.getUniqueColor(prisma.program);
+            body.color = uniqueColor;
+
             const createdProgram = await prisma.program.create({ data: body });
             return createdProgram;
         } catch (error) {

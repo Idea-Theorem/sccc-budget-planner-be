@@ -1,4 +1,5 @@
 import prisma from '../../config/prisma';
+import helpers from '../utils/helpers';
 import { Department as DepartmentType } from '../utils/types';
 
 export default {
@@ -127,6 +128,8 @@ export default {
 
 
     createDepartment: async (data: any) => {
+        const randomcolor = await helpers.getUniqueColor(prisma.department);
+        data.color = randomcolor;
         const createdDepartment = await prisma.department.create({ data: data });
         return createdDepartment;
     },
