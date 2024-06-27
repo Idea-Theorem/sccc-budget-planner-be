@@ -128,7 +128,6 @@ export default {
     updateUser: asyncErrorHandler(async (req: Request, res: Response) => {
         const userId = req.params.id;
         const { email, roles, department_id } = req.body;
-
         // Check if the user already exists
         const user = await userService.checkEmail(email);
         if (user && user.id !== userId) {

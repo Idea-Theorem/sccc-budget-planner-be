@@ -136,18 +136,25 @@ export default {
         }
     },
 
-    updateUser: async (userId: string, body: UpdateUser) => {
+    updateUser: async (userId: string, body: UpdateUser | any) => {
         try {
-            const { roles } = body;
-
-            // Delete existing relations
+            const { roles, employeDepartments, ...rest } = body;
+    
+            // Delete existing role relations
             await prisma.userRole.deleteMany({
                 where: {
                     user_id: userId,
                 },
             });
-
-            // Create new relations
+    
+            // Delete existing employee department relations
+            await prisma.employeeDepartment.deleteMany({
+                where: {
+                    user_id: userId,
+                },
+            });
+    
+            // Create new role relations
             const roleConnections = roles?.map((roleId: string) => ({
                 role: {
                     connect: {
@@ -155,21 +162,38 @@ export default {
                     },
                 },
             }));
-
-            // Update the user with the new roles
+    
+            // Create new employee department relations
+            const employeeDepartmentConnections = employeDepartments?.map((empDep: any) => ({
+                title: empDep.title,
+                salaryRate: empDep.salaryRate,
+                hourlyRate: empDep.hourlyRate,
+                department: {
+                    connect: {
+                        id: empDep.department_id,
+                    },
+                },
+            }));
+    
+            // Update the user with the new roles and employee departments
             return await prisma.user.update({
                 where: {
                     id: userId,
                 },
                 data: {
-                    ...body,
+                    ...rest,
                     roles: {
                         // Connect the user with the new roles
                         create: roleConnections,
                     },
+                    employeDepartments: {
+                        // Connect the user with the new employee departments
+                        create: employeeDepartmentConnections,
+                    },
                 },
                 include: {
                     roles: true,
+                    employeDepartments: true,
                 },
             });
         } catch (error) {
