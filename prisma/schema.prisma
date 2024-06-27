@@ -153,6 +153,7 @@ model Program {
   user           User          @relation(fields: [user_id], references: [id]) // Add this line
   user_id        String
   Comment        Comment[]
+  programBudget  Float         @default(0)
 }
 
 enum ProgramStatus {

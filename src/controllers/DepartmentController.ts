@@ -43,8 +43,8 @@ export default {
     fetchProgramsAgainstDepartment: asyncErrorHandler(async (req: Request, res: Response) => {
         const departmentId = req.params.departmentId;
         try {
-            const departments = await departmentService.fetchProgramInDepartment(departmentId);
-            return res.status(200).json({ departments });
+            const {totalBudget, programs } = await departmentService.fetchProgramInDepartment(departmentId);
+            return res.status(200).json({ totalBudget, programs });
         } catch (error) {
             console.error('Error fetching programs:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
@@ -152,8 +152,8 @@ export default {
         const { status } = req.params;
         const { name } = req.query;
         try {
-            const departments = await departmentService.fetchDepartmentsStatus(status, name);
-            return res.status(200).json({ departments });
+            const {departments, totalProgramBudget} = await departmentService.fetchDepartmentsStatus(status, name);
+            return res.status(200).json({departments, totalProgramBudget});
         } catch (error) {
             console.error('Error fetching departments:', error);
             return res.status(500).json({ message: 'Internal Server Error' });
