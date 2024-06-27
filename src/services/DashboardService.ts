@@ -47,7 +47,13 @@ export default {
 
             const programs = await prisma.program.findMany({
                 where: { status: 'APPROVED' },
+                select: {
+                    programBudget: true,
+                    // employee: true,
+                    // supply_expense: true,
+                },
             });
+
             const totalCenters = await prisma.center.count();
 
             // Get number of centers with all approved departments
@@ -60,23 +66,24 @@ export default {
             const approvedcenters = centersWithApprovedDepartments.filter(center =>
                 center.Department.every(department => department.status === 'APPROVED')
             ).length;
-            const totalIncomeSum = programs.reduce((acc: any, program) => {
-                const incomeSum = program.income.reduce((sum, item: any) => sum + item.amount, 0);
-                return acc + incomeSum;
-            }, 0);
+            const totalApprovedProgrambudget = programs?.reduce((sum: any, item: any) => sum + item.programBudget, 0);
+            // const totalIncomeSum = programs.reduce((acc: any, program) => {
+            //     const incomeSum = program.income.reduce((sum, item: any) => sum + item.amount, 0);
+            //     return acc + incomeSum;
+            // }, 0);
 
-            const totalSupplyExpenseSum = programs.reduce((acc: any, program) => {
-                const supplyExpenseSum = program.supply_expense.reduce((sum, item: any) => sum + item.amount, 0);
-                return acc + supplyExpenseSum;
-            }, 0);
+            // const totalSupplyExpenseSum = programs.reduce((acc: any, program) => {
+            //     const supplyExpenseSum = program.supply_expense.reduce((sum, item: any) => sum + item.amount, 0);
+            //     return acc + supplyExpenseSum;
+            // }, 0);
 
-            const totalSalaryExpenseSum = programs.reduce((acc: any, program) => {
-                const salaryExpenseSum = program.employee.reduce((sum, item: any) => sum + item.amount, 0);
-                return acc + salaryExpenseSum;
-            }, 0);
+            // const totalSalaryExpenseSum = programs.reduce((acc: any, program) => {
+            //     const salaryExpenseSum = program.employee.reduce((sum, item: any) => sum + item.amount, 0);
+            //     return acc + salaryExpenseSum;
+            // }, 0);
 
 
-            const totalApprovedProgrambudget = Number(totalIncomeSum) + Number(totalSupplyExpenseSum) + Number(totalSalaryExpenseSum)
+            // const totalApprovedProgrambudget = Number(totalIncomeSum) + Number(totalSupplyExpenseSum) + Number(totalSalaryExpenseSum)
 
 
             return { programsCount, totalApprovedProgrambudget, approvedCount, departmentCount, approvedDepartmentCount, approvedcenters, totalCenters };

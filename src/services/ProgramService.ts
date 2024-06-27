@@ -55,6 +55,9 @@ export default {
         try {
             const uniqueColor = await helpers.getUniqueColor(prisma.program);
             body.color = uniqueColor;
+            let programBudget = body.income.reduce((sum, income) => sum + income.amount, 0);
+
+            body.programBudget  = programBudget;
 
             const createdProgram = await prisma.program.create({ data: body });
             return createdProgram;

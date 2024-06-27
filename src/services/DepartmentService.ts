@@ -36,9 +36,9 @@ export default {
                 const programs = await prisma.program.findMany({
                     where: { department_id: department.id },
                     select: {
-                        income: true,
-                        employee: true,
-                        supply_expense: true,
+                        programBudget: true,
+                        // employee: true,
+                        // supply_expense: true,
                     },
                 });
 
@@ -46,13 +46,14 @@ export default {
                 let totalAmount = 0;
 
                 // Calculate the sum of amounts in income, employee, and supply_expense arrays for each program
-                programs.forEach(program => {
-                    const incomeTotal: any = program.income.length == 0 ? 0 : program.income.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
-                    const employeeTotal: any = program.employee.length == 0 ? 0 : program.employee.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
-                    const supplyExpenseTotal = program.supply_expense.length == 0 ? 0 : program.supply_expense.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
+                // programs.forEach(program => {
+                //     const incomeTotal: any = program.income.length == 0 ? 0 : program.income.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
+                //     const employeeTotal: any = program.employee.length == 0 ? 0 : program.employee.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
+                //     const supplyExpenseTotal = program.supply_expense.length == 0 ? 0 : program.supply_expense.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
 
-                    totalAmount += incomeTotal + employeeTotal + supplyExpenseTotal;
-                });
+                //     totalAmount += incomeTotal + employeeTotal + supplyExpenseTotal;
+                // });
+                 totalAmount = programs?.reduce((sum: any, item: any) => sum + item.programBudget, 0);
 
                 // Store the total amount in the department object
                 department.value = totalAmount;
@@ -122,8 +123,9 @@ export default {
                 department: true // Include the department details for each program
             }
         });
+        const totalBudget = programs.reduce((sum: any, item: any) => sum + item.programBudget, 0);
 
-        return programs;
+        return {totalBudget, programs };
     },
 
 
@@ -196,7 +198,7 @@ export default {
             }
         });
 
-        const approvedCount = programs.filter(program => program.status === 'APPROVED').length;
+        const approvedCount = programs.filter(program => program.status === 'APPROVED').length; 
         const pendingCount = programs.filter(program => program.status === 'PENDING').length;
 
         return { approvedCount, pendingCount };
@@ -218,7 +220,11 @@ export default {
             //     EmployeeDepartment: true
             // }
         });
-        return departments;
+        const programs: any = await prisma.program.findMany();
+        const totalProgramBudget = programs.reduce((sum: any, program: any) => {
+            return sum + program.programBudget;
+          }, 0);
+        return {departments, totalProgramBudget};
     },
 
 };

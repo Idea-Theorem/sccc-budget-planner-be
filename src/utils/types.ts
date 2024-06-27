@@ -92,6 +92,7 @@ export interface Program {
     updated_at?: Date[];
     user_id?: any
     color?: string
+    programBudget?: any
 }
 
 export interface UpdateProgramStatus {

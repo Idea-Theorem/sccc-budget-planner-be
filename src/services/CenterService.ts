@@ -22,24 +22,27 @@ export default {
         });
 
         centers.forEach((center: any) => {
-            let totalEmployeeSum: any = 0;
-            let totalIncomeSum: any = 0;
-            let totalSupplyExpenseSum: any = 0;
+            // let totalEmployeeSum: any = 0;
+            // let totalIncomeSum: any = 0;
+            // let totalSupplyExpenseSum: any = 0;
+
+            let incomeTotal: any = 0
 
             center.Department.forEach((department: any) => {
-                department.Program.forEach((program: any) => {
-                    totalEmployeeSum += program.employee.reduce((sum: any, item: any) => Number(sum) + Number(item.amount), 0);
+             incomeTotal =  department.Program?.reduce((sum: any, item: any) => sum + item.programBudget, 0);
+                // department.Program.forEach((program: any) => {
+                //     totalEmployeeSum += program.employee.reduce((sum: any, item: any) => Number(sum) + Number(item.amount), 0);
 
-                    totalIncomeSum += program.income.reduce((sum: any, item: any) => Number(sum) + Number(item.amount), 0);
+                //     totalIncomeSum += program.income.reduce((sum: any, item: any) => Number(sum) + Number(item.amount), 0);
 
-                    totalSupplyExpenseSum += program.supply_expense.reduce((sum: any, item: any) => Number(sum) + Number(item.amount), 0);
-                });
+                //     totalSupplyExpenseSum += program.supply_expense.reduce((sum: any, item: any) => Number(sum) + Number(item.amount), 0);
+                // });
             });
 
-            center.totalEmployeeSum = totalEmployeeSum;
-            center.totalIncomeSum = totalIncomeSum;
-            center.totalSupplyExpenseSum = totalSupplyExpenseSum;
-            center.value = totalEmployeeSum + totalIncomeSum + totalSupplyExpenseSum
+            // center.totalEmployeeSum = totalEmployeeSum;
+            // center.totalIncomeSum = totalIncomeSum;
+            // center.totalSupplyExpenseSum = totalSupplyExpenseSum;
+            center.value = incomeTotal
         });
         return centers;
         // };
@@ -95,29 +98,30 @@ export default {
 
         async function fetchProgramsAndCalculateAmounts(departmentArray: any) {
             for (const department of departmentArray) {
-                // Fetch programs associated with the department
-                const programs = await prisma.program.findMany({
+                const programs : any = await prisma.program.findMany({
                     where: { department_id: department.id },
                     select: {
-                        income: true,
-                        employee: true,
-                        supply_expense: true,
+                        programBudget: true,
+                        // employee: true,
+                        // supply_expense: true,
                     },
                 });
+                const totalAmount = programs.reduce((sum: any, program: any) => sum + program.programBudget, 0);
 
                 // Initialize total amount for the department
-                let totalAmount = 0;
-
+                // let totalAmount = 0;
+               
                 // Calculate the sum of amounts in income, employee, and supply_expense arrays for each program
-                programs.forEach(program => {
-                    const incomeTotal: any = program.income.length == 0 ? 0 : program.income.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
-                    const employeeTotal: any = program.employee.length == 0 ? 0 : program.employee.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
-                    const supplyExpenseTotal = program.supply_expense.length == 0 ? 0 : program.supply_expense.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
+                // programs.forEach(program => {
+                //     const incomeTotal: any = program.income.length == 0 ? 0 : program.income.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
+                //     // const employeeTotal: any = program.employee.length == 0 ? 0 : program.employee.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
+                //     // const supplyExpenseTotal = program.supply_expense.length == 0 ? 0 : program.supply_expense.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
 
-                    totalAmount += incomeTotal + employeeTotal + supplyExpenseTotal;
-                });
+                //     totalAmount += incomeTotal 
+                //     // + employeeTotal + supplyExpenseTotal;
+                // });
 
-                // Store the total amount in the department object
+                // // Store the total amount in the department object
                 department.totalAmount = totalAmount;
             }
 
