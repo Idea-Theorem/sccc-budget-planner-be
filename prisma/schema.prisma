@@ -161,6 +161,7 @@ enum ProgramStatus {
   REJECTED
   APPROVED
   DRAFTED
+  EXPIRED
 }
 
 enum DepartmentStatus {
