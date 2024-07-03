@@ -1,4 +1,5 @@
 import prisma from "../../config/prisma";
+import { io } from "../../socket";
 import helpers from "../utils/helpers";
 import {
   ProgramStatus,
@@ -153,6 +154,11 @@ export default {
             push: currentDateTime,
           },
         },
+      });
+
+      io.emit("programStatusUpdated", {
+        programId: progamIds,
+        newStatus: status,
       });
     } catch (error) {
       throw new Error("Failed to update program statuses");
