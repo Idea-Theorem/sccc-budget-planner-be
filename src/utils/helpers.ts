@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import JWT, { Secret } from "jsonwebtoken";
 import variables from "../../config/variables";
+import prisma from "../../config/prisma";
+import DashboardService from "../services/DashboardService";
 
 const JWT_SECRET = variables.jwt.token || "jwt_secret";
 
@@ -74,6 +76,57 @@ const helpers = {
       );
       return total + sum;
     }, 0);
+  },
+  updateApprovedProgramsToExpired: async () => {
+    try {
+      // Fetch all approved programs
+      const approvedPrograms = await prisma.program.findMany({
+        where: {
+          status: "APPROVED",
+        },
+      });
+
+      // Update the status of each approved program to expired
+      const updatePromises = approvedPrograms.map((program) =>
+        prisma.program.update({
+          where: { id: program.id },
+          data: { status: "EXPIRED" },
+        })
+      );
+
+      // Execute all updates in parallel
+      await Promise.all(updatePromises);
+
+      // Fetch updated approved programs to calculate total budget
+      const programs = await prisma.program.findMany({
+        where: { status: "APPROVED" },
+        select: {
+          programBudget: true,
+        },
+      });
+
+      // Calculate total approved program budget
+      const totalApprovedProgramBudget = programs.reduce(
+        (sum, item) => sum + item.programBudget,
+        0
+      );
+
+      // Update total budget in dashboard service
+      const counts = await DashboardService.updateTotalBudget(
+        1, // Assuming 1 is the ID of the dashboard
+        String(totalApprovedProgramBudget)
+      );
+
+      console.log(
+        "All approved programs have been updated to expired.",
+        counts
+      );
+    } catch (error) {
+      console.error("Error updating programs:", error);
+    } finally {
+      // Disconnect Prisma Client
+      await prisma.$disconnect();
+    }
   },
 };
 

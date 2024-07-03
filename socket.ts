@@ -1,29 +1,21 @@
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 
-const socketIo = require("socket.io");
+let io: Server;
 
-module.exports = (server: any) => {
-  const io = socketIo(server);
-
-  io.on("connection", (socket: Socket) => {
-    console.log("a user connected");
-
-    // Listen for a 'message' event from the client
-    socket.on("message", (msg) => {
-      console.log("message: " + msg);
-      // Broadcast the message to all clients
-      io.emit("message", msg);
-    });
-
-    // Handle user disconnect
-    socket.on("disconnect", () => {
-      console.log("user disconnected");
-    });
-
-    socket.on("connect_error", (err) => {
-      console.log(`connect_error due to ${err.message}`);
-    });
+export const initSocket = (server: any) => {
+  io = new Server(server, {
+    cors: {
+      origin: "*",
+    },
   });
 
-  return io;
+  io.on("connection", (socket: Socket) => {
+    console.log("A user connected:", socket.id);
+
+    socket.on("disconnect", () => {
+      console.log("User disconnected:", socket.id);
+    });
+  });
 };
+
+export { io };
