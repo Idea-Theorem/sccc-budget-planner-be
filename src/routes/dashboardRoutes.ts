@@ -90,5 +90,6 @@ router.put("/budget/:id", DashboardController.updateTotalBudget);
 router.post("/budget-super-admin", DashboardController.addSuperAdminTotalBudget);
 router.get("/budget-super-admin/:id", DashboardController.fetchSuperAdminTotalBudget);
 router.put("/budget-super-admin/:id", DashboardController.updateSuperAdminTotalBudget);
+router.get("/record", DashboardController.fetchAllRecord);
 
 export default router;
