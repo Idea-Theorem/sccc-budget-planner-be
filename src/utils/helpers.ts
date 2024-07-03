@@ -13,7 +13,10 @@ const helpers = {
       throw error;
     }
   },
-  verifyPassword: async (pass: string, hashedPassword: string): Promise<boolean> => {
+  verifyPassword: async (
+    pass: string,
+    hashedPassword: string
+  ): Promise<boolean> => {
     try {
       const verified = await bcrypt.compare(pass, hashedPassword);
       return verified;
@@ -24,7 +27,7 @@ const helpers = {
   encodeJWT: (payload: any): string => {
     try {
       const token = JWT.sign(payload, JWT_SECRET as Secret, {
-        algorithm: "HS512"
+        algorithm: "HS512",
       });
       return token;
     } catch (error) {
@@ -40,8 +43,8 @@ const helpers = {
     }
   },
   getRandomColor: () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
+    const letters = "0123456789ABCDEF";
+    let color = "#";
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
@@ -62,7 +65,16 @@ const helpers = {
     }
     return color;
   },
-};
 
+  calculateEmployeeAmountSum: (data: any) => {
+    return data.reduce((total: any, record: any) => {
+      const sum = record.employee.reduce(
+        (acc: any, employee: any) => acc + parseFloat(employee.amount),
+        0
+      );
+      return total + sum;
+    }, 0);
+  },
+};
 
 export default helpers;

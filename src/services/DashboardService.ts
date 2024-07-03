@@ -1,4 +1,5 @@
 import prisma from "../../config/prisma";
+import helpers from "../utils/helpers";
 
 export default {
   fetchDepartmentsCount: async () => {
@@ -211,6 +212,7 @@ export default {
         select: {
           income: true,
           supply_expense: true,
+          employee: true,
         },
       });
       const currentYear = new Date().getFullYear();
@@ -226,6 +228,7 @@ export default {
         select: {
           income: true,
           supply_expense: true,
+          employee: true,
         },
       });
       let first_Half_Income: any = {};
@@ -290,11 +293,14 @@ export default {
         });
       });
 
-      // console.log(sumByCategory);
-      // return programs
+      const employeeAmountsumFirstHalf =
+        helpers.calculateEmployeeAmountSum(programs);
+      const employeeAmountsumSecondHalf =
+        helpers.calculateEmployeeAmountSum(seondHalfprograms);
       const incomeArray = Object.entries(first_Half_Income).map(
         ([name, value]) => ({ name, value })
       );
+
       const supplyExpenseArray = Object.entries(first_half_supply_expense).map(
         ([name, value]) => ({ name, value })
       );
@@ -304,6 +310,16 @@ export default {
       const supplyArraySecond = Object.entries(secondHalf_supply_expense).map(
         ([name_second, value_second]) => ({ name_second, value_second })
       );
+
+      const employeeFirst = Object.entries({
+        Amount: employeeAmountsumFirstHalf,
+      }).map(([name, value]) => ({ name, value }));
+
+      const employeeSecond = Object.entries({
+        Amount: employeeAmountsumSecondHalf,
+      }).map(([name_second, value_second]) => ({ name_second, value_second }));
+
+      console.log("employeeSecond;;;", employeeSecond);
 
       let obj = {
         name: "Income",
@@ -316,7 +332,12 @@ export default {
         name: "Expense (Supplies & Services)",
         history: mergeValues([...supplyExpenseArray, ...supplyArraySecond]),
       };
-      const firstHalf = [obj, objTwo];
+
+      let objThree = {
+        name: "Expense (Salaries)",
+        history: mergeValues([...employeeFirst, ...employeeSecond]),
+      };
+      const firstHalf = [obj, objTwo, objThree];
 
       const secondHalf = {
         incomeArraySecond,
@@ -351,7 +372,7 @@ export default {
 
         return result;
       }
-      return { firstHalf, secondHalf };
+      return { firstHalf, secondHalf, seondHalfprograms };
     } catch (error) {
       console.error(error);
     }
