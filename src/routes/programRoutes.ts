@@ -92,7 +92,12 @@ router.get("/byId/:id", authenication.verify, ProgramController.getProgramById);
  *       400:
  *         description: Invalid request
  */
-router.post("/", authenication.verify, validation(programSchema.createProgram), ProgramController.createProgram);
+router.post(
+  "/",
+  authenication.verify,
+  validation(programSchema.createProgram),
+  ProgramController.createProgram
+);
 
 /**
  * @swagger
@@ -117,7 +122,12 @@ router.post("/", authenication.verify, validation(programSchema.createProgram), 
  *         description: Internal server error
  */
 
-router.put("/updateStatus", authenication.verify, validation(programSchema.updateProgramStatus), ProgramController.updateProgramStatus);
+router.put(
+  "/updateStatus",
+  authenication.verify,
+  validation(programSchema.updateProgramStatus),
+  ProgramController.updateProgramStatus
+);
 
 /**
  * @swagger
@@ -148,7 +158,12 @@ router.put("/updateStatus", authenication.verify, validation(programSchema.updat
  *       404:
  *         description: Program not found
  */
-router.put("/:id", authenication.verify, validation(programSchema.updateProgram), ProgramController.updateProgram);
+router.put(
+  "/:id",
+  authenication.verify,
+  validation(programSchema.updateProgram),
+  ProgramController.updateProgram
+);
 
 /**
  * @swagger
@@ -172,12 +187,36 @@ router.put("/:id", authenication.verify, validation(programSchema.updateProgram)
  *         description: Program not found
  */
 router.delete("/:id", authenication.verify, ProgramController.deleteProgram);
-router.post("/comments", authenication.verify, ProgramController.commentsInPrograms);
+router.post(
+  "/comments",
+  authenication.verify,
+  ProgramController.commentsInPrograms
+);
 router.get("/comments", authenication.verify, ProgramController.fetchcomments);
-router.delete("/comment/:id", authenication.verify, ProgramController.deletecomment);
-router.put("/comment/:id", authenication.verify, ProgramController.updateComment);
-router.put("/comment/resolved:id", authenication.verify, ProgramController.updateCommentstatus);
-router.get("/fetchProgramByUser", authenication.verify, ProgramController.fetchProgramsByUser);
-
+router.delete(
+  "/comment/:id",
+  authenication.verify,
+  ProgramController.deletecomment
+);
+router.put(
+  "/comment/:id",
+  authenication.verify,
+  ProgramController.updateComment
+);
+router.put(
+  "/comment/resolved:id",
+  authenication.verify,
+  ProgramController.updateCommentstatus
+);
+router.get(
+  "/fetchProgramByUser",
+  authenication.verify,
+  ProgramController.fetchProgramsByUser
+);
+router.get(
+  "/all-programs",
+  authenication.verify,
+  ProgramController.fetchAllPrograms
+);
 
 export default router;
