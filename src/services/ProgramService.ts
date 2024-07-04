@@ -228,4 +228,16 @@ export default {
       throw new Error("Failed to fetch programs");
     }
   },
+  fetchAllPrograms: async (id?: string) => {
+    try {
+      const programs = await prisma.program.findMany({
+        where: {
+          ...(id ? { user_id: id } : {}),
+        },
+      });
+      return programs;
+    } catch (error) {
+      throw new Error("Failed to fetch programs");
+    }
+  },
 };
