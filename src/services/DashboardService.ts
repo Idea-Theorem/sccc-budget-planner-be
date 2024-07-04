@@ -325,9 +325,6 @@ export default {
         name: "Income",
         history: mergeValues([...incomeArray, ...incomeArraySecond]),
       };
-
-      //   const res = mergeValues(obj.history);
-      //   console.log("res::::::::::::", res);
       let objTwo = {
         name: "Expense (Supplies & Services)",
         history: mergeValues([...supplyExpenseArray, ...supplyArraySecond]),
@@ -372,7 +369,7 @@ export default {
 
         return result;
       }
-      return { firstHalf, secondHalf, seondHalfprograms };
+      return { firstHalf };
     } catch (error) {
       console.error(error);
     }

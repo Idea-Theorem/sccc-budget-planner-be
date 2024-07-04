@@ -75,6 +75,10 @@ export default {
       body.programBudget = programBudget;
 
       const createdProgram = await prisma.program.create({ data: body });
+      io.emit("programStatusUpdated", {
+        programId: createdProgram?.id,
+        newStatus: body?.status,
+      });
       return createdProgram;
     } catch (error) {
       throw new Error("Failed to create program");
@@ -109,6 +113,10 @@ export default {
           id: programId,
         },
         data: body,
+      });
+      io.emit("programStatusUpdated", {
+        programId: programId,
+        newStatus: body?.status,
       });
     } catch (error) {
       throw new Error("Failed to update program");
@@ -155,7 +163,6 @@ export default {
           },
         },
       });
-
       io.emit("programStatusUpdated", {
         programId: progamIds,
         newStatus: status,
