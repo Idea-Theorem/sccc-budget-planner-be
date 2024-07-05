@@ -84,6 +84,20 @@ export default {
       throw new Error("Failed to create program");
     }
   },
+  getProgramByNameAndDepartment: async (
+    name: string,
+    department_id: string
+  ) => {
+    return await prisma.program.findFirst({
+      where: {
+        name: {
+          equals: name,
+          mode: "insensitive",
+        },
+        department_id: department_id,
+      },
+    });
+  },
 
   getProgramById: async (programId: string) => {
     try {

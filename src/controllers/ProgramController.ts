@@ -44,7 +44,6 @@ export default {
       const data: any = req.body;
       data.user_id = req.user.id;
       const { department_id } = data;
-      // check if department id is a valid uuid
       const isValidDepartmentId = isValidUUID(department_id);
       if (!isValidDepartmentId) {
         return res.status(401).json({ message: "Invalid department id" });
@@ -60,6 +59,17 @@ export default {
       }
 
       try {
+        const existingProgram =
+          await programService.getProgramByNameAndDepartment(
+            data?.name,
+            department_id
+          );
+        if (existingProgram) {
+          return res.status(400).json({
+            message:
+              "Program with the same name already exists in this department",
+          });
+        }
         const createdProgram = await programService.createProgram(data);
         return res.status(200).json({ program: createdProgram });
       } catch (error) {
