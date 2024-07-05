@@ -1,5 +1,6 @@
 import { Router } from "express";
 import DashboardController from "../controllers/DashboardController";
+import helpers from "../utils/helpers";
 
 const router = Router();
 
@@ -87,9 +88,19 @@ router.get("/centersCount", DashboardController.fetchCentersCount);
 router.post("/budget", DashboardController.addTotalBudget);
 router.get("/budget/:id", DashboardController.fetchTotalBudget);
 router.put("/budget/:id", DashboardController.updateTotalBudget);
-router.post("/budget-super-admin", DashboardController.addSuperAdminTotalBudget);
-router.get("/budget-super-admin/:id", DashboardController.fetchSuperAdminTotalBudget);
-router.put("/budget-super-admin/:id", DashboardController.updateSuperAdminTotalBudget);
+router.post(
+  "/budget-super-admin",
+  DashboardController.addSuperAdminTotalBudget
+);
+router.get(
+  "/budget-super-admin/:id",
+  DashboardController.fetchSuperAdminTotalBudget
+);
+router.put(
+  "/budget-super-admin/:id",
+  DashboardController.updateSuperAdminTotalBudget
+);
 router.get("/record", DashboardController.fetchAllRecord);
+router.get("/history", helpers.updateApprovedProgramsToExpired);
 
 export default router;
