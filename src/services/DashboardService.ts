@@ -224,6 +224,7 @@ export default {
             gte: secondStartDate,
             lte: secondEndDate,
           },
+          status: "APPROVED",
         },
         select: {
           income: true,
