@@ -80,24 +80,6 @@ const helpers = {
   updateApprovedProgramsToExpired: async () => {
     try {
       // Fetch all approved programs
-      const approvedPrograms = await prisma.program.findMany({
-        where: {
-          status: "APPROVED",
-        },
-      });
-
-      // Update the status of each approved program to expired
-      const updatePromises = approvedPrograms.map((program) =>
-        prisma.program.update({
-          where: { id: program.id },
-          data: { status: "EXPIRED" },
-        })
-      );
-
-      // Execute all updates in parallel
-      await Promise.all(updatePromises);
-
-      // Fetch updated approved programs to calculate total budget
       const programs = await prisma.program.findMany({
         where: { status: "APPROVED" },
         select: {
@@ -116,6 +98,25 @@ const helpers = {
         1, // Assuming 1 is the ID of the dashboard
         String(totalApprovedProgramBudget)
       );
+
+      const approvedPrograms = await prisma.program.findMany({
+        where: {
+          status: "APPROVED",
+        },
+      });
+
+      // Update the status of each approved program to expired
+      const updatePromises = approvedPrograms.map((program) =>
+        prisma.program.update({
+          where: { id: program.id },
+          data: { status: "EXPIRED" },
+        })
+      );
+
+      // Execute all updates in parallel
+      await Promise.all(updatePromises);
+
+      // Fetch updated approved programs to calculate total budget
 
       console.log(
         "All approved programs have been updated to expired.",

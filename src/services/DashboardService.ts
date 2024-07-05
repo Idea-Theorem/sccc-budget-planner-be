@@ -319,8 +319,6 @@ export default {
         Amount: employeeAmountsumSecondHalf,
       }).map(([name_second, value_second]) => ({ name_second, value_second }));
 
-      console.log("employeeSecond;;;", employeeSecond);
-
       let obj = {
         name: "Income",
         history: mergeValues([...incomeArray, ...incomeArraySecond]),
@@ -336,10 +334,6 @@ export default {
       };
       const firstHalf = [obj, objTwo, objThree];
 
-      const secondHalf = {
-        incomeArraySecond,
-        supplyArraySecond,
-      };
       function mergeValues(data: any) {
         const result: any = [];
 
