@@ -7,6 +7,7 @@ import roleRoutes from "./roleRoutes";
 import permissionRoutes from "./permissionRoutes";
 import dashboardRoutes from "./dashboardRoutes";
 import benefitRoutes from "./benefitRoute";
+import helpers from "../utils/helpers";
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use("/program", programRoutes);
 router.use("/role", roleRoutes);
 router.use("/permission", permissionRoutes);
 router.use("/dashboard", dashboardRoutes);
+router.use("/move-to-history", helpers.updateApprovedProgramsToExpired);
 
 export default router;
