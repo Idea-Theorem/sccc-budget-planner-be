@@ -121,6 +121,15 @@ export default {
   },
 
   updateProgram: async (programId: string, body: ProgramType) => {
+    if (body?.income?.length > 0) {
+      let programBudget = body.income.reduce(
+        (sum: any, income: any) => sum + income.amount,
+        0
+      );
+
+      body.programBudget = programBudget;
+    }
+
     try {
       await prisma.program.update({
         where: {
@@ -160,7 +169,7 @@ export default {
     }
   },
 
-  updateProgramStatus: async (body: UpdateProgramStatus) => {
+  updateProgramStatus: async (body: UpdateProgramStatus | any) => {
     try {
       const { progamIds, status } = body;
       const currentDateTime = new Date();
@@ -233,6 +242,11 @@ export default {
             select: {
               id: true,
               name: true,
+            },
+          },
+          _count: {
+            select: {
+              Comment: true,
             },
           },
         },
