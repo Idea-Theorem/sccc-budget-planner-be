@@ -28,7 +28,15 @@ export default {
   fetchProgramsCount: async () => {
     try {
       // Fetch count of all programs
-      const programsCount = await prisma.program.count();
+      const statuses: any = ["PENDING", "APPROVED", "DRAFTED", "REJECTED"];
+
+      const programsCount = await prisma.program.count({
+        where: {
+          status: {
+            in: statuses,
+          },
+        },
+      });
 
       // Fetch count of programs with status 'APPROVED'
       const approvedCount = await prisma.program.count({
@@ -73,6 +81,7 @@ export default {
         (sum: any, item: any) => sum + item.programBudget,
         0
       );
+
       // const totalIncomeSum = programs.reduce((acc: any, program) => {
       //     const incomeSum = program.income.reduce((sum, item: any) => sum + item.amount, 0);
       //     return acc + incomeSum;
