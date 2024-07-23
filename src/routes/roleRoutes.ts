@@ -55,13 +55,20 @@ router.get("/", RoleController.fetchRoles);
  *       404:
  *         description: Role not found
  */
-router.get("/employee-role", RoleController.fetchEmployeeRole);
-router.post("/employee-role", validation(roleSchema.createRole), RoleController.createEmployeeRole);
-router.put("/employee-role/:id", validation(roleSchema.createRole), RoleController.updateEmployeeRole);
+router.get("/employee-role/:name?", RoleController.fetchEmployeeRole);
+router.post(
+  "/employee-role",
+  validation(roleSchema.createRole),
+  RoleController.createEmployeeRole
+);
+router.put(
+  "/employee-role/:id",
+  validation(roleSchema.createRole),
+  RoleController.updateEmployeeRole
+);
 router.delete("/employee-role/:id", RoleController.deleteEmployeeRole);
 router.get("/new-hire", RoleController.fetchNewhire);
 router.delete("/programs/:id/employees/:empId", RoleController.deleteNewhire);
 router.get("/:id", RoleController.getRoleById);
-
 
 export default router;

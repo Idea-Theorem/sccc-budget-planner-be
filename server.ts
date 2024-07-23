@@ -10,6 +10,7 @@ import swaggerConfig from "./swaggerConfig";
 import errorMiddleware from "./src/middlewares/error";
 import helpers from "./src/utils/helpers";
 import { initSocket } from "./socket";
+import prisma from "./config/prisma";
 
 // Initialize Express app and HTTP server
 const app = express();
@@ -36,8 +37,35 @@ app.get("/", (req, res) => {
 
 // Schedule cron job
 cron.schedule("0 0 0 31 12 *", helpers.updateApprovedProgramsToExpired);
-
+// updateRoleNameById("a4d86ccf-7b78-4533-9269-41dc94259946");
 initSocket(server);
 server.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
 });
+
+async function updateRoleNameById(id: any) {
+  try {
+    // Update the role name by its ID
+    await prisma.rolePermission.deleteMany({
+      where: { role_id: id },
+    });
+
+    // Delete related UserRole records if needed
+    await prisma.userRole.deleteMany({
+      where: { role_id: id },
+    });
+
+    // Delete the role by its ID
+    const deletedRole = await prisma.role.delete({
+      where: { id },
+    });
+    // Return the updated role object
+    console.error("Error updating role name updatesddd :");
+  } catch (error) {
+    console.error("Error updating role name:", error);
+    throw error;
+  } finally {
+    // Disconnect Prisma Client
+    await prisma.$disconnect();
+  }
+}

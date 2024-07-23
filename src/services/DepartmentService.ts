@@ -125,19 +125,27 @@ export default {
     return employees;
   },
   fetchProgramInDepartment: async (departmentId?: any) => {
-    const programs = await prisma.program.findMany({
+    const programsData = await prisma.program.findMany({
       where: {
         department_id: departmentId,
         status: "APPROVED",
       },
       include: {
+        _count: {
+          select: { Comment: true }, // Include the count of comments
+        },
+
         department: true, // Include the department details for each program
       },
     });
-    const totalBudget = programs.reduce(
+    const totalBudget = programsData.reduce(
       (sum: any, item: any) => sum + item.programBudget,
       0
     );
+    const programs = programsData.map((program) => ({
+      ...program,
+      commentCount: program._count.Comment, // Add comment count to program
+    }));
 
     return { totalBudget, programs };
   },
@@ -238,7 +246,7 @@ export default {
     return { approvedCount, pendingCount };
   },
   fetchDepartmentsStatus: async (status?: any, name?: any) => {
-    const departments = await prisma.department.findMany({
+    const departmentData = await prisma.department.findMany({
       where: {
         status: status !== undefined ? status : undefined, // null check for status
         name: {
@@ -246,12 +254,37 @@ export default {
           mode: "insensitive", // case-insensitive search
         },
       },
-      // include: {
-      //     center: true,
-      //     User: true,
-      //     Program: true,
-      //     EmployeeDepartment: true
-      // }
+      include: {
+        _count: {
+          select: {
+            Program: true, // Count of programs in each department
+          },
+        },
+        Program: {
+          select: {
+            programBudget: true,
+            _count: {
+              select: { Comment: true }, // Count of comments in each program
+            },
+          },
+        },
+      },
+    });
+    const departments = departmentData.map((department) => {
+      const totalComments = department.Program.reduce(
+        (sum, program) => sum + program._count.Comment,
+        0
+      );
+      const totalBudget = department.Program.reduce(
+        (sum, program) => sum + program.programBudget,
+        0
+      );
+
+      return {
+        ...department,
+        totalComments,
+        totalBudget,
+      };
     });
     const programs: any = await prisma.program.findMany();
     const totalProgramBudget = programs.reduce((sum: any, program: any) => {

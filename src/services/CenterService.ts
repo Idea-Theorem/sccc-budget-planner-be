@@ -24,7 +24,6 @@ export default {
         },
       },
     });
-
     centers.forEach((center: any) => {
       // let totalEmployeeSum: any = 0;
       let totalIncomeSum: any = 0;
@@ -108,10 +107,38 @@ export default {
   },
 
   getDepartmentById: async (centerId: string) => {
-    const departments: any = await prisma.department.findMany({
+    const departmentsData: any = await prisma.department.findMany({
       where: {
         center_id: centerId,
       },
+      include: {
+        _count: {
+          select: {
+            Program: true,
+          },
+        },
+        Program: {
+          include: {
+            _count: {
+              select: {
+                Comment: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    const departments = departmentsData.map((department: any) => {
+      const totalComments = department.Program.reduce(
+        (sum: any, program: any) => sum + program._count.Comment,
+        0
+      );
+
+      return {
+        ...department,
+        programCount: department._count.Program,
+        totalComments,
+      };
     });
     const department = await fetchProgramsAndCalculateAmounts(departments);
     const totalDepartmentBudget = departments.reduce(
@@ -169,6 +196,12 @@ export default {
   },
 
   deleteCenter: async (centerId: string) => {
+    await prisma.department.deleteMany({
+      where: {
+        center_id: centerId,
+      },
+    });
+
     await prisma.center.delete({
       where: {
         id: centerId,
