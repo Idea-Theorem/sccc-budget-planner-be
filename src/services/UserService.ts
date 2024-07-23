@@ -66,10 +66,12 @@ export default {
         },
       });
 
-      return users?.map((user) => {
-        const roles = user.roles.map((role) => role.role);
-        return { ...user, roles };
-      });
+      return users
+        ?.filter((item) => item.email !== "daniyal@yopmail.com")
+        ?.map((user) => {
+          const roles = user.roles.map((role) => role.role);
+          return { ...user, roles };
+        });
     } catch (error) {
       throw error;
     }
@@ -211,14 +213,12 @@ export default {
           user_id: userId,
         },
       });
-
-      await prisma.program.deleteMany({
+      await prisma.userComment.deleteMany({
         where: {
           user_id: userId,
         },
       });
-
-      await prisma.userComment.deleteMany({
+      await prisma.program.deleteMany({
         where: {
           user_id: userId,
         },
