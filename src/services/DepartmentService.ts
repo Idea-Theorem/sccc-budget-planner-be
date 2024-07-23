@@ -206,27 +206,27 @@ export default {
   },
 
   updateStaus: async (departmentIds: any, status: any) => {
-    const departments = await prisma.department.findMany({
+    const departments: any = await prisma.department.findMany({
       where: { id: { in: departmentIds } },
       include: { Program: true },
     });
-
     departments.forEach(async (department: any) => {
       const allProgramsApproved = department.Program.every(
         (program: any) =>
           program.status === "APPROVED" || program.status === "DRAFTED"
       );
-      if (allProgramsApproved) {
-        await prisma.department.update({
-          where: { id: department.id },
-          data: { status: status },
-        });
-        console.log(`Department ${department.id} status updated to APPROVED`);
-      } else {
-        console.log(
-          `Department ${department.id} status remains as ${department.status}`
-        );
-      }
+
+      // if (allProgramsApproved) {
+      await prisma.department.update({
+        where: { id: department.id },
+        data: { status: status },
+      });
+      console.log(`Department ${department.id} status updated to APPROVED`);
+      // } else {
+      //   console.log(
+      //     `Department ${department.id} status remains as ${department.status}`
+      //   );
+      // }
     });
   },
   getProgramCount: async (departmentIds: any) => {
