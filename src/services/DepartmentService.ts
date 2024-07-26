@@ -31,9 +31,15 @@ export default {
             supply_expense: true,
           },
         },
+        _count: {
+          select: {
+            EmployeeDepartment: true, // Count the employeeDepartments linked to users
+          },
+        },
       },
     });
     const departments = await fetchProgramsAndCalculateAmounts(departmentData);
+    console.log("departments::::::::", departments);
     return departments;
     async function fetchProgramsAndCalculateAmounts(departmentArray: any) {
       for (const department of departmentArray) {
@@ -65,6 +71,7 @@ export default {
 
         // Store the total amount in the department object
         department.value = totalAmount;
+        department.userCount = department._count.employeDepartments; // Store the user count
       }
 
       return departmentArray;
