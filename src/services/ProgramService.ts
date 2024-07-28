@@ -27,6 +27,11 @@ export default {
               name: true,
             },
           },
+          _count: {
+            select: {
+              Comment: true,
+            },
+          },
         },
       });
       return programs;

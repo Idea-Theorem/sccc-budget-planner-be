@@ -39,7 +39,6 @@ export default {
       },
     });
     const departments = await fetchProgramsAndCalculateAmounts(departmentData);
-    console.log("departments::::::::", departments);
     return departments;
     async function fetchProgramsAndCalculateAmounts(departmentArray: any) {
       for (const department of departmentArray) {
