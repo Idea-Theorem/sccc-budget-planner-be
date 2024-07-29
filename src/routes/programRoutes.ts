@@ -12,7 +12,11 @@ const router = Router();
  *   name: Programs
  *   description: API endpoints for managing programs
  */
-
+router.put(
+  "/resolve/:id",
+  authenication.verify,
+  ProgramController.updateCommentstatus
+);
 /**
  * @swagger
  * /api/program:
@@ -203,11 +207,7 @@ router.put(
   authenication.verify,
   ProgramController.updateComment
 );
-router.put(
-  "/comment/resolved:id",
-  authenication.verify,
-  ProgramController.updateCommentstatus
-);
+
 router.get(
   "/fetchProgramByUser",
   authenication.verify,
