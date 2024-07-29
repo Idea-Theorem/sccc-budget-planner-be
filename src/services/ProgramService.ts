@@ -18,7 +18,7 @@ export default {
         where: {
           // ...(id ? { user_id: id } : {}),
           ...(status ? { status } : {}),
-          ...(name ? { name: { contains: name } } : {}),
+          ...(name ? { name: { contains: name, mode: "insensitive" } } : {}),
         },
         include: {
           department: {
@@ -228,7 +228,7 @@ export default {
         where: {
           ...(id ? { user_id: id } : {}),
           ...(status ? { status } : {}),
-          ...(name ? { name: { contains: name } } : {}),
+          ...(name ? { name: { contains: name, mode: "insensitive" } } : {}),
         },
         include: {
           department: {
