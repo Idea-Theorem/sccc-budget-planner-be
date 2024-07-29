@@ -36,9 +36,11 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Department'
  */
-router.get("/:name?", authenication.verify, DepartmentController.fetchDepartments);
-
-
+router.get(
+  "/:name?",
+  authenication.verify,
+  DepartmentController.fetchDepartments
+);
 
 /**
  * @swagger
@@ -65,7 +67,11 @@ router.get("/:name?", authenication.verify, DepartmentController.fetchDepartment
  *       404:
  *         description: Department not found
  */
-router.get("/byId/:id", authenication.verify, DepartmentController.getDepartmentById);
+router.get(
+  "/byId/:id",
+  authenication.verify,
+  DepartmentController.getDepartmentById
+);
 
 /**
  * @swagger
@@ -87,7 +93,12 @@ router.get("/byId/:id", authenication.verify, DepartmentController.getDepartment
  *       400:
  *         description: Invalid request
  */
-router.post("/", authenication.verify, validation(departmentSchema.createDepartment), DepartmentController.createDepartment);
+router.post(
+  "/",
+  authenication.verify,
+  validation(departmentSchema.createDepartment),
+  DepartmentController.createDepartment
+);
 
 /**
  * @swagger
@@ -118,7 +129,12 @@ router.post("/", authenication.verify, validation(departmentSchema.createDepartm
  *       404:
  *         description: Department not found
  */
-router.put("/:id", authenication.verify, validation(departmentSchema.createDepartment), DepartmentController.updateDepartment);
+router.put(
+  "/:id",
+  authenication.verify,
+  validation(departmentSchema.createDepartment),
+  DepartmentController.updateDepartment
+);
 
 /**
  * @swagger
@@ -141,18 +157,40 @@ router.put("/:id", authenication.verify, validation(departmentSchema.createDepar
  *       404:
  *         description: Department not found
  */
-router.delete("/:id", authenication.verify, DepartmentController.deleteDepartment);
-router.post("/update-status", authenication.verify, DepartmentController.updateDepartmentStatus);
-router.get("/program-count/:id", authenication.verify, DepartmentController.programCountInDepartment);
-router.get("/status/:status?", authenication.verify, DepartmentController.fetchDepartmentsViaStatus);
-router.get("/employees/:departmentId?", authenication.verify, DepartmentController.fetchEmployeeAgainstDepartment);
-router.get("/programs/:departmentId?", authenication.verify, DepartmentController.fetchProgramsAgainstDepartment);
-router.get("/by-user/department", authenication.verify, DepartmentController.fetchDepartmentsByUsers);
-
-
-
-
-
-
+router.delete(
+  "/:id",
+  authenication.verify,
+  DepartmentController.deleteDepartment
+);
+router.post(
+  "/update-status",
+  authenication.verify,
+  DepartmentController.updateDepartmentStatus
+);
+router.get(
+  "/program-count/:id",
+  authenication.verify,
+  DepartmentController.programCountInDepartment
+);
+router.get(
+  "/status/:status?",
+  authenication.verify,
+  DepartmentController.fetchDepartmentsViaStatus
+);
+router.get(
+  "/employees/:departmentId?",
+  authenication.verify,
+  DepartmentController.fetchEmployeeAgainstDepartment
+);
+router.get(
+  "/programs/:departmentId?",
+  authenication.verify,
+  DepartmentController.fetchProgramsAgainstDepartment
+);
+router.get(
+  "/by-user/department",
+  authenication.verify,
+  DepartmentController.fetchDepartmentsByUsers
+);
 
 export default router;
