@@ -45,18 +45,6 @@ export default {
     name?: string | undefined
   ) => {
     try {
-      // const comments = await prisma.comment.findMany();
-      // return comments
-      // const comments = await prisma.comment.findMany({
-      //     include: {
-      //         userComments: {
-      //             include: {
-      //                 user: true,
-      //                 comment: true
-      //             }
-      //         }
-      //     }
-      // });
       const comments = await prisma.userComment.findMany({
         include: {
           user: true,

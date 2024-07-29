@@ -184,10 +184,9 @@ export default {
     async (req: Request, res: Response) => {
       const commentId = req.params.id;
       try {
-        const comment: any = await prisma.comment.findUnique({
+        const comment: any = await prisma.userComment.findUnique({
           where: { id: commentId },
         });
-
         if (!comment) {
           return res.status(404).json({ error: "Comment not found." });
         }
@@ -198,11 +197,11 @@ export default {
             .json({ error: "Comment is already resolved." });
         }
 
-        const updatedComment = await prisma.comment.update({
+        const updatedComment = await prisma.userComment.update({
           where: { id: commentId },
           data: { isResolved: true },
         });
-
+        console.log("Updated comment:", updatedComment);
         res.json({ message: "Comment is resolved successfully." });
       } catch (error) {
         console.error(error);

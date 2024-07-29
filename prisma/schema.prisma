@@ -185,9 +185,11 @@ model Comment {
 model UserComment {
   id        String   @id @default(uuid())
   user_id   String
-  comment_id String
+  comment_id String  @unique 
   user      User     @relation(fields: [user_id], references: [id])
   comment   Comment  @relation(fields: [comment_id], references: [id])
+  isResolved Boolean @default(false)
+
 }
 
 model budget {
