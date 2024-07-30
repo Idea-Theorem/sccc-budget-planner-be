@@ -230,14 +230,16 @@ export default {
       data: { reset_token: resetToken },
     });
 
-    const resetUrl = `http://localhost:5173/reset-password?token=${resetToken}`;
+    const resetUrl = `http://20.151.64.242/reset-password?token=${resetToken}`;
 
     // Send the reset token via email (configure your mail settings)
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.NODE_MAILER_USER_NAME,
-        pass: process.env.NODE_MAILER_PASSWORD,
+        // user: process.env.NODE_MAILER_USER_NAME,
+        // pass: process.env.NODE_MAILER_PASSWORD,
+        user: "frontendrock@gmail.com",
+        pass: "lxhw bhfu qrwa ilid",
       },
     });
 
