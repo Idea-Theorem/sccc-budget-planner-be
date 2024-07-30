@@ -196,12 +196,47 @@ export default {
   },
 
   deleteCenter: async (centerId: string) => {
-    await prisma.department.deleteMany({
+    // Fetch all departments associated with the center
+    const departments = await prisma.department.findMany({
       where: {
         center_id: centerId,
       },
+      select: {
+        id: true,
+      },
     });
 
+    // Extract department ids
+    const departmentIds = departments.map((department) => department.id);
+
+    // Delete related EmployeeDepartment records
+    await prisma.employeeDepartment.deleteMany({
+      where: {
+        department_id: {
+          in: departmentIds,
+        },
+      },
+    });
+
+    // Delete related Program records
+    await prisma.program.deleteMany({
+      where: {
+        department_id: {
+          in: departmentIds,
+        },
+      },
+    });
+
+    // Delete departments
+    await prisma.department.deleteMany({
+      where: {
+        id: {
+          in: departmentIds,
+        },
+      },
+    });
+
+    // Delete the center
     await prisma.center.delete({
       where: {
         id: centerId,
