@@ -47,22 +47,10 @@ export default {
           where: { department_id: department.id, status: "APPROVED" },
           select: {
             programBudget: true,
-            // employee: true,
-            // supply_expense: true,
           },
         });
 
-        // Initialize total amount for the department
         let totalAmount = 0;
-
-        // Calculate the sum of amounts in income, employee, and supply_expense arrays for each program
-        // programs.forEach(program => {
-        //     const incomeTotal: any = program.income.length == 0 ? 0 : program.income.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
-        //     const employeeTotal: any = program.employee.length == 0 ? 0 : program.employee.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
-        //     const supplyExpenseTotal = program.supply_expense.length == 0 ? 0 : program.supply_expense.reduce((acc, item: any) => Number(acc) + Number(item.amount), 0);
-
-        //     totalAmount += incomeTotal + employeeTotal + supplyExpenseTotal;
-        // });
         totalAmount = programs?.reduce(
           (sum: any, item: any) => sum + item.programBudget,
           0
