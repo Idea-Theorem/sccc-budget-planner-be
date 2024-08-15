@@ -244,4 +244,20 @@ export default {
       }
     }
   ),
+  fetchEmployeeInfo: asyncErrorHandler(
+    async (req: Request | any, res: Response) => {
+      try {
+        const { user_id, department_id } = req.query;
+        const programs = await programService.fetchEmployeeInfo(
+          user_id,
+          department_id
+        );
+
+        return res.status(200).json({ programs });
+      } catch (error) {
+        console.error("Error fetching programs:", error);
+        return res.status(500).json({ message: error });
+      }
+    }
+  ),
 };

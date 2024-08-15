@@ -261,4 +261,18 @@ export default {
       throw new Error("Failed to fetch programs");
     }
   },
+  fetchEmployeeInfo: async (user_id?: string, department_id?: string) => {
+    try {
+      const employeeDepartment = await prisma.employeeDepartment.findFirst({
+        where: {
+          user_id: user_id,
+          department_id: department_id,
+        },
+      });
+      return employeeDepartment;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  },
 };

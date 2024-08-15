@@ -218,5 +218,10 @@ router.get(
   authenication.verify,
   ProgramController.fetchAllPrograms
 );
+router.get(
+  "/employee-info",
+  authenication.verify,
+  ProgramController.fetchEmployeeInfo
+);
 
 export default router;
