@@ -188,6 +188,11 @@ router.get(
   DepartmentController.fetchProgramsAgainstDepartment
 );
 router.get(
+  "/programs-by-status/:departmentId?/:status?/:name?",
+  authenication.verify,
+  DepartmentController.fetchProgramsAgainstDepartmentByStatus
+);
+router.get(
   "/by-user/department",
   authenication.verify,
   DepartmentController.fetchDepartmentsByUsers

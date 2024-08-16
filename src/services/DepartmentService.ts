@@ -144,6 +144,37 @@ export default {
     return { totalBudget, programs };
   },
 
+  fetchProgramInDepartmentBystatus: async (
+    departmentId?: any,
+    status?: string | any,
+    name?: string | any
+  ) => {
+    const programsData = await prisma.program.findMany({
+      where: {
+        department_id: departmentId,
+        status: status,
+        name: name ? { contains: name, mode: "insensitive" } : undefined, // Add search filter
+      },
+      include: {
+        _count: {
+          select: { Comment: true }, // Include the count of comments
+        },
+
+        department: true, // Include the department details for each program
+      },
+    });
+    const totalBudget = programsData.reduce(
+      (sum: any, item: any) => sum + item.programBudget,
+      0
+    );
+    const programs = programsData.map((program) => ({
+      ...program,
+      commentCount: program._count.Comment, // Add comment count to program
+    }));
+
+    return { totalBudget, programs };
+  },
+
   createDepartment: async (data: any) => {
     const randomcolor = await helpers.getUniqueColor(prisma.department);
     data.color = randomcolor;
