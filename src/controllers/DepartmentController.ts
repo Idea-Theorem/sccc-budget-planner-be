@@ -63,6 +63,24 @@ export default {
     }
   ),
 
+  fetchProgramsAgainstDepartmentByStatus: asyncErrorHandler(
+    async (req: Request, res: Response) => {
+      const { status, departmentId, name } = req.params;
+      try {
+        const { totalBudget, programs } =
+          await departmentService.fetchProgramInDepartmentBystatus(
+            departmentId,
+            status,
+            name
+          );
+        return res.status(200).json({ totalBudget, programs });
+      } catch (error) {
+        console.error("Error fetching programs:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+      }
+    }
+  ),
+
   createDepartment: asyncErrorHandler(async (req: Request, res: Response) => {
     const data = req.body;
     const { center_id } = data;
