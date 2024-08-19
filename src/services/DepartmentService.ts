@@ -13,6 +13,9 @@ export default {
             },
           }
         : {},
+      orderBy: {
+        created_at: "desc",
+      },
       include: {
         center: {
           select: {
@@ -95,6 +98,9 @@ export default {
           },
         },
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
     return departments;
   },
@@ -103,6 +109,9 @@ export default {
       .findMany({
         where: {
           department_id: departmentId,
+        },
+        orderBy: {
+          created_at: "desc",
         },
         // distinct: ['user_id']
       })
@@ -113,6 +122,9 @@ export default {
         id: {
           in: uniqueUserIds,
         },
+      },
+      orderBy: {
+        created_at: "desc",
       },
     });
 
@@ -130,6 +142,9 @@ export default {
         },
 
         department: true, // Include the department details for each program
+      },
+      orderBy: {
+        created_at: "desc",
       },
     });
     const totalBudget = programsData.reduce(
@@ -162,6 +177,9 @@ export default {
 
         department: true, // Include the department details for each program
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
     const totalBudget = programsData.reduce(
       (sum: any, item: any) => sum + item.programBudget,
@@ -189,6 +207,9 @@ export default {
           mode: "insensitive", // Case insensitive search
         },
         center_id: center_id,
+      },
+      orderBy: {
+        created_at: "desc",
       },
     });
     return existingDepartment;
@@ -293,6 +314,9 @@ export default {
             },
           },
         },
+      },
+      orderBy: {
+        created_at: "desc",
       },
     });
     const departments = departmentData.map((department) => {

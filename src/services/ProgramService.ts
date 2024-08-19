@@ -33,6 +33,9 @@ export default {
             },
           },
         },
+        orderBy: {
+          created_at: "desc",
+        },
       });
       return programs;
     } catch (error) {
@@ -88,6 +91,9 @@ export default {
           mode: "insensitive",
         },
         department_id: department_id,
+      },
+      orderBy: {
+        created_at: "desc",
       },
     });
   },
@@ -243,6 +249,9 @@ export default {
             },
           },
         },
+        orderBy: {
+          created_at: "desc",
+        },
       });
       return programs;
     } catch (error) {
@@ -254,6 +263,9 @@ export default {
       const programs = await prisma.program.findMany({
         where: {
           ...(id ? { user_id: id } : {}),
+        },
+        orderBy: {
+          created_at: "desc",
         },
       });
       return programs;
@@ -267,6 +279,9 @@ export default {
         where: {
           user_id: user_id,
           department_id: department_id,
+        },
+        orderBy: {
+          created_at: "desc",
         },
       });
       return employeeDepartment;

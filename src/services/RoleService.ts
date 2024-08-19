@@ -79,6 +79,9 @@ export default {
             },
           }
         : undefined,
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     return employeeRoles;

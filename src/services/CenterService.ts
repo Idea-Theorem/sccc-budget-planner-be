@@ -8,7 +8,7 @@ export default {
         ? {
             name: {
               contains: name,
-              mode: "insensitive", // Optional: makes the search case-insensitive
+              mode: "insensitive",
             },
           }
         : {},
@@ -17,58 +17,35 @@ export default {
           include: {
             Program: {
               where: {
-                status: "APPROVED", // Add this line to filter by approved status
+                status: "APPROVED",
               },
             },
           },
         },
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
     centers.forEach((center: any) => {
-      // let totalEmployeeSum: any = 0;
       let totalIncomeSum: any = 0;
-      // let totalSupplyExpenseSum: any = 0;
 
       let incomeTotal: any = 0;
 
       center.Department.forEach((department: any) => {
-        //  incomeTotal =  department.Program?.reduce((sum: any, item: any) => sum + item.programBudget, 0);
         department.Program.forEach((program: any) => {
-          // totalEmployeeSum += program.employee.reduce((sum: any, item: any) => Number(sum) + Number(item.amount), 0);
-
           totalIncomeSum += program?.income?.reduce(
             (sum: any, item: any) => Number(sum) + Number(item.amount),
             0
           );
-
-          // totalSupplyExpenseSum += program.supply_expense.reduce((sum: any, item: any) => Number(sum) + Number(item.amount), 0);
         });
       });
 
-      // center.totalEmployeeSum = totalEmployeeSum;
       center.totalIncomeSum = totalIncomeSum;
-      // center.totalSupplyExpenseSum = totalSupplyExpenseSum;
+
       center.value = totalIncomeSum;
     });
     return centers;
-    // };
-    // const centers = await prisma.center.findMany({
-    //     where: name ? {
-    //         name: {
-    //             contains: name,
-    //             mode: 'insensitive' // Optional: makes the search case-insensitive
-    //         }
-    //     } : {},
-    //     include: {
-    //         Department: {
-    //             select: {
-    //                 id: true,
-    //                 name: true
-    //             }
-    //         }
-    //     }
-    // });
-    // return centers;
   },
 
   createCenter: async (name: string) => {
@@ -126,6 +103,9 @@ export default {
             },
           },
         },
+      },
+      orderBy: {
+        created_at: "desc",
       },
     });
     const departments = departmentsData.map((department: any) => {
