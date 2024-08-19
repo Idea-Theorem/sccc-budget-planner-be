@@ -50,7 +50,6 @@ export default {
           employeDepartments: {
             select: {
               id: true,
-              // name: true,
               hourlyRate: true,
               salaryRate: true,
               title: true,
@@ -58,9 +57,11 @@ export default {
                 select: {
                   id: true,
                   name: true,
-                  // include other fields from Department model if needed
                 },
               },
+            },
+            orderBy: {
+              created_at: "desc", // sorts by the most recently added title
             },
           },
         },

@@ -85,6 +85,9 @@ const helpers = {
         select: {
           programBudget: true,
         },
+        orderBy: {
+          created_at: "desc",
+        },
       });
 
       // Calculate total approved program budget
