@@ -172,16 +172,22 @@ export default {
       },
       include: {
         _count: {
-          select: { Comment: true }, // Include the count of comments
+          select: { Comment: true },
         },
 
-        department: true, // Include the department details for each program
+        department: true,
       },
       orderBy: {
         created_at: "desc",
       },
     });
-    const totalBudget = programsData.reduce(
+
+    const programBudget = await prisma.program.findMany({
+      where: {
+        department_id: departmentId,
+      },
+    });
+    const totalBudget = programBudget.reduce(
       (sum: any, item: any) => sum + item.programBudget,
       0
     );
