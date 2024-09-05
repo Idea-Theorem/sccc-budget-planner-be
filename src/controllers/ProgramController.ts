@@ -201,7 +201,6 @@ export default {
           where: { id: commentId },
           data: { isResolved: true },
         });
-        console.log("Updated comment:", updatedComment);
         res.json({ message: "Comment is resolved successfully." });
       } catch (error) {
         console.error(error);
@@ -252,6 +251,22 @@ export default {
           user_id,
           department_id
         );
+
+        return res.status(200).json({ programs });
+      } catch (error) {
+        console.error("Error fetching programs:", error);
+        return res.status(500).json({ message: error });
+      }
+    }
+  ),
+  checkUserProgram: asyncErrorHandler(
+    async (req: Request | any, res: Response) => {
+      try {
+        const userId = req.user?.id;
+        if (!userId) {
+          return res.status(400).json({ error: "userId is required" });
+        }
+        const programs = await programService.checkUserProgram(userId);
 
         return res.status(200).json({ programs });
       } catch (error) {

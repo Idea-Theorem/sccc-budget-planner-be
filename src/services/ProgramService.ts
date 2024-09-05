@@ -290,4 +290,22 @@ export default {
       return error;
     }
   },
+  checkUserProgram: async (userId?: string) => {
+    try {
+      const existingProgram = await prisma.program.findFirst({
+        where: {
+          user_id: userId,
+        },
+      });
+
+      if (existingProgram) {
+        return { exists: true };
+      } else {
+        return { exists: false };
+      }
+    } catch (error) {
+      console.error("Error checking user program existence:", error);
+      return { error: "Internal server error" };
+    }
+  },
 };

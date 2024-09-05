@@ -224,4 +224,10 @@ router.get(
   ProgramController.fetchEmployeeInfo
 );
 
+router.get(
+  "/check-user-program",
+  authenication.verify,
+  ProgramController.checkUserProgram
+);
+
 export default router;
